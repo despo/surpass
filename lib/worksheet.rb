@@ -199,23 +199,33 @@ class Worksheet
   end
 
   # Write the text stored in label in a single cell at (r,c) according to style.
-  def write(r, c, label = "", style = nil)
-    style ||= @parent.styles.default_style
+  def write(r, c, label = "", style = @parent.styles.default_style)
     row(r).write(c, label, style)
   end
   
-  def merge(r1, r2, c1, c2, style=nil)
-    style ||= @parent.styles.default_style
-    (r1...(r2+1)).each do |r|
+  # Comment from xlwt:
+  ## Stand-alone merge of previously written cells.
+  ## Problems: (1) style to be used should be existing style of
+  ## the top-left cell, not an arg.
+  ## (2) should ensure that any previous data value in
+  ## non-top-left cells is nobbled.
+  ## Note: if a cell is set by a data record then later
+  ## is referenced by a [MUL]BLANK record, Excel will blank
+  ## out the cell on the screen, but OOo & Gnu will not
+  ## blank it out. Need to do something better than writing
+  ## multiple records. In the meantime, avoid this method and use
+  ## write_merge() instead.
+  def merge(r1, r2, c1, c2, style = @parent.styles.default_style)
+    row(r1).write_blanks(c1 + 1, c2, style) if c2 > c1
+    ((r1+1)...(r2+1)).each do |r|
       row(r).write_blanks(c1, c2, style)
     end
     @merged_ranges << [r1, r2, c1, c2]
   end
   
-  def write_merge(r1, r2, c1, c2, label="", style=nil)
-    style ||= @parent.styles.default_style
-    merge(r1, r2, c1, c2, style)
+  def write_merge(r1, r2, c1, c2, label="", style = @parent.styles.default_style)
     write(r1, c1,  label, style)
+    merge(r1, r2, c1, c2, style)
   end
   
   def to_biff
