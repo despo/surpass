@@ -6,6 +6,10 @@ class Column
   attr_accessor :collapse
   
   def initialize(index, parent)
+    is_int = index.is_a?(Integer)
+    in_range = (index >= 0) && (index <= 255)
+    raise "column index #{index} is not valid" unless is_int && in_range
+    
     @index = index
     @parent = parent
     @parent_wb = parent.parent

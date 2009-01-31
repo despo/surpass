@@ -20,6 +20,10 @@ class Row
   attr_accessor :space_below
 
   def initialize(index, parent_sheet)
+    is_int = index.is_a?(Integer)
+    in_range = (index >= 0) && (index <= 65535)
+    raise "row index #{index} is not valid" unless is_int && in_range
+    
     @index = index
     @parent = parent_sheet
     @parent_wb = parent_sheet.parent()
@@ -61,6 +65,7 @@ class Row
   def style=(style)
     adjust_height(style)
     @xf_index = @parent_wb.styles.add(style)
+    @has_default_format = 1
   end
   
   def cells_count
@@ -75,15 +80,11 @@ class Row
     options |= (@collapse & 0x01) << 4
     options |= (@hidden & 0x01) << 5
     options |= (@height_mismatch & 0x01) << 6
+    options |= (@has_default_format & 0x01) << 7
     options |= (0x01 & 0x01) << 8
-    if @xf_index != 0x0F
-      options |= (0x01 & 0x01) << 7
-    else
-      options |= (0x00 & 0x00) << 7
-    end
     options |= (@xf_index & 0x0FFF) << 16
-    options |= (0x00 & @space_above) << 28
-    options |= (0x00 & @space_below) << 29
+    options |= (@space_above & 0x01) << 28
+    options |= (@space_below & 0x01) << 29
 
     args = [@index, @min_col_index, @max_col_index, height_options, options]
     RowRecord.new(*args).to_biff
