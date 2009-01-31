@@ -4,7 +4,7 @@ class SharedStringTable
   def initialize
     @sst_record = ''
     @continues = []
-    @current_piece = [0,0].pack('I2')
+    @current_piece = [0,0].pack('V2')
     @pos = @current_piece.length
 
     @str_indexes = {}
@@ -26,14 +26,14 @@ class SharedStringTable
   
   def to_biff
     new_piece
-    result = [SST_ID, @sst_record.length, @add_calls, @str_indexes.length].pack('S2I2')
+    result = [SST_ID, @sst_record.length, @add_calls, @str_indexes.length].pack('v2V2')
     result += @sst_record[8..-1]
     result += @continues.join
     result
   end
   
   def add_to_sst(s)
-    u_str = [s.length, 0].pack("SC") + s
+    u_str = [s.length, 0].pack('vC') + s
     raise "very long string" if u_str.length > 0xFFFF
     save_atom(u_str[0...4])
     save_splitted(u_str[4..-1], false)
@@ -77,9 +77,9 @@ class SharedStringTable
       if need_more_space
         new_piece
         if is_unicode_str
-          @current_piece += [1].pack('S')
+          @current_piece += [1].pack('v')
         else
-          @current_piece += [0].pack('S')
+          @current_piece += [0].pack('v')
         end
       end
       
@@ -102,7 +102,7 @@ class BiffRecord
   
   def record_header
     # TODO figure out if Ruby's or Python's length function is correct here.
-    [self.class::RECORD_ID, @record_data.length].pack('S2')
+    [self.class::RECORD_ID, @record_data.length].pack('v2')
   end
 
   def to_biff
@@ -116,10 +116,10 @@ class BiffRecord
         pos = chunk_pos
       end
       
-      continues = [self.class::RECORD_ID, chunks[0].length].pack('S2') + chunks[0]
+      continues = [self.class::RECORD_ID, chunks[0].length].pack('v2') + chunks[0]
       chunks.each_with_index do |c, i|
         next if i == 0
-        continues += [CONTINUE_RECORD_ID, c.length].pack("S2") + c
+        continues += [CONTINUE_RECORD_ID, c.length].pack('v2') + c
       end
       continues
     else
@@ -159,7 +159,7 @@ class Biff8BOFRecord < BiffRecord
     file_hist_flags = 0x00
     ver_can_read    = 0x06
     
-    @record_data = [version, rec_type, build, year, file_hist_flags, ver_can_read].pack('S4I2')
+    @record_data = [version, rec_type, build, year, file_hist_flags, ver_can_read].pack('v4V2')
   end
 end
 
@@ -178,7 +178,7 @@ end
 class MMSRecord < BiffRecord
   RECORD_ID = 0x00C1
   def initialize
-    @record_data = [0x00].pack('S')
+    @record_data = [0x00].pack('v')
   end
 end
 
@@ -209,7 +209,7 @@ class DSFRecord < BiffRecord
   RECORD_ID = 0x0161
   
   def initialize
-    @record_data = [0x00].pack('S')
+    @record_data = [0x00].pack('v')
   end
 end
 
@@ -219,7 +219,7 @@ class TabIDRecord < BiffRecord
   def initialize(sheetcount)
     @record_data = ''
     for i in 1..sheetcount do
-      @record_data += [i].pack('S')
+      @record_data += [i].pack('v')
     end
   end
 end
@@ -239,7 +239,7 @@ class WindowProtectRecord < BiffRecord
   RECORD_ID = 0x0019
   
   def initialize(protect)
-    @record_data = [protect].pack('S')
+    @record_data = [protect].pack('v')
   end
 end
 
@@ -250,7 +250,7 @@ class ObjectProtectRecord < BiffRecord
   RECORD_ID = 0x0063
   
   def initialize(protect)
-    @record_data = [protect].pack('S')
+    @record_data = [protect].pack('v')
   end
 end
 
@@ -261,7 +261,7 @@ class ScenarioProtectRecord < BiffRecord
   RECORD_ID = 0x00DD
   
   def initialize(protect)
-    @record_data = [protect].pack('S')
+    @record_data = [protect].pack('v')
   end
 end
 
@@ -272,7 +272,7 @@ class ProtectRecord < BiffRecord
   RECORD_ID = 0x0012
   
   def initialize(protect)
-    @record_data = [protect].pack('S')
+    @record_data = [protect].pack('v')
   end
 end
 
@@ -283,7 +283,7 @@ class PasswordRecord < BiffRecord
   RECORD_ID = 0x0013
   
   def initialize(password = "")
-    @record_data = [password_hash(password)].pack('S')
+    @record_data = [password_hash(password)].pack('v')
   end
   
   # Based on the algorithm provided by Daniel Rentz of OpenOffice.
@@ -308,7 +308,7 @@ class Prot4RevRecord < BiffRecord
   RECORD_ID = 0x01AF
   
   def initialize
-    @record_data = [0x00].pack('S')
+    @record_data = [0x00].pack('v')
   end
 end
 
@@ -316,7 +316,7 @@ class Prot4RevPassRecord < BiffRecord
   RECORD_ID = 0x01BC
   
   def initialize
-    @record_data = [0x00].pack('S')
+    @record_data = [0x00].pack('v')
   end
 end
 
@@ -326,7 +326,7 @@ class BackupRecord < BiffRecord
   RECORD_ID = 0x0040
   
   def initialize(backup)
-    @record_data = [backup].pack('S')
+    @record_data = [backup].pack('v')
   end
 end
 
@@ -342,7 +342,7 @@ class HideObjRecord < BiffRecord
   RECORD_ID = 0x008D
   
   def initialize
-    @record_data = [0x00].pack('S')
+    @record_data = [0x00].pack('v')
   end
 end
 
@@ -350,7 +350,7 @@ class RefreshAllRecord < BiffRecord
   RECORD_ID = 0x01B7
   
   def initialize
-    @record_data = [0x00].pack('S')
+    @record_data = [0x00].pack('v')
   end
 end
 
@@ -367,7 +367,7 @@ class BookBoolRecord < BiffRecord
   RECORD_ID = 0x00DA
   
   def initialize
-    @record_data = [0x00].pack('S')
+    @record_data = [0x00].pack('v')
   end
 end
 
@@ -393,7 +393,7 @@ class CountryRecord < BiffRecord
   RECORD_ID = 0x00DA
   
   def initialize(ui_id, sys_settings_id)
-    @record_data = [ui_id, sys_settings_id].pack('S2')
+    @record_data = [ui_id, sys_settings_id].pack('v2')
   end
 end
 
@@ -410,7 +410,7 @@ class UseSelfsRecord < BiffRecord
   RECORD_ID = 0x0160
   
   def initialize
-    @record_data = [0x01].pack('S')
+    @record_data = [0x01].pack('v')
   end
 end
 
@@ -432,7 +432,7 @@ class DateModeRecord < BiffRecord
   RECORD_ID = 0x0022
   
   def initialize(boolean)
-    @record_data = boolean ? [1].pack('S') : [0].pack('S')
+    @record_data = boolean ? [1].pack('v') : [0].pack('v')
   end
 end
 
@@ -450,7 +450,7 @@ class PrecisionRecord < BiffRecord
   RECORD_ID = 0x000E
   
   def initialize(boolean)
-    @record_data = boolean ? [1].pack('S') : [0].pack('S')
+    @record_data = boolean ? [1].pack('v') : [0].pack('v')
   end
 end
 
@@ -506,7 +506,7 @@ class CodepageBiff8Record < BiffRecord
   UTF_16 = 0x04B0
   
   def initialize
-    @record_data = [UTF_16].pack('S')
+    @record_data = [UTF_16].pack('v')
   end
 end
 
@@ -532,7 +532,7 @@ class Window1Record < BiffRecord
   
   def initialize(hpos_twips, vpos_twips, width_twips, height_twips, flags, active_sheet, first_tab_index, selected_tabs, tab_width)
     args = [hpos_twips, vpos_twips, width_twips, height_twips, flags, active_sheet, first_tab_index, selected_tabs, tab_width]
-    @record_data = args.pack('S9')
+    @record_data = args.pack('v9')
   end
 end
 
@@ -606,7 +606,7 @@ class FontRecord < BiffRecord
   def initialize(height, options, colour_index, weight, escapement, underline, family, charset, name)
     #TODO implement upack1 fully
     args = [height, options, colour_index, weight, escapement,underline, family, charset, 0x00]
-    @record_data = args.pack("S5C4") + [name.length, 0].pack("CC") + name
+    @record_data = args.pack('v5C4') + [name.length, 0].pack('CC') + name
   end
 end
 
@@ -664,7 +664,7 @@ class NumberFormatRecord < BiffRecord
   RECORD_ID = 0x041E
   
   def initialize(index, format_string)
-    @record_data = [index].pack('S') + format_string
+    @record_data = [index].pack('v') + format_string
   end
 end
 
@@ -801,14 +801,14 @@ class XFRecord < BiffRecord
   def initialize(xf, xf_type = 'cell')
     font_xf_idx, fmt_str_xf_idx, alignment, borders, pattern, protection = xf
     
-    fnt = [font_xf_idx].pack('S')
-    fmt = [fmt_str_xf_idx].pack('S')
+    fnt = [font_xf_idx].pack('v')
+    fmt = [fmt_str_xf_idx].pack('v')
     
     if xf_type === 'cell'
       protection = ((protection.cell_locked & 0x01) << 0) | ((protection.formula_hidden & 0x01) << 1)
-      prt = [protection].pack('S')
+      prt = [protection].pack('v')
     else
-      prt = [0xFFF5].pack('S')
+      prt = [0xFFF5].pack('v')
     end
     
     aln_value = ((alignment.horz & 0x07) << 0) | ((alignment.wrap & 0x01) << 3) | ((alignment.vert & 0x07) << 4)
@@ -836,7 +836,7 @@ class XFRecord < BiffRecord
     ((borders.need_diag1    & 0x01) << 30) |
     ((borders.need_diag2    & 0x01) << 31)
     
-    brd1 = [brd1_value].pack('L')
+    brd1 = [brd1_value].pack('V')
     
     brd2_value = ((borders.top_colour    & 0x7F) << 0 ) |
           ((borders.bottom_colour & 0x7F) << 7 ) |
@@ -844,11 +844,11 @@ class XFRecord < BiffRecord
           ((borders.diag          & 0x0F) << 21) |
           ((pattern.pattern       & 0x3F) << 26)
           
-    brd2 = [brd2_value].pack('L')
+    brd2 = [brd2_value].pack('V')
     
     pat_value = ((pattern.pattern_fore_colour & 0x7F) << 0 ) |
           ((pattern.pattern_back_colour & 0x7F) << 7 )
-    pat = [pat_value].pack('S')
+    pat = [pat_value].pack('v')
 
     @record_data = fnt + fmt + prt + aln + rot + txt + used_attr + brd1 + brd2 + pat
   end
@@ -887,7 +887,7 @@ class StyleRecord < BiffRecord
   RECORD_ID = 0x0293
   
   def initialize
-    @record_data = [0x8000, 0x00, 0xFF].pack('SCC')
+    @record_data = [0x8000, 0x00, 0xFF].pack('vCC')
     # TODO: implement user-defined styles???
   end
 end
@@ -960,7 +960,7 @@ class BoundSheetRecord < BiffRecord
   RECORD_ID = 0x0085
   
   def initialize(stream_pos, visibility, name)
-    @record_data = [stream_pos, visibility, 0x00].pack("LCC") + [name.length, 0].pack("CC") + name
+    @record_data = [stream_pos, visibility, 0x00].pack('VCC') + [name.length, 0].pack('CC') + name
   end
 end
 
@@ -1052,11 +1052,11 @@ class ExtSSTRecord < BiffRecord
     end
   
     exsst_str_count_delta = [8, str_placement.length*8/0x2000].max
-    @record_data = [exsst_str_count_delta].pack('S')
+    @record_data = [exsst_str_count_delta].pack('v')
     
     str_counter = 0
     while (str_counter < str_placement.length) do
-      @record_data += [extsst[str_counter][1], extsst[str_counter][0], 0].pack('iSS')
+      @record_data += [extsst[str_counter][1], extsst[str_counter][0], 0].pack('Vvv')
       str_counter += exsst_str_count_delta
     end
   end
@@ -1075,7 +1075,7 @@ class DimensionsRecord < BiffRecord
   RECORD_ID = 0x0200
   
   def initialize(first_used_row, last_used_row, first_used_col, last_used_col)
-    @record_data = [first_used_row, last_used_row + 1, first_used_col, last_used_col + 1, 0x00].pack('L2S3')
+    @record_data = [first_used_row, last_used_row + 1, first_used_col, last_used_col + 1, 0x00].pack('V2v3')
   end
 end
 
@@ -1135,10 +1135,10 @@ class Window2Record < BiffRecord
   
   def initialize(options, first_visible_row, first_visible_col, grid_colour, preview_magn, normal_magn, scl_magn = nil)
     scl_rec = ''
-    scl_rec = [0x00A0, 4, scl_magn, 100].pack('S4') if scl_magn
+    scl_rec = [0x00A0, 4, scl_magn, 100].pack('v4') if scl_magn
       
     args = [options, first_visible_row, first_visible_col, grid_colour, 0x00, preview_magn, normal_magn, 0x00]
-    @record_data = args.pack('S7L') + scl_rec
+    @record_data = args.pack('v7V') + scl_rec
   end
 end
 
@@ -1201,7 +1201,7 @@ class PanesRecord < BiffRecord
   RECORD_ID = 0x0041
   
   def initialize(px, py, first_row_bottom, first_col_right, active_pane)
-    @record_data = [px, py, first_row_bottom, first_col_right, active_pane].pack('S5')
+    @record_data = [px, py, first_row_bottom, first_col_right, active_pane].pack('v5')
   end
 end
 
@@ -1249,7 +1249,7 @@ class RowRecord < BiffRecord
   RECORD_ID = 0x0208
   
   def initialize(index, first_col, last_col, height_options, options)
-    @record_data = [index, first_col, last_col + 1, height_options, 0x00, 0x00, options].pack('S6L')
+    @record_data = [index, first_col, last_col + 1, height_options, 0x00, 0x00, options].pack('v6V')
   end
 end
 
@@ -1259,7 +1259,7 @@ class LabelSSTRecord < BiffRecord
   RECORD_ID = 0x00FD
   
   def initialize(row, col, xf_idx, sst_idx)
-    @record_data = [row, col, xf_idx, sst_idx].pack('S3L')
+    @record_data = [row, col, xf_idx, sst_idx].pack('v3V')
   end
 end
 
@@ -1301,11 +1301,11 @@ class MergedCellsRecord < BiffRecord
       merged = ''
       while (i >= 0) && (j < 0x403) do
         r1, r2, c1, c2 = merged_list[i]
-        merged += [r1, r2, c1, c2].pack('S4')
+        merged += [r1, r2, c1, c2].pack('v4')
         i -= 1
         j += 1
       end
-      @record_data += [RECORD_ID, merged.length + 2, j].pack('S3') + merged
+      @record_data += [RECORD_ID, merged.length + 2, j].pack('v3') + merged
     end
   end
 
@@ -1330,8 +1330,8 @@ class MulBlankRecord < BiffRecord
   
   def initialize(row, first_col, last_col, xf_index)
     blanks_count = last_col-first_col+1
-    blanks = ([xf_index]*blanks_count).pack('S*')
-    @record_data = [row, first_col].pack('S2') + blanks + [last_col].pack('S')
+    blanks = ([xf_index]*blanks_count).pack('v*')
+    @record_data = [row, first_col].pack('v2') + blanks + [last_col].pack('v')
   end
 end
 
@@ -1347,7 +1347,7 @@ class BlankRecord < BiffRecord
   RECORD_ID = 0x0201
   
   def initialize(row, col, xf_index)
-    @record_data = [row, col, xf_index].pack('S3')
+    @record_data = [row, col, xf_index].pack('v3')
   end
 end
 
@@ -1358,7 +1358,7 @@ class RKRecord < BiffRecord
   RECORD_ID = 0x027E
 
   def initialize(row, col, xf_index, rk_encoded)
-    @record_data = [row, col, xf_index, rk_encoded].pack('S3i')
+    @record_data = [row, col, xf_index, rk_encoded].pack('v3V')
   end
 end
 
@@ -1367,7 +1367,7 @@ class NumberRecord < BiffRecord
   RECORD_ID = 0x0203
 
   def initialize(row, col, xf_index, number)
-    @record_data = [row, col, xf_index, number].pack('S3d')
+    @record_data = [row, col, xf_index, number].pack('v3E')
   end
 end
 
@@ -1377,7 +1377,7 @@ class BoolErrRecord < BiffRecord
   
   def initialize(row, col, xf_index, number, is_error)
     puts [row, col, xf_index, number, is_error].inspect
-    @record_data = [row, col, xf_index, number, is_error].pack('S3C2')
+    @record_data = [row, col, xf_index, number, is_error].pack('v3C2')
   end
 end
 
@@ -1397,7 +1397,7 @@ class FormulaRecord < BiffRecord
   RECORD_ID = 0x0006
 
   def initialize(row, col, xf_index, rpn, calc_flags = 0)
-    @record_data = [row, col, xf_index, 0xFFFF000000000003, calc_flags & 0x03, 0].pack('S3wSL') + rpn
+    @record_data = [row, col, xf_index, 0xFFFF000000000003, calc_flags & 0x03, 0].pack('v3wvV') + rpn
   end
 end
 
@@ -1414,7 +1414,7 @@ class GutsRecord < BiffRecord
   RECORD_ID = 0x0080
 
   def initialize(row_gut_width, col_gut_height, row_visible_levels, col_visible_levels)
-    @record_data = [row_gut_width, col_gut_height, row_visible_levels, col_visible_levels].pack('S4')
+    @record_data = [row_gut_width, col_gut_height, row_visible_levels, col_visible_levels].pack('v4')
   end
 end
 
@@ -1457,7 +1457,7 @@ class WSBoolRecord < BiffRecord
   RECORD_ID = 0x0081
 
   def initialize(options)
-    @record_data = [options].pack('S')
+    @record_data = [options].pack('v')
   end
 end
 
@@ -1490,7 +1490,7 @@ class ColInfoRecord < BiffRecord
   RECORD_ID = 0x007D
 
   def initialize(first_col, last_col, width, xf_index, options)
-    @record_data = [first_col, last_col, width, xf_index, options, 0].pack('S6')
+    @record_data = [first_col, last_col, width, xf_index, options, 0].pack('v6')
   end
 end
 
@@ -1508,7 +1508,7 @@ class CalcModeRecord < BiffRecord
   RECORD_ID = 0x000D
 
   def initialize(calc_mode)
-    @record_data = [calc_mode].pack('s')
+    @record_data = [calc_mode].pack('v')
   end
 end
 
@@ -1524,7 +1524,7 @@ class CalcCountRecord < BiffRecord
   RECORD_ID = 0x000C
 
   def initialize(calc_count)
-    @record_data = [calc_count].pack('S')
+    @record_data = [calc_count].pack('v')
   end
 end
 
@@ -1543,7 +1543,7 @@ class RefModeRecord < BiffRecord
   RECORD_ID = 0x00F
 
   def initialize(ref_mode)
-    @record_data = [ref_mode].pack('S')
+    @record_data = [ref_mode].pack('v')
   end
 end
 
@@ -1558,7 +1558,7 @@ class IterationRecord < BiffRecord
   RECORD_ID = 0x011
 
   def initialize(iterations_on)
-    @record_data = [iterations_on].pack('S')
+    @record_data = [iterations_on].pack('v')
   end
 end
 
@@ -1575,7 +1575,7 @@ class DeltaRecord < BiffRecord
   RECORD_ID = 0x010
 
   def initialize(delta)
-    @record_data = [delta].pack('d')
+    @record_data = [delta].pack('E')
   end
 end
 
@@ -1592,7 +1592,7 @@ class SaveRecalcRecord < BiffRecord
   RECORD_ID = 0x05F
 
   def initialize(recalc)
-    @record_data = [recalc].pack('S')
+    @record_data = [recalc].pack('v')
   end
 end
 
@@ -1608,7 +1608,7 @@ class PrintHeadersRecord < BiffRecord
   RECORD_ID = 0x02A
 
   def initialize(print_headers)
-    @record_data = [print_headers].pack('S')
+    @record_data = [print_headers].pack('v')
   end
 end
 
@@ -1623,7 +1623,7 @@ class PrintGridLinesRecord < BiffRecord
   RECORD_ID = 0x02B
 
   def initialize(print_grid)
-    @record_data = [print_grid].pack('S')
+    @record_data = [print_grid].pack('v')
   end
 end
 
@@ -1639,7 +1639,7 @@ class GridSetRecord < BiffRecord
   RECORD_ID = 0x082
 
   def initialize(print_grid_changed)
-    @record_data = [print_grid_changed].pack('S')
+    @record_data = [print_grid_changed].pack('v')
   end
 end
 
@@ -1660,7 +1660,7 @@ class DefaultRowHeight < BiffRecord
   RECORD_ID = 0x0225
 
   def initialize(options, def_height)
-    @record_data = [options, def_height].pack('S2')
+    @record_data = [options, def_height].pack('v2')
   end
 end
 
@@ -1677,7 +1677,7 @@ class DefColWidthRecord < BiffRecord
   RECORD_ID = 0x0055
 
   def initialize(def_width)
-    @record_data = [def_width].pack('S')
+    @record_data = [def_width].pack('v')
   end
 end
 
@@ -1701,9 +1701,9 @@ class HorizontalPageBreaksRecord < BiffRecord
   RECORD_ID = 0x001B
 
   def initialize(breaks_list)
-    @record_data = [breaks_list.length].pack('S')
+    @record_data = [breaks_list.length].pack('v')
     breaks_list.each do |r, c1, c2|
-      @record_data += [r, c1, c2].pack('S3')
+      @record_data += [r, c1, c2].pack('v3')
     end
   end
 end
@@ -1729,9 +1729,9 @@ class VerticalPageBreaksRecord < BiffRecord
   RECORD_ID = 0x001A
 
   def initialize(breaks_list)
-    @record_data = [breaks_list.length].pack('S')
+    @record_data = [breaks_list.length].pack('v')
     breaks_list.each do |c, r1, r2|
-      @record_data += [c, r1, r2].pack('S3')
+      @record_data += [c, r1, r2].pack('v3')
     end
   end
 end
@@ -1797,7 +1797,7 @@ class HeaderRecord < BiffRecord
   RECORD_ID = 0x0014
 
   def initialize(str)
-    @record_data = [str.length, 0].pack("SC") + str
+    @record_data = [str.length, 0].pack('vC') + str
   end
 end
 
@@ -1806,7 +1806,7 @@ class FooterRecord < BiffRecord
   RECORD_ID = 0x0015
 
   def initialize(str)
-    @record_data = [str.length, 0].pack("SC") + str
+    @record_data = [str.length, 0].pack('vC') + str
   end
 end
 
@@ -1822,7 +1822,7 @@ class HCenterRecord < BiffRecord
   RECORD_ID = 0x0083
 
   def initialize(is_horz_center)
-    @record_data = [is_horz_center].pack('S')
+    @record_data = [is_horz_center].pack('v')
   end
 end
 
@@ -1838,7 +1838,7 @@ class VCenterRecord < BiffRecord
   RECORD_ID = 0x0084
 
   def initialize(is_vert_center)
-    @record_data = [is_vert_center].pack('S')
+    @record_data = [is_vert_center].pack('v')
   end
 end
 
@@ -1854,7 +1854,7 @@ class LeftMarginRecord < BiffRecord
   RECORD_ID = 0x0026
 
   def initialize(margin)
-    @record_data = [margin].pack('d')
+    @record_data = [margin].pack('E')
   end
 end
 
@@ -1868,7 +1868,7 @@ class RightMarginRecord < BiffRecord
   RECORD_ID = 0x0027
 
   def initialize(margin)
-    @record_data = [margin].pack('d')
+    @record_data = [margin].pack('E')
   end
 end
 
@@ -1882,7 +1882,7 @@ class TopMarginRecord < BiffRecord
   RECORD_ID = 0x0028
 
   def initialize(margin)
-    @record_data = [margin].pack('d')
+    @record_data = [margin].pack('E')
   end
 end
 
@@ -1896,7 +1896,7 @@ class BottomMarginRecord < BiffRecord
   RECORD_ID = 0x0029
 
   def initialize(margin)
-    @record_data = [margin].pack('d')
+    @record_data = [margin].pack('E')
   end
 end
 
@@ -2054,7 +2054,7 @@ class SetupPageRecord < BiffRecord
 
   def initialize(paper, scaling, start_num, fit_width_to, fit_height_to, options, hres, vres, header_margin, footer_margin, num_copies)
     args = [paper, scaling, start_num, fit_width_to, fit_height_to, options, hres, vres, header_margin, footer_margin, num_copies]
-    @record_data = args.pack('S8d2S')
+    @record_data = args.pack('v8E2v')
   end
 end
 
@@ -2114,7 +2114,7 @@ class NameRecord < BiffRecord
     args += [menu_text.length, desc_text.length, help_text.length, status_text.length]
     args += [unicode_name, rpn]
     
-    @record_data = args.pack('SCCS SSC SSSS b*') + menu_text + desc_text + help_text + status_text
+    @record_data = args.pack('vCCv vvC vvvv b*') + menu_text + desc_text + help_text + status_text
   end
 end
 
@@ -2137,8 +2137,8 @@ class ExternSheetRecord < BiffRecord
     # do we always need this ref? or only if there are no refs?
     # AN: I am assuming only needed if no other refs TODO test
     refs = [[0,0,0]] if refs.empty?
-    ref_data = refs.collect {|r| r.pack('S3')}.join
-    @record_data = [refs.length].pack('S') + ref_data
+    ref_data = refs.collect {|r| r.pack('v3')}.join
+    @record_data = [refs.length].pack('v') + ref_data
   end
 end
 
@@ -2160,6 +2160,6 @@ end
 #   2             2     01H 04H (relict of BIFF5/BIFF7, the byte string "<04H>", see 3.9.1)
 class InternalReferenceSupBookRecord < SupBookRecord
   def initialize(num_sheets)
-    @record_data = [num_sheets, 0x01, 0x04].pack('SCC')
+    @record_data = [num_sheets, 0x01, 0x04].pack('vCC')
   end
 end

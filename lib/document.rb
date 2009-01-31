@@ -70,22 +70,22 @@ class Reader
     @rev_num               = @header[24...26]
     @ver_num               = @header[26...28]
     @byte_order            = @header[28...30]
-    @log2_sect_size       = @header[30...32].unpack('S')[0]
-    @log2_short_sect_size = @header[32...34].unpack('S')[0]
-    @total_sat_sectors    = @header[44...48].unpack('L')[0]
-    @dir_start_sid        = @header[48...52].unpack('l')[0]
-    @min_stream_size      = @header[56...60].unpack('L')[0]
-    @ssat_start_sid       = @header[60...64].unpack('l')[0]
-    @total_ssat_sectors   = @header[64...68].unpack('L')[0]
-    @msat_start_sid       = @header[68...72].unpack('l')[0]
-    @total_msat_sectors   = @header[72...76].unpack('L')[0]
+    @log2_sect_size       = @header[30...32].unpack('v')[0]
+    @log2_short_sect_size = @header[32...34].unpack('v')[0]
+    @total_sat_sectors    = @header[44...48].unpack('V')[0]
+    @dir_start_sid        = @header[48...52].unpack('V')[0]
+    @min_stream_size      = @header[56...60].unpack('V')[0]
+    @ssat_start_sid       = @header[60...64].unpack('V')[0]
+    @total_ssat_sectors   = @header[64...68].unpack('V')[0]
+    @msat_start_sid       = @header[68...72].unpack('V')[0]
+    @total_msat_sectors   = @header[72...76].unpack('V')[0]
 
     @sect_size        = 1 << @log2_sect_size
     @short_sect_size  = 1 << @log2_short_sect_size
   end
   
   def build_msat
-    @msat = @header[76..-1].unpack('l109')
+    @msat = @header[76..-1].unpack('V109')
     next_sector = @msat_start_sid
     while next_sector > 0 do
       raise "finish implementation"
@@ -99,12 +99,12 @@ class Reader
   
   def build_sat
     sat_stream = @msat.collect {|i| i >= 0 ? @data[(i*@sect_size)...((i+1)*@sect_size)] : '' }.join
-    @sat = sat_stream.unpack("l*")
+    @sat = sat_stream.unpack('V*')
   end
   
   def build_ssat
     ssat_stream = stream_data(@data, @sat, @ssat_start_sid, @sect_size)
-    @ssat = ssat_stream.unpack('l*')
+    @ssat = ssat_stream.unpack('V*')
   end
   
   def build_directory
@@ -126,11 +126,11 @@ class Reader
       
       t = dentry[66...67].unpack('C')[0]
       c = dentry[67...68].unpack('C')[0]
-      did_left = dentry[68...72].unpack('l')[0]
-      did_right = dentry[72...76].unpack('l')[0]
-      did_root = dentry[76...80].unpack('l')[0]
-      dentry_start_sid = dentry[116...120].unpack('l')[0]
-      stream_size = dentry[120...124].unpack('L')[0]
+      did_left = dentry[68...72].unpack('V')[0]
+      did_right = dentry[72...76].unpack('V')[0]
+      did_root = dentry[76...80].unpack('V')[0]
+      dentry_start_sid = dentry[116...120].unpack('V')[0]
+      stream_size = dentry[120...124].unpack('V')[0]
       
       @dir_entry_list << [did, sz, name, t, c, did_left, did_right, did_root, dentry_start_sid, stream_size]
     end
@@ -249,7 +249,7 @@ class ExcelDocument
     name_sz = encoded_name.length
 
     args = [encoded_name, name_sz, type, colour, did_left, did_right, did_root, 0, 0, 0, 0, 0, 0, 0, 0, 0, start_sid, stream_sz, 0]
-    args.pack('a64 S C2 l3 L9 l L2')
+    args.pack('a64 v C2 V3 V9 V V2')
   end
   
   def build_sat
@@ -305,13 +305,13 @@ class ExcelDocument
     sat[sect] = SID_END_OF_CHAIN
     sect += 1
     
-    @packed_sat = sat.pack('l*')
+    @packed_sat = sat.pack('V*')
     # initialize the msat_1st array to be filled with the "empty" character specified by SID_FREE_SECTOR
     msat_1st = [SID_FREE_SECTOR]*109
     @sat_sect.each_with_index do |sat_sect_num, i|
       msat_1st[i] = sat_sect_num
     end
-    @packed_msat_1st = msat_1st.pack('l*')
+    @packed_msat_1st = msat_1st.pack('V*')
     
     msat_2nd = [SID_FREE_SECTOR] * 128 * msat_sect_count
     msat_end[-1] = SID_END_OF_CHAIN if msat_sect_count > 0
@@ -331,7 +331,7 @@ class ExcelDocument
       sid_num += 1
     end
     
-    @packed_msat_2nd = msat_2nd.pack('l*')
+    @packed_msat_2nd = msat_2nd.pack('V*')
   end
   
   def build_header
@@ -340,23 +340,23 @@ class ExcelDocument
      rev_num                      = ">\000"
      ver_num                      = "\003\000"
      byte_order                   = "\376\377"
-     log_sect_size                = [9].pack('S')
-     log_short_sect_size          = [6].pack('S')
+     log_sect_size                = [9].pack('v')
+     log_short_sect_size          = [6].pack('v')
      not_used0                    = "\000"*10
-     total_sat_sectors            = [@sat_sect.length].pack('L')
-     dir_start_sid                = [@dir_stream_sect[0]].pack('l')
+     total_sat_sectors            = [@sat_sect.length].pack('V')
+     dir_start_sid                = [@dir_stream_sect[0]].pack('V')
      not_used1                    = "\000"*4        
-     min_stream_size              = [0x1000].pack('L')
-     ssat_start_sid               = [-2].pack('l')
-     total_ssat_sectors           = [0].pack('L')
+     min_stream_size              = [0x1000].pack('V')
+     ssat_start_sid               = [-2].pack('V')
+     total_ssat_sectors           = [0].pack('V')
      
      if @msat_sect_2nd.length == 0
-       msat_start_sid = [-2].pack('l')
+       msat_start_sid = [-2].pack('V')
      else
-       msat_start_sid = [@msat_sect_2nd[0]].pack('l')
+       msat_start_sid = [@msat_sect_2nd[0]].pack('V')
      end
      
-     total_msat_sectors = [@msat_sect_2nd.length].pack('L')
+     total_msat_sectors = [@msat_sect_2nd.length].pack('V')
      
      @header = [
          doc_magic,

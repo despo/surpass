@@ -2,11 +2,11 @@ module Utilities
   # For ease of comparing with pyExcelerator output values
   # python seems to automatically decode to hex values
   def hex_array_to_binary_string(array_of_hex_values)
-    [array_of_hex_values.collect {|h| [sprintf("%02x", h)]}.join].pack("H*")
+    [array_of_hex_values.collect {|h| [sprintf("%02x", h)]}.join].pack('H*')
   end
   
   # def unicode_pack(string)
-  #   string.unpack("C*").collect {|c| [c].pack("Cx")}.join
+  #   string.unpack("C*").collect {|c| [c].pack('Cx')}.join
   # end
   
   def points_to_pixels(points)

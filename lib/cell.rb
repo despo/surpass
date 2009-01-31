@@ -53,7 +53,7 @@ class NumberCell
       return rk_record(rk_encoded)
     end
     
-    w0, w1, w2, w3 = [@number].pack('d').unpack('S4')
+    w0, w1, w2, w3 = [@number].pack('E').unpack('v4')
     
     is_float_rk = (w0 == 0) && (w1 == 0) && (w2 & 0xFFFC) == w2
     if is_float_rk
@@ -61,7 +61,7 @@ class NumberCell
       return rk_record(rk_encoded)
     end
     
-    w0, w1, w2, w3 = [@number * 100].pack('d').unpack('S4')
+    w0, w1, w2, w3 = [@number * 100].pack('E').unpack('v4')
 
     is_float_rk_100 = w0 == 0 && w1 == 0 && w2 & 0xFFFC == w2
     if is_float_rk_100
@@ -126,7 +126,7 @@ class FormulaCell
   def convert_formula_value_to_result(value)
     @str = ''
     if value.is_a?(Numeric)
-      ret = [value].pack('d')
+      ret = [value].pack('E')
     else
       case value
       when TrueClass, FalseClass

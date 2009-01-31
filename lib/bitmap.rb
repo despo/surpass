@@ -41,7 +41,7 @@ class ObjBmpRecord < BiffRecord
     reserved5 = 0x0000  # reserved
     
     args = [cobj, ot, id, grbit, coll, dxl, rwt, dyt, colr, dxr, rwb, dyb, cbmacro, reserved1, reserved2, icvback, icvfore, fls, fauto, icv, lns, lnw, fautob, frs, cf, reserved3, cbpictfmla, reserved4, grbit2, reserved5]
-    @record_data = args.pack('L S12 L S C8 S L S4 L')
+    @record_data = args.pack('L v12 L v C8 v L v4 L')
   end
   
   # Calculate the vertices that define the position of the image as required by
@@ -164,7 +164,7 @@ class ImDataBmpRecord < BiffRecord
     env = 0x01
     lcb = @size
     
-    @record_data =  [cf, env, lcb].pack("S2L") + data
+    @record_data =  [cf, env, lcb].pack('v2L') + data
   end
   
   # Convert a 24 bit bitmap into the modified internal format used by Windows.
@@ -184,7 +184,7 @@ class ImDataBmpRecord < BiffRecord
 
     # Read and remove the bitmap size. This is more reliable than reading
     # the data size at offset 0x22.
-    size = data[0,4].unpack("L")[0]
+    size = data[0,4].unpack('L')[0]
     size -=  0x36   # Subtract size of bitmap header.
     size +=  0x0C   # Add size of BIFF header.
 
@@ -192,26 +192,26 @@ class ImDataBmpRecord < BiffRecord
     # Remove bitmap data: reserved, offset, header length.
     data = data[12..-1]
     # Read and remove the bitmap width and height. Verify the sizes.
-    width, height = data[0,8].unpack("L2")
+    width, height = data[0,8].unpack('L2')
     data = data[8..-1]
     raise "bitmap: largest image width supported is 65k." if (width > 0xFFFF)
     raise "bitmap: largest image height supported is 65k." if (height > 0xFFFF)
     
     # Read and remove the bitmap planes and bpp data. Verify them.
-    planes, bitcount = data[0,4].unpack("S2")
+    planes, bitcount = data[0,4].unpack('v2')
     data = data[4..-1]
     raise "bitmap isn't a 24bit true color bitmap." if (bitcount != 24)
     raise "bitmap: only 1 plane supported in bitmap image." if (planes != 1)
 
     # Read and remove the bitmap compression. Verify compression.
-    compression = data[0,4].unpack("L")[0]
+    compression = data[0,4].unpack('L')[0]
     data = data[4..-1]
     raise "bitmap: compression not supported in bitmap image." if (compression != 0)
         
     # Remove bitmap data: data size, hres, vres, colours, imp. colours.
     data = data[20..-1]
     # Add the BITMAPCOREHEADER data
-    header = [0x000c, width, height, 0x01, 0x18].pack("LS4")
+    header = [0x000c, width, height, 0x01, 0x18].pack('Lv4')
     
     [width, height, size, header + data]
   end

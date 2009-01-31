@@ -114,7 +114,7 @@ class Workbook
      
     # FIXME: this is just a bad hack, need to use Formula to make the rpn
     #~ rpn = ExcelFormula.Formula('').rpn()[2:] # minus the size field
-    rpn = [0x3B, 0x0000, rstart, rend, cstart, cend].pack('CS5')
+    rpn = [0x3B, 0x0000, rstart, rend, cstart, cend].pack('Cv5')
     args = [options, 0x00, MACROS['Print_Area'], sheetnum, rpn]
     @names << NameRecord.new(*args).to_biff
   end
