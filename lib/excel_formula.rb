@@ -1,0 +1,6 @@
+class ExcelFormula
+  NO_CALCS=0x00
+  RECALC_ALWAYS=0x01
+  CALC_ON_OPEN=0x02
+  PART_OF_SHARED_FORMULA=0x08
+end

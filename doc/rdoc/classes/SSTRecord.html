@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: SSTRecord</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">SSTRecord</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+
+
+                <a href="../files/lib/biff_record_rb.html">
+
+                lib/biff_record.rb
+
+                </a>
+
+
+        <br />
+
+            </td>
+        </tr>
+
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+
+                <a href="BiffRecord.html">
+
+                BiffRecord
+
+               </a>
+
+            </td>
+        </tr>
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+This record contains a list of all strings used anywhere in the workbook.
+Each string occurs only once. The workbook uses indexes into the list to
+reference the strings.
+</p>
+<p>
+Record SST, BIFF8: Offset Size Contents 0 4 Total number of strings in the
+workbook (see below) 4 4 Number of following strings (nm) 8 var. List of nm
+Unicode strings, 16-bit string length
+</p>
+<p>
+The first field of the SST record counts the total occurrence of strings in
+the workbook. For instance, the string AAA is used 3 times and the string
+BBB is used 2 times. The first field contains 5 and the second field
+contains 2, followed by the two strings.
+</p>
+
+    </div>
+
+   </div>
+
+
+  </div>
+
+    <!-- if includes -->
+
+    <div id="section">
+
+    <div id="constants-list">
+      <h3 class="section-bar">Constants</h3>
+
+      <div class="name-list">
+        <table summary="Constants">
+
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">RECORD_ID</td>
+          <td>=</td>
+          <td class="context-item-value">0x00FC</td>
+
+        </tr>
+
+        </table>
+      </div>
+    </div>
+
+
+
+
+    <!-- if method_list -->
+
+
+
+
+  </div>
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

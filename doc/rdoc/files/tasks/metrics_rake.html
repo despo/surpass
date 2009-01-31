@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: metrics.rake</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+  <div id="fileHeader">
+    <h1>metrics.rake</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>tasks/metrics.rake
+
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Thu Oct 16 10:12:45 +0100 2008</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+require &#8216;spec/rake/spectask&#8216;
+</p>
+<p>
+task :metrics => "metrics:all"
+</p>
+<p>
+namespace :metrics do
+</p>
+<pre>
+  desc &quot;Run all custom stats&quot;
+  task :all =&gt; [:cloc, :clean_rcov]
+
+  desc &quot;Run CLOC metrics and store in stats/cloc.txt&quot;
+  task :cloc do
+    puts `cloc --no3 --read-lang-def=/Users/ana/ana/cloc_definitions.txt --report-file=stats/cloc.txt *.rb lib/`
+  end
+
+  desc &quot;Run RCOV metrics and store in stats/rcov.txt&quot;
+  Spec::Rake::SpecTask.new('rcov') do |t|
+    t.spec_files = FileList['spec/**/*.rb']
+    t.spec_opts = ['--format', 'specdoc:stats/specdoc.txt']
+    t.out = 'stats/rcov.txt'
+    t.rcov = true
+    t.rcov_opts = ['--exclude', 'spec', '--text-report']
+  end
+
+  desc &quot;clean non-rcov text from an rcov file&quot;
+  task :clean_rcov =&gt; [:rcov] do |t|
+    array = File.readlines(&quot;stats/rcov.txt&quot;)
+    File.open(&quot;stats/rcov.txt&quot;, &quot;w&quot;) do |f|
+      state = :new
+      array.each do |l|
+        case state
+        when :new
+          next unless l =~ /^\+--/
+          state = :rcov
+          f.write l
+        when :rcov
+          f.write l
+        else
+          raise &quot;bad state #{state}&quot;
+        end
+      end
+    end
+  end
+</pre>
+<p>
+end
+</p>
+
+    </div>
+
+   </div>
+
+
+  </div>
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+    <!-- if method_list -->
+
+
+
+
+  </div>
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>
