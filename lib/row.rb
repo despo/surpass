@@ -98,12 +98,14 @@ class Row
     adjust_height(style)
     adjust_boundary_column_indexes(col)
     case label
-    when String
-      if label.length > 0
+    # when TrueClass, FalseClass
+    #   @cells << BooleanCell.new(self, col, @parent_wb.styles.add(style), as_numeric(label))
+    when String, NilClass
+      if label.to_s.length == 0
+        @cells << BlankCell.new(self, col, @parent_wb.styles.add(style))
+      else
         @cells << StringCell.new(self, col, @parent_wb.styles.add(style), @parent_wb.sst.add_str(label))
         @total_str += 1
-      else
-        @cells << BlankCell.new(self, col, @parent_wb.styles.add(style))
       end
     when Numeric
       @cells << NumberCell.new(self, col, @parent_wb.styles.add(style), label)

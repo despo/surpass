@@ -70,17 +70,13 @@ describe StyleCollection, "adding new styles" do
   end
   
   it "should add a new number format" do
-    @s.number_format_index('never seen this before').should == 163
+    @s.number_format_index('never seen this before').should == 164
   end
 end
 
 describe StyleCollection, "biff" do
   before(:each) do
     @s = StyleCollection.new
-  end
-  
-  it "should correctly convert font data to biff" do
-    @s.fonts_biff.should === File.read("spec/reference/all-fonts.bin")
   end
   
   it "should correctly convert number format data to biff" do

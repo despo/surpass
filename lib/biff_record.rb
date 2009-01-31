@@ -1357,6 +1357,7 @@ class BoolErrRecord < BiffRecord
   RECORD_ID = 0x0205
   
   def initialize(row, col, xf_index, number, is_error)
+    puts [row, col, xf_index, number, is_error].inspect
     @record_data = [row, col, xf_index, number, is_error].pack('S3C2')
   end
 end

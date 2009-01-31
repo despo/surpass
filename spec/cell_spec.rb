@@ -25,7 +25,6 @@ describe NumberCell, "to_biff" do
   after(:all) do
     @w.save("spec/output/cells-rk.xls")
   end
-  
 end
 
 TEST_VALUES = [
