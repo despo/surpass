@@ -154,7 +154,7 @@ class Reader
       while sat[sid] >= 0 do
           next_in_chain = sat[sid]
           last_chunk_start, last_chunk_finish = chunks[-1]
-          if next_in_chain - last_chunk_finish <= 1
+          if next_in_chain == last_chunk_finish + 1
               chunks[-1] = last_chunk_start, next_in_chain
           else
               chunks << [next_in_chain, next_in_chain]

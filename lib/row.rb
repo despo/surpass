@@ -57,6 +57,9 @@ class Row
   
   def adjust_boundary_column_indexes(*args)
     args.each do |a|
+      is_int = (a.to_i == a)
+      in_range = (0 <= a) && (a <= 255)
+      raise "invalid boundary index #{a}" unless is_int && in_range
       @min_col_index = a if a < @min_col_index
       @max_col_index = a if a > @max_col_index
     end
@@ -119,6 +122,7 @@ class Row
   end
   
   def write_blanks(c1, c2, style)
+    raise unless c1 <= c2
     adjust_height(style)
     adjust_boundary_column_indexes(c1, c2)
     @cells << MulBlankCell.new(self, c1, c2, @parent_wb.styles.add(style))

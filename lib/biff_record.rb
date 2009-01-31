@@ -1377,8 +1377,8 @@ end
 class FormulaRecord < BiffRecord
   RECORD_ID = 0x0006
 
-  def initialize(row, col, xf_index, rpn)
-    @record_data = [row, col, xf_index, 0xFFFF000000000003, 0, 0].pack('S3wSL') + rpn
+  def initialize(row, col, xf_index, rpn, calc_flags = 0)
+    @record_data = [row, col, xf_index, 0xFFFF000000000003, calc_flags & 0x03, 0].pack('S3wSL') + rpn
   end
 end
 

@@ -104,7 +104,7 @@ end
 class FormulaCell
   attr_accessor :result
   
-  def initialize(parent, index, format_index, formula)
+  def initialize(parent, index, format_index, formula, calc_flags = 0)
     @str = nil
     @parent = parent
     @index = index
@@ -112,10 +112,11 @@ class FormulaCell
     @options = formula.options.nil? ? parent.formula_options : formula.options
     @formula = formula
     @result = convert_formula_value_to_result(formula.default)
+    @calc_flags = calc_flags
   end
   
   def to_biff
-    args = [@parent.index, @index, @format_index, @result, @options, @formula.rpn]
+    args = [@parent.index, @index, @format_index, @result, @options, @formula.rpn, @calc_flags]
     formula_data = FormulaRecord.new(*args).to_biff
     formula_data += StringRecord.new(@str).to_biff if @str
     formula_data
