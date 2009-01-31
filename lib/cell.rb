@@ -145,3 +145,51 @@ class FormulaCell
     ret.unpack('Q')[0]
   end
 end
+
+
+class BooleanCell
+  def initialize(parent, index, format_index, number)
+    @parent = parent
+    @index = index
+    @format_index = format_index
+    @number = number
+    @is_error = 0
+  end
+  
+  def to_biff
+    BoolErrRecord.new(@parent.index, @index, @format_index, @number, @is_error)
+  end
+end
+
+class ErrorCell
+  ERROR_CODES = {
+      0x00 =>  0, # Intersection of two cell ranges is empty
+      0x07 =>  7, # Division by zero
+      0x0F => 15, # Wrong type of operand
+      0x17 => 23, # Illegal or deleted cell reference
+      0x1D => 29, # Wrong function or range name
+      0x24 => 36, # Value range overflow
+      0x2A => 42, # Argument or function not available
+      '#NULL!'  =>  0, # Intersection of two cell ranges is empty
+      '#DIV/0!' =>  7, # Division by zero
+      '#VALUE!' => 36, # Wrong type of operand
+      '#REF!'   => 23, # Illegal or deleted cell reference
+      '#NAME?'  => 29, # Wrong function or range name
+      '#NUM!'   => 36, # Value range overflow
+      '#N/A!'   => 42  # Argument or function not available
+  }
+  
+  def initialize(parent, index, format_index, error_string_or_code)
+    @parent = parent
+    @index = index
+    @format_index = format_index
+    @number = ERROR_CODES[error_string_or_code]
+    @is_error = 1
+    
+    raise "invalid error code #{error_string_or_code}" if @number.nil?
+  end
+  
+  def to_biff
+    BoolErrRecord.new(@parent.index, @index, @format_index, @number, @is_error)
+  end
+end

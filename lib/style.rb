@@ -23,6 +23,8 @@ class StyleCollection
   attr_accessor :default_style
   attr_accessor :default_format
   
+  FIRST_USER_DEFINED_NUM_FORMAT_INDEX = 164
+  
   STANDARD_NUMBER_FORMATS = [
     'general',
     '0',
@@ -95,7 +97,7 @@ class StyleCollection
   def number_format_index(number_format_string)
     if !@number_formats.has_value?(number_format_string)
       # TODO implement regex to check if valid string
-      new_index = 163 + @number_formats.length - STANDARD_NUMBER_FORMATS.length
+      new_index = FIRST_USER_DEFINED_NUM_FORMAT_INDEX + @number_formats.length - STANDARD_NUMBER_FORMATS.length
       @number_formats[new_index] = number_format_string
     end
     @number_formats.index(number_format_string)
@@ -144,7 +146,7 @@ class StyleCollection
   def number_formats_biff
     result = ''
     @number_formats.sort.each do |i, f|
-      next if i < 163
+      next if i < FIRST_USER_DEFINED_NUM_FORMAT_INDEX
       result += NumberFormatRecord.new(i, f).to_biff
     end
     result

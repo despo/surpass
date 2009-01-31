@@ -1352,6 +1352,15 @@ class NumberRecord < BiffRecord
   end
 end
 
+# This record represents a cell that contains a boolean or error value. '<3HBB'
+class BoolErrRecord < BiffRecord
+  RECORD_ID = 0x0205
+  
+  def initialize(row, col, xf_index, number, is_error)
+    @record_data = [row, col, xf_index, number, is_error].pack('S3C2')
+  end
+end
+
 # Offset Size Contents
 # 0      2    Index to row
 # 2      2    Index to column
