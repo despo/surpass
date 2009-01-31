@@ -1,4 +1,4 @@
-require "excel"
+require "lib/surpass"
 
 font0 = Font.new
 font0.name = 'Times New Roman'

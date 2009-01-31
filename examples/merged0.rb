@@ -1,4 +1,4 @@
-require "excel"
+require "lib/surpass"
 
 wb = Workbook.new
 ws0 = wb.add_sheet('sheet0')

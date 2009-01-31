@@ -1,4 +1,4 @@
-require "excel"
+require "lib/surpass"
 
 # TODO this is broken in both Ruby and Python
 

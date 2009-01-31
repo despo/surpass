@@ -1,4 +1,4 @@
-require "excel"
+require "lib/surpass"
 
 fnt = Font.new
 fnt.name = 'Arial'
