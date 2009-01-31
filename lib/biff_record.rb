@@ -1339,7 +1339,7 @@ class RKRecord < BiffRecord
   RECORD_ID = 0x027E
 
   def initialize(row, col, xf_index, rk_encoded)
-    @record_data = [row, col, xf_index, rk_encoded].pack('S3I')
+    @record_data = [row, col, xf_index, rk_encoded].pack('S3i')
   end
 end
 

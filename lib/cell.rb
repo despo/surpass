@@ -37,6 +37,22 @@ class NumberCell
   
   # TODO test this section to be sure numbers are categorized and packed correctly.
   def to_biff
+    # 30 bit signed int
+    in_range = (-0x20000000 <= @number) && (@number < 0x20000000)
+    is_int = (@number.to_i == @number)
+    if in_range && is_int
+      rk_encoded = 2 | (@number.to_i << 2)
+      return rk_record(rk_encoded)
+    end
+    
+    # try scaling by 100 then using a 30 bit signed int
+    in_range = (-0x20000000 <= @number * 100) && (@number * 100 < 0x20000000)
+    round_trip = (@number.to_i*100) == @number*100
+    if in_range && round_trip
+      rk_encoded = (3 | (@number.to_i*100 << 2))
+      return rk_record(rk_encoded)
+    end
+    
     w0, w1, w2, w3 = [@number].pack('d').unpack('S4')
     
     is_float_rk = (w0 == 0) && (w1 == 0) && (w2 & 0xFFFC) == w2
@@ -45,23 +61,11 @@ class NumberCell
       return rk_record(rk_encoded)
     end
     
-    is_30_bit_int_rk = (@number.abs < 0x20000000) && (@number.to_i == @number)
-    if is_30_bit_int_rk
-      rk_encoded = (2 | (@number.to_i << 2)) & 0xffffffff
-      return rk_record(rk_encoded)
-    end
-
     w0, w1, w2, w3 = [@number * 100].pack('d').unpack('S4')
 
     is_float_rk_100 = w0 == 0 && w1 == 0 && w2 & 0xFFFC == w2
     if is_float_rk_100
       rk_encoded = 1 | (w3 << 16) | w2
-      return rk_record(rk_encoded)
-    end
-    
-    is_30_bit_int_rk_100 = ((@number*100).abs < 0x20000000) && ((@number*100).to_i == @number*100)
-    if is_30_bit_int_rk_100
-      rk_encoded = (3 | ((@number*100).to_i << 2)) & 0xffffffff
       return rk_record(rk_encoded)
     end
 
