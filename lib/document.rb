@@ -387,7 +387,8 @@ class ExcelDocument
     build_sat
     build_header
 
-    file = File.open(file, 'wb') unless file.respond_to?(:write)
+    we_own_it = !file.respond_to?(:write)
+    file = File.open(file, 'wb') if we_own_it
     file.write(@header)
     file.write(@packed_msat_1st)
     file.write(stream)
@@ -395,6 +396,6 @@ class ExcelDocument
     file.write(@packed_msat_2nd)
     file.write(@packed_sat)
     file.write(@dir_stream)
-    file.close
+    file.close if we_own_it
   end
 end
