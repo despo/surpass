@@ -842,7 +842,7 @@ class XFRecord < BiffRecord
           ((borders.bottom_colour & 0x7F) << 7 ) |
           ((borders.diag_colour   & 0x7F) << 14) |
           ((borders.diag          & 0x0F) << 21) |
-          ((pattern.pattern       & 0x0F) << 26)
+          ((pattern.pattern       & 0x3F) << 26)
           
     brd2 = [brd2_value].pack('L')
     

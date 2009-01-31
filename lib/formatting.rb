@@ -62,7 +62,7 @@ class Font
   FAMILY_SWISS        = 0x02
   FAMILY_MODERN       = 0x03
   FAMILY_SCRIPT       = 0x04
-  FAMILY_DECORARTIVE  = 0x05
+  FAMILY_DECORATIVE   = 0x05
   
   CHARSET_ANSI_LATIN          = 0x00
   CHARSET_SYS_DEFAULT         = 0x01
@@ -118,7 +118,7 @@ class Font
     @escapement = ESCAPEMENT_NONE
     @underline = UNDERLINE_NONE
     @family = FAMILY_NONE
-    @charset = CHARSET_ANSI_CYRILLIC # TODO change
+    @charset = CHARSET_SYS_DEFAULT
     @name = 'Arial'
   end
   
