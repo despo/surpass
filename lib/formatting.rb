@@ -152,7 +152,7 @@ class Alignment
   VERT_CENTER                 = 0x01
   VERT_BOTTOM                 = 0x02
   VERT_JUSTIFIED              = 0x03 # Justified (BIFF5-BIFF8X)
-  VERT_DISIRIBUTED            = 0x04 # Distributed (BIFF8X)
+  VERT_DISTRIBUTED            = 0x04 # Distributed (BIFF8X)
 
   DIRECTION_GENERAL           = 0x00 # BIFF8X
   DIRECTION_LR                = 0x01

@@ -396,7 +396,13 @@ class Worksheet
     options |= (as_numeric(@sheet_visible       ) & 0x01) << 10
     options |= (as_numeric(@page_preview        ) & 0x01) << 11
 
-    Window2Record.new(options, @first_visible_row, @first_visible_col, @grid_colour, @preview_magn, @normal_magn).to_biff
+    if @page_preview
+      scl_magn = @preview_magn || 60
+    else
+      scl_magn = @normal_magn
+    end
+
+    Window2Record.new(options, @first_visible_row, @first_visible_col, @grid_colour, @preview_magn, @normal_magn, scl_magn).to_biff
   end
   
   def panes_record
@@ -461,7 +467,11 @@ class Worksheet
   end
   
   def col_width(col)
-    64
+    if cols.keys.include?(col)
+      col.width_in_pixels
+    else
+      64
+    end
   end
 
   def insert_bitmap(filename, row, col, x = 0, y = 0, scale_x = 1, scale_y = 1)

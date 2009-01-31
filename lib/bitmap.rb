@@ -129,12 +129,12 @@ class ObjBmpRecord < BiffRecord
     return if starts_or_ends_in_hidden_cell
 
     # Convert the pixel values to the percentage value expected by Excel
-    x1 = x1.to_f / size_col(sheet, col_start) * 1024
-    y1 = y1.to_f / size_row(sheet, row_start) * 256
+    x1 = (x1.to_f / size_col(sheet, col_start) * 1024).to_i
+    y1 = (y1.to_f / size_row(sheet, row_start) * 256).to_i
     # Distance to right side of object
-    x2 = width.to_f / size_col(sheet, col_end) * 1024
+    x2 = (width.to_f / size_col(sheet, col_end) * 1024).to_i
     # Distance to bottom of object
-    y2 = height.to_f / size_row(sheet, row_end) * 256
+    y2 = (height.to_f / size_row(sheet, row_end) * 256).to_i
     
     [col_start, x1, row_start, y1, col_end, x2, row_end, y2]
   end

@@ -30,4 +30,4 @@ end
 
 ws0.write_merge(5, 8, 6, 10, "")
 
-wb.save('blanks.xls')
+wb.save('examples/blanks.xls')

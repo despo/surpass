@@ -1,1 +1,3 @@
-add support for non-built-in number formats
+* systematically validate all range inputs (i.e. column and row indexes)
+* add support for non-built-in number formats
+* formula support (needs full Ruby ANTLR support)

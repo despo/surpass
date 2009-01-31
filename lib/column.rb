@@ -32,4 +32,9 @@ class Column
   def set_style(style)
     @xf_index = @parent_wb.add_style(style)
   end
+  
+  def width_in_pixels
+      # *** Approximation ****
+    (self.width * 0.0272 + 0.446).round
+  end
 end
