@@ -58,11 +58,10 @@ class Workbook
   attr_reader :default_style
 
   def initialize(filename = nil)
-    @owner = 'None'       
-    @country_code = 0x07 
+    @owner = 'None'
     @wnd_protect = 0
     @obj_protect = 0
-    @protect = 0        
+    @protect = 0
     @backup_on_save = 0
 
     @hpos_twips = 0x01E0
@@ -152,7 +151,7 @@ class Workbook
     section_1 = section_1_array.join
 
     section_3_array = []
-    section_3_array << CountryRecord.new(@country_code, @country_code).to_biff # yes, @country_code should be there twice
+    section_3_array << CountryRecord.new(@country_code, @country_code).to_biff unless @country_code.nil?
     section_3_array << InternalReferenceSupBookRecord.new(@worksheets.length).to_biff
     section_3_array << ExternSheetRecord.new(@refs).to_biff
     section_3_array << @names.collect {|n| n.to_biff}.join
