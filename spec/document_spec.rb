@@ -3,10 +3,11 @@ require File.dirname(__FILE__) + '/spec_helper'
 describe ExcelDocument do
   it "should save" do
     w = Workbook.new
+    w.country_code = 0x01
     s = w.add_sheet("Hello World!")
     s.write(0, 0, 99)
     s.write(1, 1, "Hello!")
-    w.save("mini.xls")
+    w.save("spec/output/mini.xls")
   end
 end
 
