@@ -17,13 +17,20 @@ class Worksheet
   attr_accessor :show_outline
   attr_accessor :remove_splits
   attr_accessor :selected
-  attr_accessor :hidden
+  # RED HERRING ALERT: "sheet_visible" is a clone of the "selected" attribute.
+  # Typically a workbook created by the Excel UI will have one sheet
+  # (the sheet that was selected when the user saved it)
+  # with both bits set to 1, and all other sheets will have both 
+  # bits set to 0. The true visibility of the sheet is found in the "visibility" 
+  # attribute obtained from the BOUNDSHEET record.
+  attr_accessor :sheet_visible
   attr_accessor :page_preview
   attr_accessor :first_visible_row
   attr_accessor :first_visible_col
   attr_accessor :grid_colour
   attr_accessor :preview_magn
   attr_accessor :normal_magn
+  attr_accessor :visibility
   attr_accessor :vert_split_pos
   attr_accessor :horz_split_pos
   attr_accessor :vert_split_first_visible
@@ -101,7 +108,7 @@ class Worksheet
     @show_outline = 1
     @remove_splits = 0
     @selected = 0
-    @hidden = 0
+    @sheet_visible = 0
     @page_preview = 0
     
     @first_visible_row = 0
@@ -109,6 +116,7 @@ class Worksheet
     @grid_colour = 0x40
     @preview_magn = 0
     @normal_magn = 0
+    @visibility = 0
 
     @vert_split_pos = nil
     @horz_split_pos = nil
@@ -132,7 +140,8 @@ class Worksheet
 
     @row_default_height = 0x00FF
     @col_default_width = 0x0008
-
+    
+    @default_row_height_mismatch = 0
     @default_row_hidden = 0
     @default_row_space_above = 0
     @default_row_space_below = 0
@@ -301,7 +310,7 @@ class Worksheet
   
   def default_row_height_record
     options = 0x00
-    options |= (0x00 & 0x01) << 0
+    options |= (@default_row_height_mismatch & 0x01) << 0
     options |= (@default_row_hidden & 0x01) << 1
     options |= (@default_row_space_above & 0x01) << 2
     options |= (@default_row_space_below & 0x01) << 3
@@ -384,7 +393,7 @@ class Worksheet
     options |= (as_numeric(@show_outline        ) & 0x01) << 7
     options |= (as_numeric(@remove_splits       ) & 0x01) << 8
     options |= (as_numeric(@selected            ) & 0x01) << 9
-    options |= (as_numeric(@hidden              ) & 0x01) << 10
+    options |= (as_numeric(@sheet_visible       ) & 0x01) << 10
     options |= (as_numeric(@page_preview        ) & 0x01) << 11
 
     Window2Record.new(options, @first_visible_row, @first_visible_col, @grid_colour, @preview_magn, @normal_magn).to_biff

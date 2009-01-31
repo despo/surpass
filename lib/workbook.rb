@@ -167,13 +167,13 @@ class Workbook
     section_6 = worksheet_biff_data.join
     
     # Need to know how long the bound sheet records will be
-    boundsheet_data_lengths = @worksheets.collect {|w| BoundSheetRecord.new(0x00, w.hidden, w.name).to_biff.length }
+    boundsheet_data_lengths = @worksheets.collect {|w| BoundSheetRecord.new(0x00, w.visibility, w.name).to_biff.length }
     total_boundsheet_data_length = boundsheet_data_lengths.inject(0) {|sum, l| sum + l}
 
     start_position = section_1.length + total_boundsheet_data_length + section_3.length + section_4.length + section_5.length
     boundsheet_records = []
     @worksheets.each_with_index do |w, i|
-      boundsheet_records << BoundSheetRecord.new(start_position, w.hidden, w.name).to_biff
+      boundsheet_records << BoundSheetRecord.new(start_position, w.visibility, w.name).to_biff
       start_position += worksheet_biff_data_lengths[i]
     end
     

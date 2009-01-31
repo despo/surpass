@@ -12,6 +12,7 @@ class Row
   
   attr_accessor :height
   attr_accessor :has_default_height
+  attr_accessor :height_mismatch
   attr_accessor :level
   attr_accessor :collapse
   attr_accessor :hidden
@@ -32,6 +33,7 @@ class Row
     
     @height = 0x00FF
     @has_default_height = 0x01
+    @height_mismatch = 0
     @level = 0
     @collapse = 0
     @hidden = 0
@@ -72,7 +74,7 @@ class Row
     options =  (@level & 0x07) << 0
     options |= (@collapse & 0x01) << 4
     options |= (@hidden & 0x01) << 5
-    options |= (0x00 & 0x01) << 6
+    options |= (@height_mismatch & 0x01) << 6
     options |= (0x01 & 0x01) << 8
     if @xf_index != 0x0F
       options |= (0x01 & 0x01) << 7
