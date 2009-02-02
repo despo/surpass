@@ -1,4 +1,12 @@
-class StringCell
+class Cell
+  attr_reader :index
+  
+  def set_style(style_format)
+    @format_index = @parent.parent_wb.styles.add(style_format)
+  end
+end
+
+class StringCell < Cell
   def initialize(parent, index, format_index, sst_index)
     @parent = parent
     @index = index
@@ -11,7 +19,7 @@ class StringCell
   end
 end
 
-class BlankCell
+class BlankCell < Cell
   def initialize(parent, index, format_index)
     @parent = parent
     @index = index
@@ -23,7 +31,7 @@ class BlankCell
   end
 end
 
-class NumberCell
+class NumberCell < Cell
   def initialize(parent, index, format_index, number)
     @parent = parent
     @index = index
@@ -74,7 +82,7 @@ class NumberCell
   end
 end
 
-class MulNumberCell
+class MulNumberCell < Cell
   def initialize(parent, index, format_index, sst_index)
     @parent = parent
     @index = index
@@ -87,7 +95,7 @@ class MulNumberCell
   end
 end
 
-class MulBlankCell
+class MulBlankCell < Cell
   def initialize(parent, col1, col2, xf_idx)
     raise unless col1 < col2
     @parent = parent
@@ -101,7 +109,7 @@ class MulBlankCell
   end
 end
 
-class FormulaCell
+class FormulaCell < Cell
   attr_accessor :result
   
   def initialize(parent, index, format_index, formula, calc_flags = 0)
@@ -148,7 +156,7 @@ class FormulaCell
 end
 
 
-class BooleanCell
+class BooleanCell < Cell
   def initialize(parent, index, format_index, number)
     @parent = parent
     @index = index
@@ -162,7 +170,7 @@ class BooleanCell
   end
 end
 
-class ErrorCell
+class ErrorCell < Cell
   ERROR_CODES = {
       0x00 =>  0, # Intersection of two cell ranges is empty
       0x07 =>  7, # Division by zero

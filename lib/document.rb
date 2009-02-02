@@ -31,7 +31,7 @@ class Reader
     file = File.open(file, 'rb') unless file.respond_to?(:read)
     doc = file.read
     @header, @data = doc[0...512], doc[512..-1]
-
+    
     build_header
     build_msat
     build_sat
@@ -88,7 +88,7 @@ class Reader
     @msat = @header[76..-1].unpack('V109')
     next_sector = @msat_start_sid
     while next_sector > 0 do
-      raise "finish implementation"
+      raise "not implemented"
       start = next_sector * @sect_size
       finish = (next_sector + 1) * @sect_size
       msat_sector = @data[start...finish]
@@ -260,7 +260,7 @@ class ExcelDocument
     msat_sect_count       = 0
     sat_sect_count_limit  = 109
     
-    while total_sect_count > 128*sat_sect_count || sat_sect_count > sat_sect_count_limit do
+    while (total_sect_count > 128*sat_sect_count) || (sat_sect_count > sat_sect_count_limit) do
       sat_sect_count += 1
       total_sect_count += 1
       if sat_sect_count > sat_sect_count_limit
@@ -306,15 +306,15 @@ class ExcelDocument
     sect += 1
     
     @packed_sat = sat.pack('V*')
-    # initialize the msat_1st array to be filled with the "empty" character specified by SID_FREE_SECTOR
-    msat_1st = [SID_FREE_SECTOR]*109
-    @sat_sect.each_with_index do |sat_sect_num, i|
-      msat_1st[i] = sat_sect_num
+    
+    msat_1st = []
+    109.times do |i|
+      msat_1st[i] = @sat_sect[i] || SID_FREE_SECTOR
     end
     @packed_msat_1st = msat_1st.pack('V*')
     
     msat_2nd = [SID_FREE_SECTOR] * 128 * msat_sect_count
-    msat_end[-1] = SID_END_OF_CHAIN if msat_sect_count > 0
+    msat_2nd[-1] = SID_END_OF_CHAIN if msat_sect_count > 0
     
     i = 109
     msat_sect = 0

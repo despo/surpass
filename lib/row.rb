@@ -97,6 +97,10 @@ class Row
     cells.collect {|c| c.to_biff }.join
   end
   
+  def cell(col_index)
+    cells.select {|c| c.index == col_index}.first
+  end
+  
   def write(col, label, style)
     adjust_height(style)
     adjust_boundary_column_indexes(col)

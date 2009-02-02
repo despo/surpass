@@ -206,6 +206,20 @@ class Worksheet
   def calc_mode=(value)
     @calc_mode = (value == 0xFFFF && value) || value & 0x01
   end
+  
+  def set_cell_style(r, c, style)
+    cell = row(r).cell(c)
+    cell.set_style(style) unless cell.nil?
+  end
+  
+  def set_range_style(row_range, col_range, style)
+    # TODO optimize
+    row_range.to_a.each do |r|
+      col_range.to_a.each do |c|
+        set_cell_style(r, c, style)
+      end
+    end
+  end
 
   # Write the text stored in label in a single cell at (r,c) according to style.
   def write(r, c, label = "", style = @parent.styles.default_style)
@@ -463,20 +477,12 @@ class Worksheet
 
   # Fetch the row indicated by index, or create it if necessary.
   def row(index)
-    if !rows.keys.include?(index)
-      rows[index] = Row.new(index, self)
-    else
-      rows[index]
-    end
+    rows[index] || rows[index] = Row.new(index, self)
   end  
   
   # Fetch the col indicated by index, or create it if necessary.
   def col(index)
-    if !cols.keys.include?(index)
-      cols[index] = Column.new(index, self)
-    else
-      cols[index]
-    end
+    cols[index] || cols[index] = Column.new(index, self)
   end
   
   def row_height(row)

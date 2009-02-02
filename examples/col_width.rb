@@ -9,7 +9,7 @@ ws = w.add_sheet('Hey, Dude')
     style = StyleFormat.new
     style.font = fnt
     ws.write(1, i, 'Test')
-    ws.col(i).width = 0x0d * i
+    ws.col(i).width = 256 * i
 end
 
 w.save('col_width.xls')
