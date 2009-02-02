@@ -212,6 +212,20 @@ class Worksheet
     row(r).write(c, label, style)
   end
   
+  def write_array_to_row(array, r, c = 0, style = @parent.styles.default_style)
+    array.each_with_index do |a, i|
+      row(r).write(c + i, a, style)
+    end
+  end
+  alias :rarray :write_array_to_row
+
+  def write_array_to_column(array, c, r = 0, style = @parent.styles.default_style)
+    array.each_with_index do |a, i|
+      row(r + i).write(c, a, style)
+    end
+  end
+  alias :carray :write_array_to_column
+  
   # Comment from xlwt:
   ## Stand-alone merge of previously written cells.
   ## Problems: (1) style to be used should be existing style of
