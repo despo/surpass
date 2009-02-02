@@ -226,6 +226,13 @@ class Worksheet
   end
   alias :carray :write_array_to_column
   
+  def write_arrays(array_of_arrays, r = 0, c = 0, style = @parent.styles.default_style)
+    array_of_arrays.each_with_index do |a, i|
+      raise "not an array of arrays!" unless a.is_a?(Array)
+      write_array_to_row(a, r + i, c, style)
+    end
+  end
+  
   # Comment from xlwt:
   ## Stand-alone merge of previously written cells.
   ## Problems: (1) style to be used should be existing style of

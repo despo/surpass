@@ -20,7 +20,8 @@ FIXME (describe your package)
 
 == INSTALL:
 
-* FIXME (sudo gem install, anything else)
+bones installation:
+sudo rake gem:install
 
 == LICENSE:
 

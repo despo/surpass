@@ -6,13 +6,25 @@ class StyleFormat
   attr_accessor :pattern
   attr_accessor :protection
   
-  def initialize
+  def initialize(hash = {})
     @number_format_string = 'general'
-    @font           = Font.new # TODO should this look for an existing StyleCollection and pull its @fonts[0]?
+    
+    # TODO should this look for an existing StyleCollection and pull its @fonts[0]? Instead of Font.new?
+    @font           = Font.new(hash_select(hash, /^font_/))
     @alignment      = Alignment.new
     @borders        = Borders.new
     @pattern        = Pattern.new
     @protection     = Protection.new
+  end
+  
+  def hash_select(hash, pattern)
+    new_hash = {}
+    hash.keys.each do |k|
+      next unless k.to_s =~ pattern
+      new_key = k.to_s.gsub(pattern, '').to_sym
+      new_hash[new_key] = hash[k]
+    end
+    new_hash
   end
 end
 

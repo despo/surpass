@@ -106,21 +106,42 @@ class Font
   attr_accessor :charset
   attr_accessor :name
   
-  def initialize
-    @height = 0x00C8 # 200: this is font with height 10 points
-    @italic = false
-    @struck_out = false
-    @outline = false
-    @shadow = false
-    @colour_index = 0x7FFF
-    @bold = false
-    @weight = 0x0190 # 0x02BC gives bold font
-    @escapement = ESCAPEMENT_NONE
-    @underline = UNDERLINE_NONE
-    @family = FAMILY_NONE
-    @charset = CHARSET_SYS_DEFAULT
-    @name = 'Arial'
+  def initialize(hash = {})
+    @height = hash[:height] || 0x00C8 # 200: this is font with height 10 points
+    @italic = hash[:italic] || false
+    @struck_out = hash[:struck_out] || false
+    @outline = hash[:outline] || false
+    @shadow = hash[:shadow] || false
+    
+    colour1 = hash[:colour_index]
+    colour2 = colour_index_from_name(hash[:colour])
+    colour3 = colour_index_from_name(hash[:color])
+    colour4 = 0x7FFF
+    
+    @colour_index = colour1 || colour2 || colour3 || colour4
+    
+    @bold = hash[:bold] || false
+    @weight = hash[:weight] || 0x0190 # 0x02BC gives bold font
+    @escapement = hash[:escapement] || ESCAPEMENT_NONE
+    @underline = hash[:underline] || UNDERLINE_NONE
+    @family = hash[:family] || FAMILY_NONE
+    @charset = hash[:charset] || CHARSET_SYS_DEFAULT
+    @name = hash[:font_name] || 'Arial'
   end
+  
+  def colour_index_from_name(colour_name)
+    COLOURS[colour_name]
+  end
+  
+  def colour=(colour_name)
+    new_colour = colour_index_from_name(colour_name)
+    if new_colour.nil?
+      raise "Invalid Colour #{colour_name}"
+    else
+      @colour_index = new_colour
+    end
+  end
+  alias :color= :colour=
   
   def to_biff
     options = PLAIN
