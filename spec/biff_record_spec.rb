@@ -210,18 +210,19 @@ describe Window1Record do
   end
 end
 
-# describe FontRecord do
-#   it "should pack correctly" do
-#     
-#     b = FontRecord.new(200,0,32767,400,0,0,0,204,"Arial")
-#     b.record_data.should === "\310\000\000\000\377\177\220\001\000\000\000\000\314\000Arial" 
-#   end
-# end
+describe FontRecord do
+  it "should pack correctly" do
+    
+    b = FontRecord.new(200,0,32767,400,0,0,0,204,"Arial")
+    b.record_data.should === "\310\000\000\000\377\177\220\001\000\000\000\000\314\000\005\000Arial" 
+  end
+end
 
 # describe XFRecord do
 #   it "should pack correctly" do
-#     b = XFRecord.new([1,1,1,1,1,1,1])
-#     b.record_data.should === "\000\000"
+#     b = XFRecord.new([1,1,Alignment.new,Borders.new,Pattern.new,Protection.new])
+#     puts binary_string_to_hex_array(b.record_data)
+#     b.record_data.should === "\001\000\001\000\001\000"
 #     b.to_biff.unpack('A*').should === ["\257\001\002"]
 #   end
 # end

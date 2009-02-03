@@ -2,22 +2,25 @@ class SharedStringTable
   SST_ID = 0x00FC
   
   def initialize
-    @sst_record = ''
+    @sst_record = nil
     @continues = []
     @current_piece = [0,0].pack('V2')
-    @pos = @current_piece.length
 
-    @str_indexes = {}
+    @str_indexes = {} # TODO replace with array? or is hash more efficient?
     @add_calls = 0
   end
   
   def add_str(s)
     @add_calls += 1
-    if !@str_indexes.include?(s)
-      @str_indexes[s] = @str_indexes.length
+    index = @str_indexes[s]
+    if index.nil?
+      # This is a new string for the SST.
+      position = @str_indexes.length
+      @str_indexes[s] = position
+      index = position
       add_to_sst(s)
     end
-    @str_indexes[s]
+    index
   end
   
   def str_index(s)
@@ -25,7 +28,7 @@ class SharedStringTable
   end
   
   def to_biff
-    new_piece
+    new_piece # flush the 'current' piece
     result = [SST_ID, @sst_record.length, @add_calls, @str_indexes.length].pack('v2V2')
     result += @sst_record[8..-1]
     result += @continues.join
@@ -39,14 +42,16 @@ class SharedStringTable
     save_splitted(u_str[4..-1], false)
   end
   
+  # Store the @current_piece in @continues and initialize a new @current_piece
   def new_piece
-    if @sst_record === ''
+    if @sst_record.nil?
+      # We get here when we first run out of space, or if that never happens then we end
+      # up here when everything is finished and we call to_biff for the first time.
       @sst_record = @current_piece
     else
-      @continues << [BiffRecord::CONTINUE_RECORD_ID, @current_piece.length, @current_piece]
+      @continues << [BiffRecord::CONTINUE_RECORD_ID, @current_piece.length].pack('v2') + @current_piece
     end
     @current_piece = ''
-    @pos = @current_piece.length # TODO why not just 0?
   end
   
   def save_atom(atom)
@@ -71,15 +76,14 @@ class SharedStringTable
           atom_length = free_space
         end
       end
-      
       @current_piece += s[i...(i+atom_length)]
       
       if need_more_space
         new_piece
         if is_unicode_str
-          @current_piece += [1].pack('v')
+          @current_piece += "\001"
         else
-          @current_piece += [0].pack('v')
+          @current_piece += "\000"
         end
       end
       
@@ -1133,10 +1137,10 @@ end
 class Window2Record < BiffRecord
   RECORD_ID = 0x023E
   
-  def initialize(options, first_visible_row, first_visible_col, grid_colour, preview_magn, normal_magn, scl_magn = nil)
+  def initialize(options, first_visible_row, first_visible_col, grid_colour, preview_magn, normal_magn, scl_magn)
     scl_rec = ''
-    scl_rec = [0x00A0, 4, scl_magn, 100].pack('v4') if scl_magn
-      
+    scl_rec = [0x00A0, 4, scl_magn, 100].pack('v4') unless scl_magn == 0
+    
     args = [options, first_visible_row, first_visible_col, grid_colour, 0x00, preview_magn, normal_magn, 0x00]
     @record_data = args.pack('v7V') + scl_rec
   end
@@ -1376,7 +1380,6 @@ class BoolErrRecord < BiffRecord
   RECORD_ID = 0x0205
   
   def initialize(row, col, xf_index, number, is_error)
-    puts [row, col, xf_index, number, is_error].inspect
     @record_data = [row, col, xf_index, number, is_error].pack('v3C2')
   end
 end

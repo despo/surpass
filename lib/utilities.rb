@@ -5,6 +5,10 @@ module Utilities
     [array_of_hex_values.collect {|h| [sprintf("%02x", h)]}.join].pack('H*')
   end
   
+  def binary_string_to_hex_array(binary_string)
+    binary_string.unpack("H*")
+  end
+  
   # def unicode_pack(string)
   #   string.unpack("C*").collect {|c| [c].pack('Cx')}.join
   # end

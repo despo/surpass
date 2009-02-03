@@ -152,9 +152,9 @@ class Workbook
 
     section_3_array = []
     section_3_array << CountryRecord.new(@country_code, @country_code).to_biff unless @country_code.nil?
-    section_3_array << InternalReferenceSupBookRecord.new(@worksheets.length).to_biff
-    section_3_array << ExternSheetRecord.new(@refs).to_biff
-    section_3_array << @names.collect {|n| n.to_biff}.join
+    # section_3_array << InternalReferenceSupBookRecord.new(@worksheets.length).to_biff
+    # section_3_array << ExternSheetRecord.new(@refs).to_biff
+    # section_3_array << @names.collect {|n| n.to_biff}.join
     section_3_array << @sst.to_biff
     section_3 = section_3_array.join
     
@@ -169,8 +169,8 @@ class Workbook
     # Need to know how long the bound sheet records will be
     boundsheet_data_lengths = @worksheets.collect {|w| BoundSheetRecord.new(0x00, w.visibility, w.name).to_biff.length }
     total_boundsheet_data_length = boundsheet_data_lengths.inject(0) {|sum, l| sum + l}
-
     start_position = section_1.length + total_boundsheet_data_length + section_3.length + section_4.length + section_5.length
+    
     boundsheet_records = []
     @worksheets.each_with_index do |w, i|
       boundsheet_records << BoundSheetRecord.new(start_position, w.visibility, w.name).to_biff
@@ -178,7 +178,6 @@ class Workbook
     end
     
     section_2 = boundsheet_records.join
-    
     section_1 + section_2 + section_3 + section_4 + section_5 + section_6
   end
   

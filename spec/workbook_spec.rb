@@ -24,3 +24,25 @@ describe Workbook, "to_biff" do
     end
   end
 end
+
+describe Workbook, "description" do
+  before(:all) do
+    strings = File.read("spec/data/random-strings.txt").split("\n")
+
+    @book = Workbook.new
+    @sheet = @book.add_sheet
+
+    colcount = 20 + 1
+    rowcount = 20 + 1
+
+    colcount.times do |c|
+      rowcount.times do |r|
+        i = c * rowcount + r
+        @sheet.write(r, c, strings[i])
+      end
+    end
+  end
+  it "should description" do
+    # @book.window_1_record
+  end
+end

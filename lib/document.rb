@@ -207,7 +207,7 @@ class ExcelDocument
   def build_directory
     @dir_stream = ''
     
-    name = 'Root entry'
+    name = 'Root Entry'
     type = 0x05 # root storage
     colour = 0x01 # black
     did_left  = -1
@@ -216,7 +216,7 @@ class ExcelDocument
     start_sid = -2
     stream_sz = 0
     @dir_stream += pack_directory(name, type, colour, did_left, did_right, did_root, start_sid, stream_sz)
-    
+
     name = 'Workbook'
     type = 0x02 # user stream
     colour = 0x01 # black
@@ -226,7 +226,6 @@ class ExcelDocument
     start_sid = 0
     stream_sz = @book_stream_len
     @dir_stream += pack_directory(name, type, colour, did_left, did_right, did_root, start_sid, stream_sz)
-    
     # padding
     name      = ''
     type      = 0x00 # empty
@@ -241,7 +240,6 @@ class ExcelDocument
   
   def pack_directory(name, type, colour, did_left, did_right, did_root, start_sid, stream_sz)
     encoded_name = ''
-    # TODO figure out what the hell this is supposed to do !!
     0.upto(name.length) do |i|
       encoded_name << name[i, 1] + "\000" 
     end

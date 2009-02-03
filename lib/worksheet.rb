@@ -276,8 +276,8 @@ class Worksheet
     result = []
     result << Biff8BOFRecord.new(Biff8BOFRecord::WORKSHEET).to_biff
     # Calc Settings
-    result << CalcCountRecord.new(@calc_count & 0xFFFF).to_biff
     result << CalcModeRecord.new(@calc_mode).to_biff
+    result << CalcCountRecord.new(@calc_count & 0xFFFF).to_biff
     result << RefModeRecord.new(@rc_ref_mode & 0x01).to_biff
     result << IterationRecord.new(@iterations_on & 0x01).to_biff
     result << DeltaRecord.new(@delta).to_biff
@@ -318,16 +318,14 @@ class Worksheet
       result << @rows[i].cells_biff
     end
     
-    @charts.each do |c|
-      result << c.to_biff
-    end
-    
+    # @charts.each do |c|
+    #   result << c.to_biff
+    # end
     result << MergedCellsRecord.new(@merged_ranges).to_biff
     result << @bmp_rec
     result << window_2_record
     result << panes_record
-    result << hyperlink_table_record
-    
+    # result << hyperlink_table_record
     result << EOFRecord.new.to_biff
     
     result.join
@@ -431,12 +429,16 @@ class Worksheet
     options |= (as_numeric(@sheet_visible       ) & 0x01) << 10
     options |= (as_numeric(@page_preview        ) & 0x01) << 11
 
-    if @page_preview
-      scl_magn = @preview_magn || 60
+    if @page_preview != 0
+      if @preview_magn == 0
+        scl_magn = 60
+      else
+        scl_magn = @preview_magn
+      end
     else
       scl_magn = @normal_magn
     end
-
+    
     Window2Record.new(options, @first_visible_row, @first_visible_col, @grid_colour, @preview_magn, @normal_magn, scl_magn).to_biff
   end
   

@@ -36,7 +36,7 @@ class Row
     @height_in_pixels = 0x11
     
     @height = 0x00FF
-    @has_default_height = 0x01
+    @has_default_height = 0x00
     @height_mismatch = 0
     @level = 0
     @collapse = 0
