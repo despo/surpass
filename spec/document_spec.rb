@@ -11,84 +11,84 @@ describe ExcelDocument do
   end
 end
 
-describe Reader do
-  before(:each) do
-    @doc = Reader.new("spec/reference/mini.xls")
-  end
-  
-  it "should read in the entire file" do
-    @doc.header.length.should == 512
-    @doc.data.length.should == 5120
-  end
-  
-  it "should correctly parse doc_magic" do
-    @doc.doc_magic.should === [0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1].to_bin
-  end
-  
-  it "should correctly parse file_uid" do
-    @doc.file_uid.should === [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00].to_bin
-  end
-  
-  it "should correctly parse rev_num" do
-    @doc.rev_num.should === [0x3E, 0x00].to_bin
-  end
-  
-  it "should correctly parse ver_num" do
-    @doc.ver_num.should === [0x03, 0x00].to_bin
-  end
-  
-  it "should correctly parse byte_order" do
-    @doc.byte_order.should === [0xFE, 0xFF].to_bin
-  end
-  
-  it "should correctly parse sector size" do
-    @doc.sect_size.should === 512
-  end
-  
-  it "should correctly parse short sector size" do
-    @doc.short_sect_size.should == 64
-  end
-  
-  it "should correctly parse total sat sectors" do
-    @doc.total_sat_sectors.should == 1
-  end
-  
-  it "should correctly parse dir start sid" do
-    @doc.dir_start_sid.should == 8
-  end
-  
-  it "should correctly parse min stream size" do
-    @doc.min_stream_size.should == 4096
-  end
-  
-  it "should correctly parse ssat start sid" do
-    @doc.ssat_start_sid.should == -2
-  end
-  
-  it "should correctly parse total ssat sectors" do
-    @doc.total_ssat_sectors.should == 0
-  end
-  
-  it "should correctly parse msat start sid" do
-    @doc.msat_start_sid.should == -2
-  end
-  
-  it "should correctly parse total msat sectors" do
-    @doc.total_msat_sectors.should == 0
-  end
-  
-  it "should correctly parse the msat" do
-    @doc.msat.should == [9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
-  end
-  
-  it "should correctly parse the sat" do
-    @doc.sat.should == [1, 2, 3, 4, 5, 6, 7, -2, -2, -3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
-  end
-  
-  it "should correctly parse the directory list" do
-    @doc.dir_entry_list.length.should == 4
-  end
-end
+# describe Reader do
+#   before(:each) do
+#     @doc = Reader.new("spec/reference/mini.xls")
+#   end
+#   
+#   it "should read in the entire file" do
+#     @doc.header.length.should == 512
+#     @doc.data.length.should == 5120
+#   end
+#   
+#   it "should correctly parse doc_magic" do
+#     @doc.doc_magic.should === [0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1].to_bin
+#   end
+#   
+#   it "should correctly parse file_uid" do
+#     @doc.file_uid.should === [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00].to_bin
+#   end
+#   
+#   it "should correctly parse rev_num" do
+#     @doc.rev_num.should === [0x3E, 0x00].to_bin
+#   end
+#   
+#   it "should correctly parse ver_num" do
+#     @doc.ver_num.should === [0x03, 0x00].to_bin
+#   end
+#   
+#   it "should correctly parse byte_order" do
+#     @doc.byte_order.should === [0xFE, 0xFF].to_bin
+#   end
+#   
+#   it "should correctly parse sector size" do
+#     @doc.sect_size.should === 512
+#   end
+#   
+#   it "should correctly parse short sector size" do
+#     @doc.short_sect_size.should == 64
+#   end
+#   
+#   it "should correctly parse total sat sectors" do
+#     @doc.total_sat_sectors.should == 1
+#   end
+#   
+#   it "should correctly parse dir start sid" do
+#     @doc.dir_start_sid.should == 8
+#   end
+#   
+#   it "should correctly parse min stream size" do
+#     @doc.min_stream_size.should == 4096
+#   end
+#   
+#   it "should correctly parse ssat start sid" do
+#     @doc.ssat_start_sid.should == -2
+#   end
+#   
+#   it "should correctly parse total ssat sectors" do
+#     @doc.total_ssat_sectors.should == 0
+#   end
+#   
+#   it "should correctly parse msat start sid" do
+#     @doc.msat_start_sid.should == -2
+#   end
+#   
+#   it "should correctly parse total msat sectors" do
+#     @doc.total_msat_sectors.should == 0
+#   end
+#   
+#   it "should correctly parse the msat" do
+#     @doc.msat.should == [9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+#   end
+#   
+#   it "should correctly parse the sat" do
+#     @doc.sat.should == [1, 2, 3, 4, 5, 6, 7, -2, -2, -3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+#   end
+#   
+#   it "should correctly parse the directory list" do
+#     @doc.dir_entry_list.length.should == 4
+#   end
+# end
 
 # from pyExcelerator import *
 # doc = CompoundDoc.Reader("museum/mini.xls", True)

@@ -102,24 +102,27 @@ class Row
   end
   
   def write(col, label, style)
+    style = StyleFormat.new(style) if style.is_a?(Hash)
+    style_index = @parent_wb.styles.add(style)
+    
     adjust_height(style)
     adjust_boundary_column_indexes(col)
     case label
     # when TrueClass, FalseClass
-    #   @cells << BooleanCell.new(self, col, @parent_wb.styles.add(style), as_numeric(label))
+    #   @cells << BooleanCell.new(self, col, style_index, as_numeric(label))
     when String, NilClass
       if label.to_s.length == 0
-        @cells << BlankCell.new(self, col, @parent_wb.styles.add(style))
+        @cells << BlankCell.new(self, col, style_index)
       else
-        @cells << StringCell.new(self, col, @parent_wb.styles.add(style), @parent_wb.sst.add_str(label))
+        @cells << StringCell.new(self, col, style_index, @parent_wb.sst.add_str(label))
         @total_str += 1
       end
     when Numeric
-      @cells << NumberCell.new(self, col, @parent_wb.styles.add(style), label)
+      @cells << NumberCell.new(self, col, style_index, label)
     when Date, DateTime, Time
-      @cells << NumberCell.new(self, col, @parent_wb.styles.add(style), as_excel_date(label))
+      @cells << NumberCell.new(self, col, style_index, as_excel_date(label))
     when ExcelFormula
-      @cells << FormulaCell.new(self, col, @parent_wb.styles.add(style), label)
+      @cells << FormulaCell.new(self, col, style_index, label)
     else
       raise label.class.name
     end

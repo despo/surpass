@@ -1,8 +1,9 @@
 class Cell
   attr_reader :index
   
-  def set_style(style_format)
-    @format_index = @parent.parent_wb.styles.add(style_format)
+  def set_style(style)
+    style = StyleFormat.new(style) if style.is_a?(Hash)
+    @format_index = @parent.parent_wb.styles.add(style)
   end
 end
 

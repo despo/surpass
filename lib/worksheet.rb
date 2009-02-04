@@ -480,7 +480,7 @@ class Worksheet
   # Fetch the row indicated by index, or create it if necessary.
   def row(index)
     rows[index] || rows[index] = Row.new(index, self)
-  end  
+  end
   
   # Fetch the col indicated by index, or create it if necessary.
   def col(index)
