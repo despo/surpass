@@ -7,11 +7,10 @@ class StyleFormat
   attr_accessor :protection
   
   def initialize(hash = {})
-    @number_format_string = 'general'
-    
-    # TODO should this look for an existing StyleCollection and pull its @fonts[0]? Instead of Font.new?
+    @number_format_string = hash[:number_format_string] || 'General'
+
     @font           = Font.new(hash_select(hash, /^font_/))
-    @alignment      = Alignment.new
+    @alignment      = Alignment.new(hash_select(hash, /^text_/))
     @borders        = Borders.new
     @pattern        = Pattern.new
     @protection     = Protection.new
@@ -38,7 +37,7 @@ class StyleCollection
   FIRST_USER_DEFINED_NUM_FORMAT_INDEX = 164
   
   STANDARD_NUMBER_FORMATS = [
-    'general',
+    'General',
     '0',
     '0.00',
     '#,##0',
@@ -107,28 +106,31 @@ class StyleCollection
   end
   
   def number_format_index(number_format_string)
-    if !@number_formats.has_value?(number_format_string)
+    index = @number_formats.index(number_format_string)
+    if index.nil?
       # TODO implement regex to check if valid string
-      new_index = FIRST_USER_DEFINED_NUM_FORMAT_INDEX + @number_formats.length - STANDARD_NUMBER_FORMATS.length
-      @number_formats[new_index] = number_format_string
+      index = FIRST_USER_DEFINED_NUM_FORMAT_INDEX + @number_formats.length - STANDARD_NUMBER_FORMATS.length
+      @number_formats[index] = number_format_string
     end
-    @number_formats.index(number_format_string)
+    index
   end
   
   def font_index(font)
-    if !@fonts.has_value?(font)
-      new_index = @fonts.length + 1
-      @fonts[new_index] = font
+    index = @fonts.index(font)
+    if index.nil?
+      index = @fonts.length + 1
+      @fonts[index] = font
     end
-    @fonts.index(font)
+    index
   end
   
   def format_index(format)
-    if !@styles.has_value?(format)
-      new_index = 0x10 + @styles.length
-      @styles[new_index] = format
+    index = @styles.index(format)
+    if index.nil?
+      index = 0x10 + @styles.length
+      @styles[index] = format
     end
-    @styles.index(format)
+    index
   end
   
   private

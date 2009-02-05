@@ -114,11 +114,12 @@ class Font
     @shadow = hash[:shadow] || false
     
     colour1 = hash[:colour_index]
-    colour2 = colour_index_from_name(hash[:colour])
-    colour3 = colour_index_from_name(hash[:color])
-    colour4 = 0x7FFF
+    colour2 = hash[:color_index]
+    colour3 = colour_index_from_name(hash[:colour])
+    colour4 = colour_index_from_name(hash[:color])
+    colour5 = 0x7FFF
     
-    @colour_index = colour1 || colour2 || colour3 || colour4
+    @colour_index = colour1 || colour2 || colour3 || colour4 || colour5
     
     @bold = hash[:bold] || false
     @weight = hash[:weight] || 0x0190 # 0x02BC gives bold font
@@ -126,7 +127,7 @@ class Font
     @underline = hash[:underline] || UNDERLINE_NONE
     @family = hash[:family] || FAMILY_NONE
     @charset = hash[:charset] || CHARSET_SYS_DEFAULT
-    @name = hash[:font_name] || 'Arial'
+    @name = hash[:name] || 'Arial'
   end
   
   def colour_index_from_name(colour_name)
@@ -203,16 +204,28 @@ class Alignment
   attr_accessor :inde
   attr_accessor :merg
   
-  def initialize
-   @horz = HORZ_GENERAL
-   @vert = VERT_BOTTOM
-   @dire = DIRECTION_GENERAL
-   @orie = ORIENTATION_NOT_ROTATED
-   @rota = ROTATION_0_ANGLE
-   @wrap = NOT_WRAP_AT_RIGHT
-   @shri = NOT_SHRINK_TO_FIT
-   @inde = 0
-   @merg = 0
+  def initialize(hash = {})
+    case hash[:align]
+    when nil
+      @horz = HORZ_GENERAL
+    when 'right'
+      @horz = HORZ_RIGHT
+    when 'left'
+      @horz = HORZ_LEFT
+    when 'center'
+      @horz = HORZ_CENTER
+    else
+      raise "alignment #{hash[:align]} not implemented!"
+    end
+    
+    @vert = VERT_BOTTOM
+    @dire = DIRECTION_GENERAL
+    @orie = ORIENTATION_NOT_ROTATED
+    @rota = ROTATION_0_ANGLE
+    @wrap = NOT_WRAP_AT_RIGHT
+    @shri = NOT_SHRINK_TO_FIT
+    @inde = 0
+    @merg = 0
   end
 end
 

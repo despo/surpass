@@ -33,49 +33,19 @@ module Surpass
   # in. Optionally, a specific _directory_ name can be passed in such that
   # the _filename_ does not have to be equivalent to the directory.
   #
-  def self.require_all_libs_relative_to( fname, dir = nil )
+  def self.require_all_libs_relative_to( fname, dir = "." )
     dir ||= ::File.basename(fname, '.*')
     search_me = ::File.expand_path(
         ::File.join(::File.dirname(fname), dir, '**', '*.rb'))
 
-    Dir.glob(search_me).sort.each {|rb| require rb}
+    Dir.glob(search_me).sort.each do |rb|
+      next if File.basename(rb) === File.basename(__FILE__) # skip surpass.rb
+      require rb
+    end
   end
 
 end  # module Surpass
 
 Surpass.require_all_libs_relative_to(__FILE__)
 
-
-# Original pre-bones code:
-
-$LOAD_PATH << File.expand_path(File.dirname(__FILE__))
-
-require 'biff_record'
-require 'bitmap'
-require 'cell'
-require 'column'
-require 'document'
-require 'excel_formula'
-require 'formatting'
-require 'row'
-require 'style'
-require 'utilities'
-require 'workbook'
-require 'worksheet'
-
-# Ruby Standard Libraries
 require 'date'
-
-include Utilities
-
-class TrueClass
-  def to_i
-    1
-  end
-end
-
-class FalseClass
-  def to_i
-    0
-  end
-end

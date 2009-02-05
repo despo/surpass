@@ -22,9 +22,9 @@ class Column
   end
   
   def to_biff
-    options =  (@hidden & 0x01) << 0
+    options =  (as_numeric(@hidden) & 0x01) << 0
     options |= (@level & 0x07) << 8
-    options |= (@collapse & 0x01) << 12
+    options |= (as_numeric(@collapse) & 0x01) << 12
     
     ColInfoRecord.new(@index, @index, @width, @xf_index, options).to_biff
   end

@@ -64,3 +64,22 @@ module Utilities
   end
 end
 
+def String.random_alphanumeric(size=16)
+  s = ""
+  size.times { s << (i = Kernel.rand(62); i += ((i < 10) ? 48 : ((i < 36) ? 55 : 61 ))).chr }
+  s
+end
+
+class TrueClass
+  def to_i
+    1
+  end
+end
+
+class FalseClass
+  def to_i
+    0
+  end
+end
+
+include Utilities

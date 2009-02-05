@@ -207,35 +207,82 @@ class Worksheet
     @calc_mode = (value == 0xFFFF && value) || value & 0x01
   end
   
-  def set_cell_style(r, c, style)
-    cell = row(r).cell(c)
-    cell.set_style(style) unless cell.nil?
+  def set_cell_style(r, c, style, create_blanks = false)
+    cell = rows[r].cell(c)
+    if cell.nil?
+      write(r, c, nil, style) if create_blanks
+    else
+      cell.set_style(style)
+    end
   end
   
-  def set_range_style(row_range, col_range, style)
-    # TODO optimize
-    row_range.to_a.each do |r|
-      col_range.to_a.each do |c|
-        set_cell_style(r, c, style)
+  def hide_columns(col_range)
+    col_range.each do |c|
+      hide_column(c)
+    end
+  end
+  
+  def unhide_columns(col_range)
+    col_range.each do |c|
+      unhide_column(c)
+    end
+  end
+  
+  def set_column_widths(col_range, width)
+    col_range.each do |c|
+      set_column_width(c, width)
+    end
+  end
+  
+  def hide_column(c)
+    fetch_or_create_column(c).hidden = true
+  end
+
+  def unhide_column(c)
+    fetch_or_create_column(c).hidden = false
+  end
+  
+  def set_column_width(c, width)
+    if width < 100
+      # Assume we are trying to use Excel-user style widths, scale up accordingly.
+      # You can call col's width method directly to avoid this.
+      width = width * 260
+    end
+    fetch_or_create_column(c).width = width
+  end
+  
+  # Change the style for a range of cells. If nil is supplied for row_range,
+  # the new style is supplied to every row (i.e. the entire column). Only
+  # changes style for cells which actually exist, so this does not paint 
+  # anything which has not been written to.
+  def set_range_style(row_range, col_range, style, create_blanks = false)
+    row_range ||= 0..65535
+    col_range ||= 0..255
+    
+    @rows.each do |i, r|
+      next unless row_range.include?(i)
+      r.cells.each do |c|
+        next unless col_range.include?(c.col)
+        c.set_style(style)
       end
     end
   end
 
   # Write the text stored in label in a single cell at (r,c) according to style.
   def write(r, c, label = "", style = @parent.styles.default_style)
-    row(r).write(c, label, style)
+    fetch_or_create_row(r).write(c, label, style)
   end
   
   def write_array_to_row(array, r, c = 0, style = @parent.styles.default_style)
     array.each_with_index do |a, i|
-      row(r).write(c + i, a, style)
+      fetch_or_create_row(r).write(c + i, a, style)
     end
   end
   alias :rarray :write_array_to_row
 
   def write_array_to_column(array, c, r = 0, style = @parent.styles.default_style)
     array.each_with_index do |a, i|
-      row(r + i).write(c, a, style)
+      fetch_or_create_row(r + i).write(c, a, style)
     end
   end
   alias :carray :write_array_to_column
@@ -260,9 +307,9 @@ class Worksheet
   ## multiple records. In the meantime, avoid this method and use
   ## write_merge() instead.
   def merge(r1, r2, c1, c2, style = @parent.styles.default_style)
-    row(r1).write_blanks(c1 + 1, c2, style) if c2 > c1
+    fetch_or_create_row(r1).write_blanks(c1 + 1, c2, style) if c2 > c1
     ((r1+1)...(r2+1)).each do |r|
-      row(r).write_blanks(c1, c2, style)
+      fetch_or_create_row(r).write_blanks(c1, c2, style)
     end
     @merged_ranges << [r1, r2, c1, c2]
   end
@@ -476,16 +523,18 @@ class Worksheet
     end
     result
   end
-
+  
   # Fetch the row indicated by index, or create it if necessary.
-  def row(index)
-    rows[index] || rows[index] = Row.new(index, self)
+  def fetch_or_create_row(index)
+    rows[index] ||= Row.new(index, self)
   end
+  alias :row :fetch_or_create_row
   
   # Fetch the col indicated by index, or create it if necessary.
-  def col(index)
-    cols[index] || cols[index] = Column.new(index, self)
+  def fetch_or_create_column(index)
+    cols[index] ||= Column.new(index, self)
   end
+  alias :col :fetch_or_create_row
   
   def row_height(row)
     if @rows.include?(row)

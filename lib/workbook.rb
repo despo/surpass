@@ -80,7 +80,7 @@ class Workbook
     @vscroll_visible = true
     @tabs_visible = true
 
-    @styles = StyleCollection.new
+    @styles = ::StyleCollection.new
 
     @dates_1904 = false
     @use_cell_values = true

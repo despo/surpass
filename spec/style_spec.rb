@@ -66,7 +66,7 @@ describe StyleCollection, "adding new styles" do
   end
   
   it "should not re-add an existing number format" do
-    @s.number_format_index('general').should == 0
+    @s.number_format_index('General').should == 0
   end
   
   it "should add a new number format" do

@@ -5,6 +5,14 @@ class Cell
     style = StyleFormat.new(style) if style.is_a?(Hash)
     @format_index = @parent.parent_wb.styles.add(style)
   end
+  
+  def row
+    @parent
+  end
+  
+  def col
+    @index
+  end
 end
 
 class StringCell < Cell
