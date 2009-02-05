@@ -1,10 +1,11 @@
-require "lib/surpass"
+require "rubygems"
+require "surpass"
 
-w = Workbook.new
-ws = w.add_sheet('Hey, Dude')
+book = Workbook.new
+ws = book.add_sheet
 
 fmts = [
-    'general',
+    'General',
     '0',
     '0.00',
     '#,##0',
@@ -51,4 +52,4 @@ fmts.each_with_index do |fmt, i|
     ws.write(i, 4, -1278.9078, style)
 end
 
-w.save('num_formats.xls')
+book.save(__FILE__.gsub(/rb$/, "xls"))

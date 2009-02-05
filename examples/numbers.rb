@@ -1,7 +1,8 @@
-require "lib/surpass"
+require "rubygems"
+require "surpass"
 
-w = Workbook.new
-ws = w.add_sheet('Hey, Dude')
+book = Workbook.new
+ws = book.add_sheet
 
 ws.write(0, 0, 1)
 ws.write(1, 0, 1.23)
@@ -18,4 +19,4 @@ ws.write(1, 2, -1.23e-5)
 ws.write(2, 2, -12345678.90780980)
 ws.write(3, 2, -123456.78)
 
-w.save('numbers.xls')
+book.save(__FILE__.gsub(/rb$/, "xls"))

@@ -1,4 +1,5 @@
-require "lib/surpass"
+require "rubygems"
+require "surpass"
 
 font0 = Font.new
 font0.name = 'Times New Roman'
@@ -9,8 +10,8 @@ style0 = StyleFormat.new
 style0.font = font0
 
 
-wb = Workbook.new
-ws0 = wb.add_sheet('0')
+book = Workbook.new
+ws0 = book.add_sheet('0')
 
 ws0.write(1, 1, 'Test', style0)
 
@@ -30,4 +31,4 @@ end
 
 ws0.write_merge(5, 8, 6, 10, "")
 
-wb.save('examples/blanks.xls')
+book.save(__FILE__.gsub(/rb$/, "xls"))

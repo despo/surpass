@@ -1,16 +1,14 @@
-require "lib/surpass"
+require "rubygems"
+require "surpass"
 
-w = Workbook.new
-s = w.add_sheet('0')
-
-# colcount = 200 + 1
-# rowcount = 6000 + 1
+book = Workbook.new
+s = book.add_sheet('0')
 
 colcount = 200 + 1
 rowcount = 6000 + 1
 
-t0 = Time.now
-puts "starting at #{t0.to_s}"
+start = Time.now
+puts "starting at #{start.to_s}"
 
 colcount.times do |c|
   rowcount.times do |r|
@@ -18,11 +16,10 @@ colcount.times do |c|
   end
 end
 
+t = Time.now - start
+puts "time elapsed (writing data to workbook) #{t.to_s}"
 
-t1 = Time.now - t0
-puts "elapsed #{t1.to_s}"
+book.save(__FILE__.gsub(/rb$/, "xls"))
 
-w.save("big-16Mb.xls")
-
-t2 = Time.now - t0
-puts "elapsed #{t2.to_s}"
+t = Time.now - start
+puts "time elapsed (writing workbook to file) #{t.to_s}"

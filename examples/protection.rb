@@ -1,4 +1,5 @@
-require "lib/surpass"
+require "rubygems"
+require "surpass"
 
 fnt = Font.new
 fnt.name = 'Arial'
@@ -15,9 +16,9 @@ style = StyleFormat.new
 style.font = fnt
 style.borders = borders
 
-wb = Workbook.new
+book = Workbook.new
 
-ws0 = wb.add_sheet('Rows Outline')
+ws0 = book.add_sheet('Rows Outline')
 
 ws0.write_merge(1, 1, 1, 5, 'test 1', style)
 ws0.write_merge(2, 2, 1, 4, 'test 1', style)
@@ -40,7 +41,7 @@ ws0.row(8).level = 1
 ws0.row(9).level = 1
 
 
-ws1 = wb.add_sheet('Columns Outline')
+ws1 = book.add_sheet('Columns Outline')
 
 ws1.write_merge(1, 1, 1, 5, 'test 1', style)
 ws1.write_merge(2, 2, 1, 4, 'test 1', style)
@@ -63,7 +64,7 @@ ws1.col(8).level = 1
 ws1.col(9).level = 1
 
 
-ws2 = wb.add_sheet('Rows and Columns Outline')
+ws2 = book.add_sheet('Rows and Columns Outline')
 
 ws2.write_merge(1, 1, 1, 5, 'test 1', style)
 ws2.write_merge(2, 2, 1, 4, 'test 1', style)
@@ -124,7 +125,8 @@ ws2.obj_protect = true
 ws2.scen_protect = true
 ws2.password = "ok"
 
-wb.protect = true
-wb.wnd_protect = true
-wb.obj_protect = true
-wb.save('protection.xls')
+book.protect = true
+book.wnd_protect = true
+book.obj_protect = true
+
+book.save(__FILE__.gsub(/rb$/, "xls"))

@@ -1,7 +1,8 @@
-require "lib/surpass"
+require "rubygems"
+require "surpass"
 
-wb = Workbook.new
-ws0 = wb.add_sheet('sheet0')
+book = Workbook.new
+ws0 = book.add_sheet
 
 
 fnt = Font.new
@@ -21,6 +22,6 @@ style.borders = borders
 
 ws0.write_merge(3, 3, 1, 5, 'test1', style)
 ws0.write_merge(4, 10, 1, 5, 'test2', style)
-ws0.col(1).width = 0x0d00
+ws0.set_column_width(1, 0x0d00)
 
-wb.save('merged0.xls')
+book.save(__FILE__.gsub(/rb$/, "xls"))

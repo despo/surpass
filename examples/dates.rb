@@ -1,7 +1,8 @@
-require "lib/surpass"
+require "rubygems"
+require "surpass"
 
-w = Workbook.new
-ws = w.add_sheet('Hey, Dude')
+book = Workbook.new
+ws = book.add_sheet('Hey, Dude')
 
 formats = [
     'M/D/YY',
@@ -27,4 +28,4 @@ formats.each_with_index do |f, i|
   ws.write(i, 4, Time.now, style)
 end
 
-w.save('dates.xls')
+book.save(__FILE__.gsub(/rb$/, "xls"))

@@ -1,7 +1,8 @@
-require "lib/surpass"
+require "rubygems"
+require "surpass"
 
-w = Workbook.new
-ws = w.add_sheet('Hey, Dude')
+book = Workbook.new
+ws = book.add_sheet('Hey, Dude')
 
 (6...80).each do |i|
     fnt = Font.new
@@ -9,7 +10,7 @@ ws = w.add_sheet('Hey, Dude')
     style = StyleFormat.new
     style.font = fnt
     ws.write(1, i, 'Test')
-    ws.col(i).width = 256 * i
+    ws.set_column_width(i, i)
 end
 
-w.save('col_width.xls')
+book.save(__FILE__.gsub(/rb$/, "xls"))

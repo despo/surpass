@@ -1,14 +1,15 @@
-require "lib/surpass"
+require "rubygems"
+require "surpass"
 
 # TODO this is broken in both Ruby and Python
 
-w = Workbook.new
-ws1 = w.add_sheet('sheet 1')
-ws2 = w.add_sheet('sheet 2')
-ws3 = w.add_sheet('sheet 3')
-ws4 = w.add_sheet('sheet 4')
-ws5 = w.add_sheet('sheet 5')
-ws6 = w.add_sheet('sheet 6')
+book = Workbook.new
+ws1 = book.add_sheet
+ws2 = book.add_sheet
+ws3 = book.add_sheet
+ws4 = book.add_sheet
+ws5 = book.add_sheet
+ws6 = book.add_sheet
 
 0.upto(0x100) do |i|
   ws1.write(i/0x10, i%0x10, i)
@@ -43,5 +44,5 @@ ws4.horz_split_first_visible = 2
 ws6.vert_split_pos = 40
 ws4.vert_split_first_visible = 2
 
-w.save('panes.xls')
+book.save(__FILE__.gsub(/rb$/, "xls"))
 

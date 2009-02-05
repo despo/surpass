@@ -1,4 +1,5 @@
-require "lib/surpass"
+require "rubygems"
+require "surpass"
 
 props = \
 [
@@ -18,7 +19,6 @@ props = \
         'show_outline',
         'remove_splits',
         'selected',
-        'hidden',
         'page_preview',
         'first_visible_row',
         'first_visible_col',
@@ -72,9 +72,9 @@ props = \
         'copies_num',
 ]
 
-wb = Workbook.new
-ws = wb.add_sheet('sheet')
+book = Workbook.new
+sheet = book.add_sheet('sheet')
 
 props.each do |p|
-  puts "#{p} #{ws.send(p.to_sym)}"
+  puts "#{p} #{sheet.send(p.to_sym)}"
 end

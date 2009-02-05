@@ -1,21 +1,16 @@
-require "lib/surpass"
-
-def String.random_alphanumeric(size=16)
-  s = ""
-  size.times { s << (i = Kernel.rand(62); i += ((i < 10) ? 48 : ((i < 36) ? 55 : 61 ))).chr }
-  s
-end
+require "rubygems"
+require "surpass"
 
 strings = File.read("spec/data/random-strings.txt").split("\n")
 
-w = Workbook.new
-s = w.add_sheet('0')
+book = Workbook.new
+s = book.add_sheet('0')
 
-colcount = 30 + 1
-rowcount = 30 + 1
+colcount = 100 + 1
+rowcount = 100 + 1
 
-t0 = Time.now
-puts "starting at #{t0.to_s}"
+start = Time.now
+puts "starting at #{start.to_s}"
 
 colcount.times do |c|
   rowcount.times do |r|
@@ -24,21 +19,10 @@ colcount.times do |c|
   end
 end
 
+t = Time.now - start
+puts "time elapsed (writing data to workbook) #{t.to_s}"
 
-t1 = Time.now - t0
-puts "elapsed #{t1.to_s}"
+book.save(__FILE__.gsub(/rb$/, "xls"))
 
-w.save("ruby-big-random-strings.xls")
-
-File.open("ruby-ws", "w") do |f|
-  f.write s.to_biff
-end
-
-
-File.open("ruby-sst", "w") do |f|
-  f.write w.sst.to_biff
-end
-
-t2 = Time.now - t0
-puts "elapsed #{t2.to_s}"
-
+t = Time.now - start
+puts "time elapsed (writing workbook to file) #{t.to_s}"
