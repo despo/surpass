@@ -95,7 +95,7 @@ class Workbook
   end
   
   def add_sheet(name = nil)
-    name ||= "Sheet #{@worksheets.length + 1}"
+    name ||= "Sheet#{@worksheets.length + 1}"
     s = Worksheet.new(name, self)
     @worksheets << s
     s
@@ -191,6 +191,11 @@ class Workbook
     
     args = [@hpos_twips, @vpos_twips, @width_twips, @height_twips, flags, @active_sheet, @first_tab_index, @selected_tabs, @tab_width_twips]
     Window1Record.new(*args).to_biff
+  end
+  
+  def data
+    doc = ExcelDocument.new
+    doc.data(to_biff)
   end
   
   def save(filename = nil)

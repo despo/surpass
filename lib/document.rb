@@ -376,7 +376,7 @@ class ExcelDocument
      ].join
   end
   
-  def save(file, stream)
+  def data(stream)
     distance_to_end_of_next_sector_boundary = 0x1000 - (stream.length % 0x1000)
     @book_stream_len = stream.length + distance_to_end_of_next_sector_boundary
     padding = "\000" * distance_to_end_of_next_sector_boundary
@@ -384,16 +384,23 @@ class ExcelDocument
     build_directory
     build_sat
     build_header
-
+    
+    s = StringIO.new
+    s.write(@header)
+    s.write(@packed_msat_1st)
+    s.write(stream)
+    s.write(padding)
+    s.write(@packed_msat_2nd)
+    s.write(@packed_sat)
+    s.write(@dir_stream)
+    s.rewind
+    s
+  end
+  
+  def save(file, stream)
     we_own_it = !file.respond_to?(:write)
     file = File.open(file, 'wb') if we_own_it
-    file.write(@header)
-    file.write(@packed_msat_1st)
-    file.write(stream)
-    file.write(padding)
-    file.write(@packed_msat_2nd)
-    file.write(@packed_sat)
-    file.write(@dir_stream)
+    file.write data(stream).read
     file.close if we_own_it
   end
 end
