@@ -176,8 +176,8 @@ class ImDataBmpRecord < BiffRecord
       data = f.read
     end
     
-    raise "bitmap doesn't contain enough data" if data.length <= 0x36
-    raise "bitmap is not valid" unless data[0, 2] === "BM"
+    raise "bitmap #{filename} doesn't contain enough data" if data.length <= 0x36
+    raise "bitmap #{filename} is not valid" unless data[0, 2] === "BM"
     
     # Remove bitmap data: ID.
     data = data[2..-1]
@@ -194,19 +194,19 @@ class ImDataBmpRecord < BiffRecord
     # Read and remove the bitmap width and height. Verify the sizes.
     width, height = data[0,8].unpack('L2')
     data = data[8..-1]
-    raise "bitmap: largest image width supported is 65k." if (width > 0xFFFF)
-    raise "bitmap: largest image height supported is 65k." if (height > 0xFFFF)
+    raise "bitmap #{filename} largest image width supported is 65k." if (width > 0xFFFF)
+    raise "bitmap #{filename} largest image height supported is 65k." if (height > 0xFFFF)
     
     # Read and remove the bitmap planes and bpp data. Verify them.
     planes, bitcount = data[0,4].unpack('v2')
     data = data[4..-1]
-    raise "bitmap isn't a 24bit true color bitmap." if (bitcount != 24)
-    raise "bitmap: only 1 plane supported in bitmap image." if (planes != 1)
+    raise "bitmap #{filename} isn't a 24bit true color bitmap." if (bitcount != 24)
+    raise "bitmap #{filename} only 1 plane supported in bitmap image." if (planes != 1)
 
     # Read and remove the bitmap compression. Verify compression.
     compression = data[0,4].unpack('L')[0]
     data = data[4..-1]
-    raise "bitmap: compression not supported in bitmap image." if (compression != 0)
+    raise "bitmap #{filename} compression not supported in bitmap image." if (compression != 0)
         
     # Remove bitmap data: data size, hres, vres, colours, imp. colours.
     data = data[20..-1]
