@@ -235,11 +235,11 @@ class Worksheet
   end
   
   def hide_column(c)
-    fetch_or_create_column(c).hidden = true
+    col(c).hidden = true
   end
 
   def unhide_column(c)
-    fetch_or_create_column(c).hidden = false
+    col(c).hidden = false
   end
   
   def set_column_width(c, width)
@@ -248,7 +248,7 @@ class Worksheet
       # You can call col's width method directly to avoid this.
       width = width * 260
     end
-    fetch_or_create_column(c).width = width
+    col(c).width = width
   end
   
   # Change the style for a range of cells. If nil is supplied for row_range,
@@ -270,19 +270,19 @@ class Worksheet
 
   # Write the text stored in label in a single cell at (r,c) according to style.
   def write(r, c, label = "", style = @parent.styles.default_style)
-    fetch_or_create_row(r).write(c, label, style)
+    row(r).write(c, label, style)
   end
   
   def write_array_to_row(array, r, c = 0, style = @parent.styles.default_style)
     array.each_with_index do |a, i|
-      fetch_or_create_row(r).write(c + i, a, style)
+      row(r).write(c + i, a, style)
     end
   end
   alias :rarray :write_array_to_row
 
   def write_array_to_column(array, c, r = 0, style = @parent.styles.default_style)
     array.each_with_index do |a, i|
-      fetch_or_create_row(r + i).write(c, a, style)
+      row(r + i).write(c, a, style)
     end
   end
   alias :carray :write_array_to_column
@@ -307,9 +307,9 @@ class Worksheet
   ## multiple records. In the meantime, avoid this method and use
   ## write_merge() instead.
   def merge(r1, r2, c1, c2, style = @parent.styles.default_style)
-    fetch_or_create_row(r1).write_blanks(c1 + 1, c2, style) if c2 > c1
+    row(r1).write_blanks(c1 + 1, c2, style) if c2 > c1
     ((r1+1)...(r2+1)).each do |r|
-      fetch_or_create_row(r).write_blanks(c1, c2, style)
+      row(r).write_blanks(c1, c2, style)
     end
     @merged_ranges << [r1, r2, c1, c2]
   end
@@ -525,16 +525,15 @@ class Worksheet
   end
   
   # Fetch the row indicated by index, or create it if necessary.
-  def fetch_or_create_row(index)
+  def row(index)
     rows[index] ||= Row.new(index, self)
   end
-  alias :row :fetch_or_create_row
   
   # Fetch the col indicated by index, or create it if necessary.
-  def fetch_or_create_column(index)
+  def col(index)
     cols[index] ||= Column.new(index, self)
   end
-  alias :col :fetch_or_create_row
+  alias :column :col
   
   def row_height(row)
     if @rows.include?(row)
