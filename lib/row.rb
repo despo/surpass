@@ -108,8 +108,8 @@ class Row
     adjust_height(style)
     adjust_boundary_column_indexes(col)
     case label
-    # when TrueClass, FalseClass
-    #   @cells << BooleanCell.new(self, col, style_index, as_numeric(label))
+    when TrueClass, FalseClass
+      @cells << BooleanCell.new(self, col, style_index, label)
     when String, NilClass
       if label.to_s.length == 0
         @cells << BlankCell.new(self, col, style_index)

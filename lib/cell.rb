@@ -175,7 +175,8 @@ class BooleanCell < Cell
   end
   
   def to_biff
-    BoolErrRecord.new(@parent.index, @index, @format_index, @number, @is_error)
+    number = @number ? 1 : 0
+    BoolErrRecord.new(@parent.index, @index, @format_index, number, @is_error).to_biff
   end
 end
 

@@ -19,4 +19,6 @@ ws.write(1, 2, -1.23e-5)
 ws.write(2, 2, -12345678.90780980)
 ws.write(3, 2, -123456.78)
 
+ws.write(0, 4, true)
+
 book.save(__FILE__.gsub(/rb$/, "xls"))
