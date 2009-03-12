@@ -199,33 +199,64 @@ class Alignment
   attr_accessor :dire
   attr_accessor :orie
   attr_accessor :rota
-  attr_accessor :wrap
   attr_accessor :shri
   attr_accessor :inde
   attr_accessor :merg
+
+  attr_reader :wrap
   
   def initialize(hash = {})
-    case hash[:align]
-    when nil
-      @horz = HORZ_GENERAL
+    # Initialize to defaults.
+    @horz = HORZ_GENERAL
+    @vert = VERT_BOTTOM
+    @wrap = NOT_WRAP_AT_RIGHT
+    @dire = DIRECTION_GENERAL
+    @orie = ORIENTATION_NOT_ROTATED
+    @rota = ROTATION_0_ANGLE
+    @shri = NOT_SHRINK_TO_FIT
+    @inde = 0
+    @merg = 0
+    
+    # Allow defaults to be overridden in hash. Where there is no :align key in hash,
+    # this just leaves the default value in place.
+    self.align = hash[:align]
+    self.wrap = hash[:wrap]
+  end
+  
+  # Don't support passing constants here because :horz and :vert are exposed
+  # so if someone wants to use nasty HORZ_RIGHT they can to align.vert = HORZ_RIGHT
+  def align=(arg)
+    case arg
     when 'right'
       @horz = HORZ_RIGHT
     when 'left'
       @horz = HORZ_LEFT
-    when 'center'
+    when 'center', 'centre'
       @horz = HORZ_CENTER
+    when 'general'
+      @horz = HORZ_GENERAL
+    when 'filled'
+      @horz = HORZ_FILLED
+    when 'justify'
+      @horz = HORZ_JUSTIFIED
+    when nil
+      # Do nothing.
     else
-      raise "alignment #{hash[:align]} not implemented!"
+      raise "I don't know how to set align to #{arg.inspect}"
     end
-    
-    @vert = VERT_BOTTOM
-    @dire = DIRECTION_GENERAL
-    @orie = ORIENTATION_NOT_ROTATED
-    @rota = ROTATION_0_ANGLE
-    @wrap = NOT_WRAP_AT_RIGHT
-    @shri = NOT_SHRINK_TO_FIT
-    @inde = 0
-    @merg = 0
+  end
+  
+  def wrap=(arg)
+    case arg
+    when TrueClass, WRAP_AT_RIGHT
+      @wrap = WRAP_AT_RIGHT
+    when FalseClass, NOT_WRAP_AT_RIGHT
+      @wrap = NOT_WRAP_AT_RIGHT
+    when nil
+      # Do nothing.
+    else
+      raise "I don't know how to set wrap to #{arg.inspect}"
+    end
   end
 end
 
