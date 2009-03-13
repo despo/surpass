@@ -242,6 +242,7 @@ class Worksheet
     col(c).hidden = false
   end
   
+  # TODO fix this if column doesn't exist yet.
   def set_column_width(c, width)
     if width < 100
       # Assume we are trying to use Excel-user style widths, scale up accordingly.

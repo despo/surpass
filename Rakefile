@@ -29,4 +29,7 @@ PROJ.ignore_file = '.bzrignore'
 
 PROJ.spec.opts << '--color'
 
+
+PROJ.rdoc.format = 'darkfish'
+
 # EOF

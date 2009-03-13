@@ -46,7 +46,7 @@ end
 describe FnGroupCountRecord do
   it "should pack correctly" do
     b = FnGroupCountRecord.new
-    b.record_data.should == "\016\000"
+    b.record_data.should === "\016\000"
     b.to_biff.unpack('A*').should === ["\234\000\002\000\016"]
   end
 end

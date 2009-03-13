@@ -1,22 +1,14 @@
 surpass
-    by FIXME (your name)
-    FIXME (url)
+    by Ana Nelson, based on original Python code by Roman V. Kiseliov
+    http://launchpad.net/surpass
 
 == DESCRIPTION:
 
-FIXME (describe your package)
-
-== FEATURES/PROBLEMS:
-
-* FIXME (list of features or problems)
-
-== SYNOPSIS:
-
-  FIXME (code sample of usage)
+Surpass is writing (and eventually reading) excel workbooks in pure Ruby. Surpass is based on xlwt (and pyExcelerator).
 
 == REQUIREMENTS:
 
-* FIXME (list of requirements)
+Ruby 1.8.6 (C or JRuby)
 
 == INSTALL:
 
