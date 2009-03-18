@@ -53,4 +53,19 @@ sheet.write(16, 2, "bottom left", StyleFormat.new(:text_align => 'bottom left'))
 sheet.write(16, 3, "bottom centre", StyleFormat.new(:text_align => 'bottom centre'))
 sheet.write(16, 4, "bottom right", StyleFormat.new(:text_align => 'bottom right'))
 
+# Borders
+
+sheet.write(3, 1, "borders", StyleFormat.new(
+  :border_right => 'medium blue',
+  :border_left => 'thin yellow',
+  :border_top => 'dotted purple',
+  :border_bottom => 'dashed pink'
+))
+
+sheet.write(5, 1, "borders", StyleFormat.new(
+  :border_all => 'slanted-medium-dash-dotted green'
+))
+
+sheet.write(7, 1, "fill", StyleFormat.new(:fill_color => 'yellow'))
+
 book.save

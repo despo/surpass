@@ -84,34 +84,23 @@ class Font
   attr_reader :underline
   
   def initialize(hash = {})
-    if hash[:size].nil?
-      @height = hash[:height] || 200 # twips
-    else
-      self.size = hash[:size] # points
+    @height = 200 # font size 10
+    @italic = false
+    @struck_out = false
+    @outline = false
+    @shadow = false
+    @colour_index = 0x7FFF
+    @bold = false
+    @weight = 400 # regular
+    @escapement = ESCAPEMENT_NONE
+    @charset = CHARSET_SYS_DEFAULT
+    @name = 'Arial'
+    @family = FAMILY_NONE
+    @underline = UNDERLINE_NONE
+    
+    hash.each do |k, v|
+      self.send((k.to_s + '=').to_sym, v)
     end
-
-    @italic = hash[:italic] || false
-    @struck_out = hash[:struck_out] || hash[:strikethrough] || false
-    @outline = hash[:outline] || false
-    @shadow = hash[:shadow] || false
-    
-    colour1 = hash[:colour_index]
-    colour2 = hash[:color_index]
-    colour3 = colour_index_from_name(hash[:colour])
-    colour4 = colour_index_from_name(hash[:color])
-    colour5 = 0x7FFF
-    
-    @colour_index = colour1 || colour2 || colour3 || colour4 || colour5
-    
-    @bold = hash[:bold] || false
-    @weight = hash[:weight] || 0x0190 # 0x02BC gives bold font
-    @escapement = hash[:escapement] || ESCAPEMENT_NONE
-    @charset = hash[:charset] || CHARSET_SYS_DEFAULT
-    @name = hash[:name] || 'Arial'
-
-    # Use custom accessors.
-    self.family = hash[:family] || FAMILY_NONE
-    self.underline = hash[:underline]
   end
   
   def family=(arg)
@@ -319,11 +308,11 @@ class Alignment
 end
 
 class Borders
-  attr_accessor :left
-  attr_accessor :right
-  attr_accessor :top
-  attr_accessor :bottom
-  attr_accessor :diag
+  attr_reader :left
+  attr_reader :right
+  attr_reader :top
+  attr_reader :bottom
+  attr_reader :diag
 
   attr_accessor :left_colour
   attr_accessor :right_colour
@@ -355,7 +344,7 @@ class Borders
   NO_NEED_DIAG1   = 0x00
   NO_NEED_DIAG2   = 0x00
   
-  def initialize
+  def initialize(hash = {})
     @left   = NO_LINE
     @right  = NO_LINE
     @top    = NO_LINE
@@ -370,6 +359,92 @@ class Borders
 
     @need_diag1 = NO_NEED_DIAG1
     @need_diag2 = NO_NEED_DIAG2
+    
+    hash.each do |k, v|
+      self.send((k.to_s + '=').to_sym, v)
+    end
+  end
+  
+  def all=(directives)
+    self.left = directives
+    self.right = directives
+    self.top = directives
+    self.bottom = directives
+  end
+  
+  def process_directives(directives)
+    if directives =~ /\s/
+      args = directives.split
+    else
+      args = [directives] # there's just 1 here, stick it in an array
+    end
+    
+    instructions = [nil, nil]
+    args.each do |a|
+      if Formatting::COLOURS.include?(a)
+        instructions[1] = Formatting::COLOURS[a]
+        next
+      end
+
+      instructions[0] = case a
+      when 'none'
+        NO_LINE
+      when 'thin'
+        THIN
+      when 'medium'
+        MEDIUM
+      when 'dashed'
+        DASHED
+      when 'dotted'
+        DOTTED
+      when 'thick'
+        THICK
+      when 'double'
+        DOUBLE
+      when 'hair'
+        HAIR
+      when 'medium-dashed'
+        MEDIUM_DASHED
+      when 'thin-dash-dotted'
+        THIN_DASH_DOTTED
+      when 'medium-dash-dotted'
+        MEDIUM_DASH_DOTTED
+      when 'thin-dash-dot-dotted'
+        THIN_DASH_DOT_DOTTED
+      when 'medium-dash-dot-dotted'
+        MEDIUM_DASH_DOT_DOTTED
+      when 'slanted-medium-dash-dotted'
+        SLANTED_MEDIUM_DASH_DOTTED
+      else
+        raise "I don't know how to format a border with #{a.inspect}"
+      end
+    end
+    
+    instructions
+  end
+  
+  def right=(directives)
+    instructions = process_directives(directives)
+    @right = instructions[0] unless instructions[0].nil?
+    @right_colour = instructions[1] unless instructions[1].nil?
+  end
+  
+  def left=(directives)
+    instructions = process_directives(directives)
+    @left = instructions[0] unless instructions[0].nil?
+    @left_colour = instructions[1] unless instructions[1].nil?
+  end
+  
+  def top=(directives)
+    instructions = process_directives(directives)
+    @top = instructions[0] unless instructions[0].nil?
+    @top_colour = instructions[1] unless instructions[1].nil?
+  end
+
+  def bottom=(directives)
+    instructions = process_directives(directives)
+    @bottom = instructions[0] unless instructions[0].nil?
+    @bottom_colour = instructions[1] unless instructions[1].nil?
   end
 end
 
@@ -381,10 +456,25 @@ class Pattern
   attr_accessor :pattern_fore_colour
   attr_accessor :pattern_back_colour
   
-  def initialize
+  def initialize(hash = {})
     @pattern = NO_PATTERN
     @pattern_fore_colour = 0x40
     @pattern_back_colour = 0x41
+    
+    hash.each do |k, v|
+      self.send((k.to_s + '=').to_sym, v)
+    end
+  end
+  
+  # Convenience method to set fill colour
+  def colour=(arg)
+    colour_index = Formatting::COLOURS[arg]
+    @pattern = SOLID_PATTERN
+    @pattern_fore_colour = colour_index
+  end
+  
+  def color=(arg)
+    self.colour = arg
   end
 end
 

@@ -11,8 +11,8 @@ class StyleFormat
 
     @font           = Font.new(hash_select(hash, /^font_/))
     @alignment      = Alignment.new(hash_select(hash, /^text_/))
-    @borders        = Borders.new
-    @pattern        = Pattern.new
+    @borders        = Borders.new(hash_select(hash, /^border_/))
+    @pattern        = Pattern.new(hash_select(hash, /^fill_/))
     @protection     = Protection.new
   end
   
