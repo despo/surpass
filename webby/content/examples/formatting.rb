@@ -1,8 +1,7 @@
-# require 'rubygems'
-# require 'surpass'
-require "../lib/surpass"
+require 'rubygems'
+require 'surpass'
 
-book = Workbook.new(__FILE__.gsub(/rb$/, 'xls').gsub('content/', 'output/')) # You can pass a filename here too.
+book = Workbook.new('output/examples/formatting.xls') # You can pass a filename here too.
 sheet = book.add_sheet("Demo Worksheet") # You can name your worksheets.
 
 # Let's set up some formatting.
@@ -62,9 +61,9 @@ sheet.write(16, 4, "bottom right", :text_align => 'bottom right',
 # Borders
 sheet.write(3, 1, "borders",
   :border_right => 'medium blue',
-  :border_left => 'thin yellow',
+  :border_left => 'yellow', # thin by default
   :border_top => 'dotted purple',
-  :border_bottom => 'dashed pink'
+  :border_bottom => 'dashed' # black by default
 )
 
 # Or the hash-free option.

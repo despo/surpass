@@ -41,7 +41,21 @@ The StyleFormat class is a wrapper for the various types of formatting you can a
 
 Each of these attributes has a corresponding class, and you can look in lib/formatting.rb for the source.
 
-There are two basic ways to set formatting options. You can pass a hash with formatting options when you initialize a new StyleFormat instance, or you can set individual attributes of the formatting classes. You can combine both approaches. Both of these are demonstrated in the next section.
+There are two basic ways to set formatting options. You can pass a hash with formatting options when you initialize a new StyleFormat instance, or you can set individual attributes of the formatting classes. You can combine both approaches. Both of these are demonstrated in the examples in this section.
+
+\subsection{Specifying Colours}
+
+Here is a list of available built-in colours:
+
+<%= Formatting::COLOURS.keys.sort.to_itemize %>
+
+You can refer to any of these colours by name.
+
+At this time, there is no support for custom colours.
+
+\subsection{Border Formats}
+
+Here is a list of available border line types:
 
 <%= Borders.line_type_directives.to_itemize %>
 

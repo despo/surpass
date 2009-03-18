@@ -1,24 +1,62 @@
 module Formatting
   COLOURS = {
-          'aqua'    => 0x0F,
-          'cyan'    => 0x0F,
-          'black'   => 0x08,
-          'blue'    => 0x0C,
-          'brown'   => 0x10,
-          'magenta' => 0x0E,
-          'fuchsia' => 0x0E,
-          'gray'    => 0x17,
-          'grey'    => 0x17,
-          'green'   => 0x11,
-          'lime'    => 0x0B,
-          'navy'    => 0x12,
-          'orange'  => 0x35,
-          'pink'    => 0x21,
-          'purple'  => 0x14,
-          'red'     => 0x0A,
-          'silver'  => 0x16,
-          'white'   => 0x09,
-          'yellow'  => 0x0D,
+    'aqua' => 0x31,
+    'black'   => 0x08,
+    'blue'    => 0x0C,
+    'blue_grey' => 0x36,
+    'bright_green' => 0xb,
+    'brown' => 0x3c,
+    'coral' => 0x1d,
+    'cornflower_blue' => 0x18,
+    'cyan'    => 0x0F,
+    'dark_blue' => 0x12,
+    'dark_green' => 0x3a,
+    'dark_red' => 0x10,
+    'dark_teal' => 0x38,
+    'dark_yellow' => 0x13,
+    'fuchsia' => 0x0E,
+    'gold' => 0x33,
+    'gray'    => 0x17,
+    'grey'    => 0x17,
+    'green' => 0x11,
+    'grey_25_percent' => 0x16,
+    'grey_40_percent' => 0x37,
+    'grey_50_percent' => 0x17,
+    'grey_80_percent' => 0x3f,
+    'indigo' => 0x3e,
+    'lavender' => 0x2e,
+    'lemon_chiffon' => 0x1a,
+    'light_blue' => 0x30,
+    'light_cornflower_blue' => 0x1f,
+    'light_green' => 0x2a,
+    'light_orange' => 0x34,
+    'light_turquoise' => 0x29,
+    'light_yellow' => 0x2b,
+    'lime'    => 0x0B,
+    'lime' => 0x32,
+    'magenta' => 0x0E,
+    'maroon' => 0x19,
+    'navy'    => 0x12,
+    'olive_green' => 0x3b,
+    'orange' => 0x35,
+    'orchid' => 0x1c,
+    'pale_blue' => 0x2c,
+    'pink'    => 0x21,
+    'pink' => 0xe,
+    'plum' => 0x3d,
+    'purple'  => 0x14,
+    'red'     => 0x0A,
+    'rose' => 0x2d,
+    'royal_blue' => 0x1e,
+    'sea_green' => 0x39,
+    'silver'  => 0x16,
+    'sky_blue' => 0x28,
+    'tan' => 0x2f,
+    'teal' => 0x15,
+    'turquoise' => 0xf,
+    'violet' => 0x14,
+    'white'   => 0x09,
+    'yellow'  => 0x0D
   }
 end
 
@@ -166,7 +204,7 @@ class Font
   end
   
   def colour_index_from_name(colour_name)
-    Formatting::COLOURS[colour_name]
+    Formatting::COLOURS[colour_name.to_s]
   end
   
   def colour=(colour_name)
@@ -189,8 +227,7 @@ class Font
     options |= SHADOW if @shadow
 
     @weight = 700 if @bold
-    colour_index = Formatting::COLOURS[@colour_index] || @colour_index
-    args = [@height, options, colour_index, @weight, @escapement, @underline, @family, @charset, @name]
+    args = [@height, options, @colour_index, @weight, @escapement, @underline, @family, @charset, @name]
     FontRecord.new(*args).to_biff
   end
 end
@@ -403,7 +440,7 @@ class Borders
     
     raise "no directives given to process_directives" if args.empty? # maybe don't need this, just get thin black border? but for development I want to know if this happens.
     
-    instructions = [THIN, 'black']
+    instructions = [THIN, Formatting::COLOURS['black']]
     args.each do |a|
       if Formatting::COLOURS.include?(a)
         instructions[1] = Formatting::COLOURS[a]
@@ -438,7 +475,43 @@ class Borders
     @bottom, @bottom_colour = process_directives(directives)
   end
 end
-
+# public final static short     NO_FILL             = 0  ;
+# /**  Solidly filled */
+# public final static short     SOLID_FOREGROUND    = 1  ;
+# /**  Small fine dots */
+# public final static short     FINE_DOTS           = 2  ;
+# /**  Wide dots */
+# public final static short     ALT_BARS            = 3  ;
+# /**  Sparse dots */
+# public final static short     SPARSE_DOTS         = 4  ;
+# /**  Thick horizontal bands */
+# public final static short     THICK_HORZ_BANDS    = 5  ;
+# /**  Thick vertical bands */
+# public final static short     THICK_VERT_BANDS    = 6  ;
+# /**  Thick backward facing diagonals */
+# public final static short     THICK_BACKWARD_DIAG = 7  ;
+# /**  Thick forward facing diagonals */
+# public final static short     THICK_FORWARD_DIAG  = 8  ;
+# /**  Large spots */
+# public final static short     BIG_SPOTS           = 9  ;
+# /**  Brick-like layout */
+# public final static short     BRICKS              = 10 ;
+# /**  Thin horizontal bands */
+# public final static short     THIN_HORZ_BANDS     = 11 ;
+# /**  Thin vertical bands */
+# public final static short     THIN_VERT_BANDS     = 12 ;
+# /**  Thin backward diagonal */
+# public final static short     THIN_BACKWARD_DIAG  = 13 ;
+# /**  Thin forward diagonal */
+# public final static short     THIN_FORWARD_DIAG   = 14 ;
+# /**  Squares */
+# public final static short     SQUARES             = 15 ;
+# /**  Diamonds */
+# public final static short     DIAMONDS            = 16 ;
+# /**  Less Dots */
+# public final static short     LESS_DOTS           = 17 ;
+# /**  Least Dots */
+# public final static short     LEAST_DOTS          = 18 ;
 class Pattern
   NO_PATTERN      = 0x00 
   SOLID_PATTERN   = 0x01
