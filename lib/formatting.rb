@@ -1,50 +1,26 @@
-# The  XF  record is able to store explicit cell formatting attributes or the
-# attributes  of  a cell style. Explicit formatting includes the reference to
-# a  cell  style  XF  record. This allows to extend a defined cell style with
-# some  explicit  attributes.  The  formatting  attributes  are  divided into
-# 6 groups:
-# 
-# Group           Attributes
-# -------------------------------------
-# Number format   Number format index (index to FORMAT record)
-# Font            Font index (index to FONT record)
-# Alignment       Horizontal and vertical alignment, text wrap, indentation, 
-#                 orientation/rotation, text direction
-# Border          Border line styles and colours
-# Background      Background area style and colours
-# Protection      Cell locked, formula hidden
-# 
-# For  each  group  a flag in the cell XF record specifies whether to use the
-# attributes  contained  in  that  XF  record  or  in  the  referenced  style
-# XF  record. In style XF records, these flags specify whether the attributes
-# will  overwrite  explicit  cell  formatting  when  the  style is applied to
-# a  cell. Changing a cell style (without applying this style to a cell) will
-# change  all  cells which already use that style and do not contain explicit
-# cell  attributes for the changed style attributes. If a cell XF record does
-# not  contain  explicit  attributes  in a group (if the attribute group flag
-# is not set), it repeats the attributes of its style XF record.
-
-COLOURS = {
-        'aqua'    => 0x0F,
-        'cyan'    => 0x0F,
-        'black'   => 0x08,
-        'blue'    => 0x0C,
-        'brown'   => 0x10,
-        'magenta' => 0x0E,
-        'fuchsia' => 0x0E,
-        'gray'    => 0x17,
-        'grey'    => 0x17,
-        'green'   => 0x11,
-        'lime'    => 0x0B,
-        'navy'    => 0x12,
-        'orange'  => 0x35,
-        'pink'    => 0x21,
-        'purple'  => 0x14,
-        'red'     => 0x0A,
-        'silver'  => 0x16,
-        'white'   => 0x09,
-        'yellow'  => 0x0D,
-}
+module Formatting
+  COLOURS = {
+          'aqua'    => 0x0F,
+          'cyan'    => 0x0F,
+          'black'   => 0x08,
+          'blue'    => 0x0C,
+          'brown'   => 0x10,
+          'magenta' => 0x0E,
+          'fuchsia' => 0x0E,
+          'gray'    => 0x17,
+          'grey'    => 0x17,
+          'green'   => 0x11,
+          'lime'    => 0x0B,
+          'navy'    => 0x12,
+          'orange'  => 0x35,
+          'pink'    => 0x21,
+          'purple'  => 0x14,
+          'red'     => 0x0A,
+          'silver'  => 0x16,
+          'white'   => 0x09,
+          'yellow'  => 0x0D,
+  }
+end
 
 class Font
   ESCAPEMENT_NONE         = 0x00
@@ -99,18 +75,23 @@ class Font
   attr_accessor :shadow
   attr_accessor :colour_index
   attr_accessor :bold
-  attr_accessor :weight
+  attr_accessor :weight # In practice, seems to be only 400 = normal, 700 = bold so just use bold = true.
   attr_accessor :escapement
-  attr_accessor :underline
   attr_accessor :charset
   attr_accessor :name
 
   attr_reader :family
-
+  attr_reader :underline
+  
   def initialize(hash = {})
-    @height = hash[:height] || 0x00C8 # 200: this is font with height 10 points
+    if hash[:size].nil?
+      @height = hash[:height] || 200 # twips
+    else
+      self.size = hash[:size] # points
+    end
+
     @italic = hash[:italic] || false
-    @struck_out = hash[:struck_out] || false
+    @struck_out = hash[:struck_out] || hash[:strikethrough] || false
     @outline = hash[:outline] || false
     @shadow = hash[:shadow] || false
     
@@ -125,11 +106,12 @@ class Font
     @bold = hash[:bold] || false
     @weight = hash[:weight] || 0x0190 # 0x02BC gives bold font
     @escapement = hash[:escapement] || ESCAPEMENT_NONE
-    @underline = hash[:underline] || UNDERLINE_NONE
     @charset = hash[:charset] || CHARSET_SYS_DEFAULT
     @name = hash[:name] || 'Arial'
 
+    # Use custom accessors.
     self.family = hash[:family] || FAMILY_NONE
+    self.underline = hash[:underline]
   end
   
   def family=(arg)
@@ -137,8 +119,65 @@ class Font
     @family = arg
   end
   
+  # Convert font size in points to native twips
+  def size=(points)
+    @height = points * 20
+  end
+  
+  def strikethrough=(arg)
+    @struck_out = arg
+  end
+  
+  def subscript=(arg)
+    case arg
+    when TrueClass
+      @escapement = ESCAPEMENT_SUBSCRIPT
+    when FalseClass
+      @escapement  = ESCAPEMENT_NONE
+    else
+      raise arg.inspect
+    end
+  end
+  
+  def superscript=(arg)
+    case arg
+    when TrueClass
+      @escapement = ESCAPEMENT_SUPERSCRIPT
+    when FalseClass
+      @escapement  = ESCAPEMENT_NONE
+    else
+      raise arg.inspect
+    end
+  end
+
+  # User-friendly underlining directives.
+  def underline=(arg)
+    case arg
+    when UNDERLINE_NONE, UNDERLINE_SINGLE, UNDERLINE_SINGLE_ACC, UNDERLINE_DOUBLE, UNDERLINE_DOUBLE_ACC
+      @underline = arg
+    when nil
+      @underline ||= UNDERLINE_NONE
+    when TrueClass
+      @underline = UNDERLINE_SINGLE
+    when FalseClass
+      @underline = UNDERLINE_NONE
+    when :none
+      @underline = UNDERLINE_NONE
+    when :single
+      @underline = UNDERLINE_SINGLE
+    when :single_acc, :single_accounting
+      @underline = UNDERLINE_SINGLE_ACC
+    when :double
+      @underline = UNDERLINE_DOUBLE
+    when :double_acc, :double_accounting
+      @underline = UNDERLINE_DOUBLE_ACC
+    else
+      raise arg.inspect
+    end
+  end
+  
   def colour_index_from_name(colour_name)
-    COLOURS[colour_name]
+    Formatting::COLOURS[colour_name]
   end
   
   def colour=(colour_name)
@@ -160,8 +199,8 @@ class Font
     options |= OUTLINE if @outline
     options |= SHADOW if @shadow
 
-    @weight = 0x02BC if @bold
-    colour_index = COLOURS[@colour_index] || @colour_index
+    @weight = 700 if @bold
+    colour_index = Formatting::COLOURS[@colour_index] || @colour_index
     args = [@height, options, colour_index, @weight, @escapement, @underline, @family, @charset, @name]
     FontRecord.new(*args).to_biff
   end
@@ -231,25 +270,37 @@ class Alignment
   end
   
   # Don't support passing constants here because :horz and :vert are exposed
-  # so if someone wants to use nasty HORZ_RIGHT they can to align.vert = HORZ_RIGHT
-  def align=(arg)
-    case arg
-    when 'right'
-      @horz = HORZ_RIGHT
-    when 'left'
-      @horz = HORZ_LEFT
-    when 'center', 'centre'
-      @horz = HORZ_CENTER
-    when 'general'
-      @horz = HORZ_GENERAL
-    when 'filled'
-      @horz = HORZ_FILLED
-    when 'justify'
-      @horz = HORZ_JUSTIFIED
-    when nil
-      # Do nothing.
+  # so if someone wants to use nasty HORZ_RIGHT they can do align.vert = HORZ_RIGHT
+  def align=(alignment_directives)
+    if alignment_directives =~ /\s/
+      args = alignment_directives.split
     else
-      raise "I don't know how to set align to #{arg.inspect}"
+      args = [alignment_directives] # there's just 1 here
+    end
+    
+    args.each do |a|
+      case a
+      when 'right'
+        @horz = HORZ_RIGHT
+      when 'left'
+        @horz = HORZ_LEFT
+      when 'center', 'centre'
+        @horz = HORZ_CENTER
+      when 'general'
+        @horz = HORZ_GENERAL
+      when 'filled'
+        @horz = HORZ_FILLED
+      when 'justify'
+        @horz = HORZ_JUSTIFIED
+      when 'top'
+        @vert = VERT_TOP
+      when 'bottom'
+        @vert = VERT_BOTTOM
+      when nil
+        # Do nothing.
+      else
+        raise "I don't know how to set align to #{a.inspect}"
+      end
     end
   end
   
