@@ -124,7 +124,7 @@ class Font
     when FalseClass
       @escapement  = ESCAPEMENT_NONE
     else
-      raise arg.inspect
+      raise "I don't know how to set subscript to #{arg.inspect}."
     end
   end
   
@@ -135,7 +135,7 @@ class Font
     when FalseClass
       @escapement  = ESCAPEMENT_NONE
     else
-      raise arg.inspect
+      raise "I don't know how to set superscript to #{arg.inspect}."
     end
   end
 
@@ -161,7 +161,7 @@ class Font
     when :double_acc, :double_accounting
       @underline = UNDERLINE_DOUBLE_ACC
     else
-      raise arg.inspect
+      raise "I don't know how to set underline to #{arg.inspect}."
     end
   end
   
@@ -288,7 +288,7 @@ class Alignment
       when nil
         # Do nothing.
       else
-        raise "I don't know how to set align to #{a.inspect}"
+        raise "I don't know how to set align to #{a.inspect}."
       end
     end
   end
@@ -302,7 +302,7 @@ class Alignment
     when nil
       # Do nothing.
     else
-      raise "I don't know how to set wrap to #{arg.inspect}"
+      raise "I don't know how to set wrap to #{arg.inspect}."
     end
   end
 end
@@ -379,7 +379,9 @@ class Borders
       args = [directives] # there's just 1 here, stick it in an array
     end
     
-    instructions = [nil, nil]
+    raise "no directives given to process_directives" if args.empty? # maybe don't need this, just get thin black border? but for development I want to know if this happens.
+    
+    instructions = [THIN, 'black']
     args.each do |a|
       if Formatting::COLOURS.include?(a)
         instructions[1] = Formatting::COLOURS[a]
@@ -416,35 +418,31 @@ class Borders
       when 'slanted-medium-dash-dotted'
         SLANTED_MEDIUM_DASH_DOTTED
       else
-        raise "I don't know how to format a border with #{a.inspect}"
+        raise "I don't know how to format a border with #{a.inspect}."
       end
     end
-    
+
     instructions
   end
   
   def right=(directives)
     instructions = process_directives(directives)
-    @right = instructions[0] unless instructions[0].nil?
-    @right_colour = instructions[1] unless instructions[1].nil?
+    @right, @right_colour = instructions
   end
   
   def left=(directives)
     instructions = process_directives(directives)
-    @left = instructions[0] unless instructions[0].nil?
-    @left_colour = instructions[1] unless instructions[1].nil?
+    @left, @left_colour = instructions
   end
   
   def top=(directives)
     instructions = process_directives(directives)
-    @top = instructions[0] unless instructions[0].nil?
-    @top_colour = instructions[1] unless instructions[1].nil?
+    @top, @top_colour = instructions
   end
 
   def bottom=(directives)
     instructions = process_directives(directives)
-    @bottom = instructions[0] unless instructions[0].nil?
-    @bottom_colour = instructions[1] unless instructions[1].nil?
+    @bottom, @bottom_colour = instructions
   end
 end
 
@@ -469,6 +467,7 @@ class Pattern
   # Convenience method to set fill colour
   def colour=(arg)
     colour_index = Formatting::COLOURS[arg]
+    raise "Invalid colour #{arg}" if colour_index.nil?
     @pattern = SOLID_PATTERN
     @pattern_fore_colour = colour_index
   end

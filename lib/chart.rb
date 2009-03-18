@@ -1,6 +1,6 @@
 class Chart
   def initialize
-    
+    raise "not implemented"
   end
   
   
