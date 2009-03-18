@@ -1,0 +1,29 @@
+---
+title:      Surpass and XLWT Manual
+author:     Ana Nelson
+created_at: 2009-01-30 13:08:32.468894 +00:00
+layout: default
+filter:
+  - erb
+  - idio
+---
+\section{Hello World}
+
+Let's do a minimal "Hello World" script. We'll need to take care of any imports, initialize a Workbook object, create a Worksheet within the workbook, then write some text. Here's how.
+
+\subsection{Surpass}
+
+<%= lidio("examples/hello-world.rb")%>
+
+\subsection{XLWT}
+<%= lidio("examples/hello-world.py")%>
+
+\subsection{Result}
+
+And, here's how it looks.
+
+\includegraphics[width=16cm]{examples/hello-world.png}
+
+\section{A Demo}
+
+If you are the sort of person who prefers to learn by example, here is a rather comprehensive demo showing most of the basics you might want to do.

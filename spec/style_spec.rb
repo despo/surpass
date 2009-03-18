@@ -56,8 +56,8 @@ describe StyleCollection, "adding new styles" do
   end
   
   it "should return the default style index when trying to add a nil style" do
-    @s.add(nil).should === 0x10
-    @s.styles.should have(1).elements
+    @s.add(nil).should === 17
+    @s.styles.should have(2).elements
   end
   
   it "should correctly add a new blank style" do

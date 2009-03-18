@@ -1,7 +1,7 @@
+task :screenshots do
+  require "tasks/screenshots"
+end
+
 task :default => :pdf
 
-APPLICATION_PATHS = {
-      :gingerbread => '/Users/ana/admin/gingerbread',
-      :documentation => '/Users/ana/documentation',
-      :phaser => '/Users/ana/admin/phaser'
-}
+task :all => [:clobber, :screenshots, :pdf]
