@@ -12,9 +12,8 @@ end
 # Space with nothing else in it for nice, tidy screenshots.
 # Desktop background should be set to plain white.
 # Also you should have "When switching to an application, switch to a ..." box checked
-
-app = OSA.app("Microsoft Excel")
-app.activate
+# app = OSA.app("Microsoft Excel")
+# app.activate
 
 `mkdir -p output/examples`
 
@@ -41,5 +40,5 @@ end
 end
 
 # Return to iTerm
-app = OSA.app("iTerm")
-app.activate
+# app = OSA.app("iTerm")
+# app.activate

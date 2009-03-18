@@ -1,7 +1,8 @@
-require 'rubygems'
-require 'surpass'
+# require 'rubygems'
+# require 'surpass'
+require "../lib/surpass"
 
-book = Workbook.new("output/examples/demo.xls") # You can pass a filename here too.
+book = Workbook.new(__FILE__.gsub(/rb$/, 'xls').gsub('content/', 'output/')) # You can pass a filename here too.
 sheet = book.add_sheet("Demo Worksheet") # You can name your worksheets.
 
 # Let's set up some formatting.
@@ -43,19 +44,19 @@ end
   sheet.write(i, 8, s.to_s, StyleFormat.new(attribute => true))
 end
 
-
 # Cell alignment.
-# You can pass a hash of style attributes directly to sheet.write, but 
-# remember this creates a new StyleFormat object each time, so don't
-# do this if you are going to re-use a style for multiple cells. If you
-# are going to use a format more than once, then create a StyleFormat and
-# pass a reference to that.
-sheet.write(15, 2, "top left", :text_align => 'top left', :border_top => 'pink', :border_left => 'pink')
+sheet.write(15, 2, "top left", :text_align => 'top left', 
+  :border_top => 'pink', 
+  :border_left => 'pink'
+)
 sheet.write(15, 3, "top center", :text_align => 'top center')
 sheet.write(15, 4, "top right", :text_align => 'top right')
 sheet.write(16, 2, "bottom left", :text_align => 'bottom left')
 sheet.write(16, 3, "bottom centre", :text_align => 'bottom centre')
-sheet.write(16, 4, "bottom right", :text_align => 'bottom right', :border_bottom => 'pink', :border_right => 'pink')
+sheet.write(16, 4, "bottom right", :text_align => 'bottom right', 
+  :border_bottom => 'pink', 
+  :border_right => 'pink'
+)
 
 
 # Borders

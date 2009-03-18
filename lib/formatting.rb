@@ -344,6 +344,28 @@ class Borders
   NO_NEED_DIAG1   = 0x00
   NO_NEED_DIAG2   = 0x00
   
+  # Want to keep these sorted in this order, so need nested array instead of hash.
+  LINE_TYPE_DIRECTIVES = [
+    ['none', NO_LINE],
+    ['thin', THIN],
+    ['medium', MEDIUM],
+    ['dashed', DASHED],
+    ['dotted', DOTTED],
+    ['thick', THICK],
+    ['double', DOUBLE],
+    ['hair', HAIR],
+    ['medium-dashed', MEDIUM_DASHED],
+    ['thin-dash-dotted', THIN_DASH_DOTTED],
+    ['medium-dash-dotted', MEDIUM_DASH_DOTTED],
+    ['thin-dash-dot-dotted', THIN_DASH_DOT_DOTTED],
+    ['medium-dash-dot-dotted', MEDIUM_DASH_DOT_DOTTED],
+    ['slanted-medium-dash-dotted', SLANTED_MEDIUM_DASH_DOTTED]
+  ]
+  
+  def self.line_type_directives
+    LINE_TYPE_DIRECTIVES.collect {|k, v| k}
+  end
+  
   def initialize(hash = {})
     @left   = NO_LINE
     @right  = NO_LINE
@@ -387,62 +409,33 @@ class Borders
         instructions[1] = Formatting::COLOURS[a]
         next
       end
-
-      instructions[0] = case a
-      when 'none'
-        NO_LINE
-      when 'thin'
-        THIN
-      when 'medium'
-        MEDIUM
-      when 'dashed'
-        DASHED
-      when 'dotted'
-        DOTTED
-      when 'thick'
-        THICK
-      when 'double'
-        DOUBLE
-      when 'hair'
-        HAIR
-      when 'medium-dashed'
-        MEDIUM_DASHED
-      when 'thin-dash-dotted'
-        THIN_DASH_DOTTED
-      when 'medium-dash-dotted'
-        MEDIUM_DASH_DOTTED
-      when 'thin-dash-dot-dotted'
-        THIN_DASH_DOT_DOTTED
-      when 'medium-dash-dot-dotted'
-        MEDIUM_DASH_DOT_DOTTED
-      when 'slanted-medium-dash-dotted'
-        SLANTED_MEDIUM_DASH_DOTTED
-      else
-        raise "I don't know how to format a border with #{a.inspect}."
+      
+      if Borders.line_type_directives.include?(a)
+        line_type_directives_hash = Hash[*LINE_TYPE_DIRECTIVES.flatten]
+        instructions[0] = line_type_directives_hash[a]
+        next
       end
+
+      raise "I don't know how to format a border with #{a.inspect}."
     end
 
     instructions
   end
   
   def right=(directives)
-    instructions = process_directives(directives)
-    @right, @right_colour = instructions
+    @right, @right_colour = process_directives(directives)
   end
   
   def left=(directives)
-    instructions = process_directives(directives)
-    @left, @left_colour = instructions
+    @left, @left_colour = process_directives(directives)
   end
   
   def top=(directives)
-    instructions = process_directives(directives)
-    @top, @top_colour = instructions
+    @top, @top_colour = process_directives(directives)
   end
 
   def bottom=(directives)
-    instructions = process_directives(directives)
-    @bottom, @bottom_colour = instructions
+    @bottom, @bottom_colour = process_directives(directives)
   end
 end
 

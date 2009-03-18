@@ -32,7 +32,7 @@ describe Alignment do
   end
   
   it "should raise an error if anything else passed" do
-    lambda {@a.wrap = :yes}.should raise_error("I don't know how to set wrap to :yes")
+    lambda {@a.wrap = :yes}.should raise_error("I don't know how to set wrap to :yes.")
   end
 end
 

@@ -7,6 +7,8 @@ filter:
   - erb
   - idio
 ---
+<% require "../lib/surpass" -%>
+
 \section{Hello World}
 
 Let's do a minimal "Hello World" script. We'll need to take care of any imports, initialize a Workbook object, create a Worksheet within the workbook, then write some text. Here's how.
@@ -22,20 +24,9 @@ Let's do a minimal "Hello World" script. We'll need to take care of any imports,
 
 And, here's how it looks.
 
-\includegraphics[width=16cm]{examples/hello-world.png}
+\includegraphics[width=15cm]{examples/hello-world.png}
 
-\section{A Demo}
-
-If you are the sort of person who prefers to learn by example, here is a rather comprehensive demo showing most of the basics you might want to do.
-
-\subsection{Surpass}
-<%= lidio("examples/demo.rb")%>
-
-And, here's how it looks.
-
-\includegraphics[width=16cm]{examples/demo.png}
-
-\section{Formats}
+\section{Formatting}
 
 The StyleFormat class is a wrapper for the various types of formatting you can apply to a cell. StyleFormat has attributes:
 
@@ -48,5 +39,15 @@ The StyleFormat class is a wrapper for the various types of formatting you can a
   \item protection
 \end{itemize}
 
-Each of these attributes has a corresponding class.
+Each of these attributes has a corresponding class, and you can look in lib/formatting.rb for the source.
 
+There are two basic ways to set formatting options. You can pass a hash with formatting options when you initialize a new StyleFormat instance, or you can set individual attributes of the formatting classes. You can combine both approaches. Both of these are demonstrated in the next section.
+
+<%= Borders.line_type_directives.to_itemize %>
+
+\subsection{Surpass}
+<%= lidio("examples/formatting.rb")%>
+
+And, here's how it looks.
+
+\includegraphics[width=16cm]{examples/formatting.png}
