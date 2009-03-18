@@ -36,7 +36,7 @@ class SharedStringTable
   end
   
   def add_to_sst(s)
-    u_str = [s.length, 0].pack('vC') + s
+    u_str = mock_unicode_string(s)
     raise "very long string" if u_str.length > 0xFFFF
     save_atom(u_str[0...4])
     save_splitted(u_str[4..-1], false)
@@ -668,7 +668,7 @@ class NumberFormatRecord < BiffRecord
   RECORD_ID = 0x041E
   
   def initialize(index, format_string)
-    @record_data = [index].pack('v') + format_string
+    @record_data = [index].pack('v') + mock_unicode_string(format_string)
   end
 end
 

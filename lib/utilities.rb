@@ -9,10 +9,6 @@ module Utilities
     binary_string.unpack("H*")
   end
   
-  # def unicode_pack(string)
-  #   string.unpack("C*").collect {|c| [c].pack('Cx')}.join
-  # end
-  
   def points_to_pixels(points)
     points*(4.0/3)
   end
@@ -35,6 +31,11 @@ module Utilities
     excel_date += 1 if excel_date > 59 # Add a day for Excel's missing leap day in 1900
     excel_date
   end
+  
+  def mock_unicode_string(s)
+    [s.length, 0].pack('vC') + s
+  end
+  
   
   def as_boolean(input)
     case input
