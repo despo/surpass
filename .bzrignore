@@ -1,4 +1,6 @@
 spec/output/*
 *.xls
 pkg/
-webby/output/
+webby/output/*
+.cairn
+
