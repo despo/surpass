@@ -102,10 +102,11 @@ class Font
   attr_accessor :weight
   attr_accessor :escapement
   attr_accessor :underline
-  attr_accessor :family
   attr_accessor :charset
   attr_accessor :name
-  
+
+  attr_reader :family
+
   def initialize(hash = {})
     @height = hash[:height] || 0x00C8 # 200: this is font with height 10 points
     @italic = hash[:italic] || false
@@ -125,9 +126,15 @@ class Font
     @weight = hash[:weight] || 0x0190 # 0x02BC gives bold font
     @escapement = hash[:escapement] || ESCAPEMENT_NONE
     @underline = hash[:underline] || UNDERLINE_NONE
-    @family = hash[:family] || FAMILY_NONE
     @charset = hash[:charset] || CHARSET_SYS_DEFAULT
     @name = hash[:name] || 'Arial'
+
+    self.family = hash[:family] || FAMILY_NONE
+  end
+  
+  def family=(arg)
+    raise "Oops, font_family doesn't take a string. Do you want font_name instead?" if arg.is_a?(String)
+    @family = arg
   end
   
   def colour_index_from_name(colour_name)
