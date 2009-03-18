@@ -1,7 +1,5 @@
-# require 'rubygems'
-# require 'surpass'
-
-require '../lib/surpass'
+require 'rubygems'
+require 'surpass'
 
 book = Workbook.new("output/examples/demo.xls") # You can pass a filename here too.
 sheet = book.add_sheet("Demo Worksheet") # You can name your worksheets.
