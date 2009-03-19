@@ -1,0 +1,20 @@
+---
+title:  Surpass
+author: Ana Nelson
+layout:  web
+filter:
+  - erb
+  - idio
+  - textile
+---
+
+h1. <%= @page.title %>
+
+Homepage of the Surpass project, coming soon...
+
+Download the "manual":surpass-manual.pdf
+View "examples":examples
+
+<%= idio("examples/formatting.rb") %>
+
+<img src="examples/formatting.png" />

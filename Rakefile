@@ -29,9 +29,7 @@ PROJ.ignore_file = '.bzrignore'
 
 PROJ.spec.opts << '--color'
 
-PROJ.exclude = %w{.bzr webby .DS_Store}
+PROJ.exclude = %w{.bzr webby}
 
 
 PROJ.rdoc.format = 'darkfish'
-
-# EOF

@@ -15,10 +15,9 @@ Ruby 1.8.6 (C or JRuby)
 bones installation:
 sudo rake gem:install
 
-== BIFF File Format:
+== Documentation
 
-http://sc.openoffice.org/excelfileformat.pdf
-http://www.microsoft.com/interop/docs/OfficeBinaryFormats.mspx
+See manual.pdf
 
 == LICENSE:
 
