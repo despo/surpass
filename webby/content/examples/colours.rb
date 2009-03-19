@@ -6,7 +6,7 @@ sheet = book.add_sheet("Colours") # You can name your worksheets.
 
 per_row = 20
 
-Formatting::COLOURS.keys.each_with_index do |c, i|
+Formatting::COLORS.keys.each_with_index do |c, i|
   format = StyleFormat.new
   format.pattern.color = c
   row = i % per_row

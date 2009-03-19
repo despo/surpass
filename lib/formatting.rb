@@ -3,54 +3,54 @@ module Formatting
     'aqua' => 0x31,
     'black'   => 0x08,
     'blue'    => 0x0C,
-    'blue_grey' => 0x36,
-    'bright_green' => 0xb,
+    'blue-grey' => 0x36,
+    'bright-green' => 0xb,
     'brown' => 0x3c,
     'coral' => 0x1d,
-    'cornflower_blue' => 0x18,
+    'cornflower-blue' => 0x18,
     'cyan'    => 0x0F,
-    'dark_blue' => 0x12,
-    'dark_green' => 0x3a,
-    'dark_red' => 0x10,
-    'dark_teal' => 0x38,
-    'dark_yellow' => 0x13,
+    'dark-blue' => 0x12,
+    'dark-green' => 0x3a,
+    'dark-red' => 0x10,
+    'dark-teal' => 0x38,
+    'dark-yellow' => 0x13,
     'fuchsia' => 0x0E,
     'gold' => 0x33,
     'gray'    => 0x17,
     'grey'    => 0x17,
     'green' => 0x11,
-    'grey_25_percent' => 0x16,
-    'grey_40_percent' => 0x37,
-    'grey_50_percent' => 0x17,
-    'grey_80_percent' => 0x3f,
+    'grey-25-percent' => 0x16,
+    'grey-40-percent' => 0x37,
+    'grey-50-percent' => 0x17,
+    'grey-80-percent' => 0x3f,
     'indigo' => 0x3e,
     'lavender' => 0x2e,
-    'lemon_chiffon' => 0x1a,
-    'light_blue' => 0x30,
-    'light_cornflower_blue' => 0x1f,
-    'light_green' => 0x2a,
-    'light_orange' => 0x34,
-    'light_turquoise' => 0x29,
-    'light_yellow' => 0x2b,
+    'lemon-chiffon' => 0x1a,
+    'light-blue' => 0x30,
+    'light-cornflower-blue' => 0x1f,
+    'light-green' => 0x2a,
+    'light-orange' => 0x34,
+    'light-turquoise' => 0x29,
+    'light-yellow' => 0x2b,
     'lime'    => 0x0B,
     'lime' => 0x32,
     'magenta' => 0x0E,
     'maroon' => 0x19,
     'navy'    => 0x12,
-    'olive_green' => 0x3b,
+    'olive-green' => 0x3b,
     'orange' => 0x35,
     'orchid' => 0x1c,
-    'pale_blue' => 0x2c,
+    'pale-blue' => 0x2c,
     'pink'    => 0x21,
     'pink' => 0xe,
     'plum' => 0x3d,
     'purple'  => 0x14,
     'red'     => 0x0A,
     'rose' => 0x2d,
-    'royal_blue' => 0x1e,
-    'sea_green' => 0x39,
+    'royal-blue' => 0x1e,
+    'sea-green' => 0x39,
     'silver'  => 0x16,
-    'sky_blue' => 0x28,
+    'sky-blue' => 0x28,
     'tan' => 0x2f,
     'teal' => 0x15,
     'turquoise' => 0xf,
@@ -58,6 +58,8 @@ module Formatting
     'white'   => 0x09,
     'yellow'  => 0x0D
   }
+  
+  COLORS = COLOURS
 end
 
 class Font
@@ -537,10 +539,8 @@ class Pattern
     @pattern = SOLID_PATTERN
     @pattern_fore_colour = colour_index
   end
-  
-  def color=(arg)
-    self.colour = arg
-  end
+  alias :color= :colour=
+  alias :fill= :colour=
 end
 
 class Protection

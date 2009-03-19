@@ -69,6 +69,7 @@ sheet.write(3, 1, "borders",
 # Or the hash-free option.
 crazy_border_format = StyleFormat.new
 crazy_border_format.borders.all = 'slanted-medium-dash-dotted grey'
+crazy_border_format.pattern.fill = 'light-cornflower-blue'
 
 sheet.write(5, 1, "borders", crazy_border_format)
 

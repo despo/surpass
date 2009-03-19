@@ -9,8 +9,34 @@ filter:
 ---
 <% require "../lib/surpass" -%>
 
+To compile this documentation requires \LaTeX, \href{http://pypi.python.org/pypi/idiopidae}{Idiopidae}, and my branch of \href{http://webby.rubyforge.org/}{webby}, which is available from a bzr repository at \href{http://ananelson.com/code/webby/}.
+
+This documentation refers to Surpass version <%= Surpass::VERSION %>.
+
 \chapter{Installation and Hello World} % (fold)
 \label{cha:installation_and_hello_world}
+
+\section{Dependencies} % (fold)
+\label{sec:dependencies}
+
+Surpass only needs basic Ruby. It has been tested using Ruby 1.8.6 and JRuby 1.1.5.
+
+For development, you will want to have access to something that can open Microsoft Excel files. This could be Microsoft Excel, Open Office, Google Docs or even a gmail account.
+
+% section dependencies (end)
+
+\section{Gem Installation}
+
+\begin{verbatim}
+sudo gem install surpass
+\end{verbatim}
+
+\section{Source Installation}
+
+\begin{verbatim}
+bzr branch http://ananelson.com/code/surpass
+sudo rake gem:install
+\end{verbatim}
 
 \section{Hello World}
 
