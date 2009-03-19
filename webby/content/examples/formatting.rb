@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'surpass'
 
-book = Workbook.new('output/examples/formatting.xls') # You can pass a filename here too.
+book = Workbook.new(__FILE__.gsub(/rb$/, "xls"))
 sheet = book.add_sheet("Demo Worksheet") # You can name your worksheets.
 
 # Let's set up some formatting.

@@ -1,5 +1,9 @@
 require "rubygems"
-require "rbosa"
+begin
+  require "rbosa"
+rescue
+  "You don't have RubyOSA. That's okay but won't be able to automatically activate Excel for screenshots."
+end
 
 def capture_xls(xls, png)
   `open #{xls}`
@@ -10,10 +14,14 @@ end
 
 # Excel should be already open, and it should be assigned to a 
 # Space with nothing else in it for nice, tidy screenshots.
-# Desktop background should be set to plain white.
+# Desktop background should be set to plain white, or use Backdrop.app.
 # Also you should have "When switching to an application, switch to a ..." box checked
-# app = OSA.app("Microsoft Excel")
-# app.activate
+begin
+  app = OSA.app("Microsoft Excel")
+  app.activate
+rescue
+  puts "OSA activation of Microsoft Excel didn't work, you'll have to activate it manually."
+end
 
 `mkdir -p output/examples`
 
@@ -21,8 +29,8 @@ end
 `ls content/examples/*.rb`.chomp.split("\n").each_with_index do |f, i|
   puts "processing #{f}..."
 
-  png = f.gsub('content/', 'output/').gsub(/rb$/, "png")
-  xls = f.gsub('content/', 'output/').gsub(/rb$/, "xls")
+  png = f.gsub(/rb$/, "png")
+  xls = f.gsub(/rb$/, "xls")
 
   `ruby #{f}`
   capture_xls(xls, png)
@@ -30,15 +38,21 @@ end
 
 # Take screenshots of all Python Examples.
 `ls content/examples/*.py`.chomp.split("\n").each_with_index do |f, i|
+  exit # Skip processing Python examples for the moment.
+  
   puts "processing #{f}..."
 
-  png = f.gsub('content/', 'output/').gsub(/\.py$/, "-python.png")
-  xls = f.gsub('content/', 'output/').gsub(/\.py$/, "-python.xls")
+  png = f.gsub(/\.py$/, "-python.png")
+  xls = f.gsub(/\.py$/, "-python.xls")
 
   `python #{f}`
   capture_xls(xls, png)
 end
 
 # Return to iTerm
-# app = OSA.app("iTerm")
-# app.activate
+begin
+  app = OSA.app("iTerm")
+  app.activate
+rescue
+end
+

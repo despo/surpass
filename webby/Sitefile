@@ -4,4 +4,9 @@ end
 
 task :default => :pdf
 
-task :all => [:clobber, :screenshots, :pdf]
+desc "Move generated manual to surpass root directory."
+task :copy do
+  `cp output/manual.pdf ..`
+end
+
+task :all => [:clobber, :screenshots, :pdf, :copy]

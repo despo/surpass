@@ -9,6 +9,8 @@ filter:    erb
 \usepackage[ascii]{inputenc}
 \usepackage{hyperref}
 \usepackage[pdftex]{graphicx}
+\usepackage{wrapfig}
+\usepackage{multicol}
 
 <%= pygments_latex_styles %>
 

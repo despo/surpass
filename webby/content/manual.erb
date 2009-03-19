@@ -1,13 +1,16 @@
 ---
-title:      Surpass and XLWT Manual
+title:      Surpass Manual
 author:     Ana Nelson
 created_at: 2009-01-30 13:08:32.468894 +00:00
-layout: default
+layout: book
 filter:
   - erb
   - idio
 ---
 <% require "../lib/surpass" -%>
+
+\chapter{Installation and Hello World} % (fold)
+\label{cha:installation_and_hello_world}
 
 \section{Hello World}
 
@@ -17,14 +20,34 @@ Let's do a minimal "Hello World" script. We'll need to take care of any imports,
 
 <%= lidio("examples/hello-world.rb")%>
 
-\subsection{XLWT}
-<%= lidio("examples/hello-world.py")%>
-
 \subsection{Result}
 
 And, here's how it looks.
 
 \includegraphics[width=15cm]{examples/hello-world.png}
+
+% chapter installation_and_hello_world (end)
+
+\chapter{Writing Data} % (fold)
+\label{cha:writing_data}
+
+% chapter writing_data (end)
+
+
+\chapter{Formatting} % (fold)
+\label{cha:formatting}
+
+\section{Reference}
+
+There are some rake tasks included with Surpass which provide some useful reference data.
+
+<%= lidio("examples/rake-tasks.sh") %>
+<%= latex_verbatim IO.popen("cd ..; bash webby/content/examples/rake-tasks.sh").read %>
+
+And since you are running these on a command line, you can save them or pipe them to other commands, as usual.
+
+<%= lidio("examples/show-light-colors.sh") %>
+<%= latex_verbatim IO.popen("cd ..; bash webby/content/examples/show-light-colors.sh").read %>
 
 \section{Formatting}
 
@@ -45,19 +68,21 @@ There are two basic ways to set formatting options. You can pass a hash with for
 
 \subsection{Specifying Colours}
 
-Here is a list of available built-in colours:
+Here is a list of available colours:
 
-<%= Formatting::COLOURS.keys.sort.to_itemize %>
+\begin{multicols}{3}
+<%= latex_verbatim(Formatting::COLOURS.keys.sort.join("\n")) %>
+\end{multicols}
+
+\includegraphics[width=16cm]{examples/colours.png}
 
 You can refer to any of these colours by name.
-
-At this time, there is no support for custom colours.
 
 \subsection{Border Formats}
 
 Here is a list of available border line types:
+<%= latex_verbatim(Borders.line_type_directives.join("\n")) %>
 
-<%= Borders.line_type_directives.to_itemize %>
 
 \subsection{Surpass}
 <%= lidio("examples/formatting.rb")%>
@@ -65,3 +90,5 @@ Here is a list of available border line types:
 And, here's how it looks.
 
 \includegraphics[width=16cm]{examples/formatting.png}
+
+% chapter formatting (end)
