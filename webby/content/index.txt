@@ -7,12 +7,12 @@ filter:
   - idio
   - textile
 ---
-
+<% require "surpass" %>
 h1. <%= @page.title %>
 
 Homepage of the Surpass project, coming soon...
 
-Download the "manual":surpass-manual.pdf
+Download the "manual":surpass-manual-<%= Surpass::VERSION.gsub(".", "-") %>.pdf
 View "examples":examples
 
 <%= idio("examples/formatting.rb") %>
