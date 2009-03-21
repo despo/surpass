@@ -8,7 +8,7 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: surpass-info [options]"
 
-  opts.on("-c", "--colors", "list available colors") do |v|
+  opts.on("-c", "--colors", "List available colors") do |v|
     puts Formatting::COLOURS.keys.sort
   end
   
