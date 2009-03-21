@@ -13,9 +13,8 @@ Gem::Specification.new do |s|
   s.executables = ["surpass-info"]
   s.extra_rdoc_files = ["History.txt", "LICENSE.txt", "README.txt", "bin/surpass-info"]
   s.files = ["History.txt", "LICENSE.txt", "README.txt", "Rakefile", "bin/surpass-info", "lib/biff_record.rb", "lib/bitmap.rb", "lib/cell.rb", "lib/chart.rb", "lib/column.rb", "lib/document.rb", "lib/excel_formula.rb", "lib/excel_magic.rb", "lib/formatting.rb", "lib/row.rb", "lib/style.rb", "lib/surpass.rb", "lib/utilities.rb", "lib/workbook.rb", "lib/worksheet.rb"]
-  s.has_rdoc = true
+  s.has_rdoc = false
   s.homepage = %q{https://surpass.rubyforge.org}
-  s.rdoc_options = ["--main", "README.txt"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{surpass}
   s.rubygems_version = %q{1.3.1}

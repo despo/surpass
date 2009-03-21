@@ -31,8 +31,6 @@ PROJ.spec.opts << '--color'
 
 PROJ.exclude = %w{.bzr webby surpass-manual-* examples spec tasks stats .DS_Store}
 
-PROJ.rdoc.format = 'darkfish'
-
 desc "Run all examples (except the big ones) in examples dir."
 task :examples do
   `ls examples/*.rb`.chomp.split("\n").each_with_index do |f, i|
