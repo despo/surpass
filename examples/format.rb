@@ -8,7 +8,7 @@ ws0 = book.add_sheet('0')
 
 ws0.write(1, 1, 'Test', style0)
 
-(0...0x53).each do |i|
+(0...14).each do |i|
   style = StyleFormat.new(:font_name => 'Arial', :font_color_index => i, :font_outline => true)
 
   borders = Borders.new

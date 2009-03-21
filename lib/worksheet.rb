@@ -270,25 +270,25 @@ class Worksheet
   end
 
   # Write the text stored in label in a single cell at (r,c) according to style.
-  def write(r, c, label = "", style = @parent.styles.default_style)
+  def write(r, c, label = "", style = nil)
     row(r).write(c, label, style)
   end
   
-  def write_array_to_row(array, r, c = 0, style = @parent.styles.default_style)
+  def write_array_to_row(array, r, c = 0, style = true)
     array.each_with_index do |a, i|
       row(r).write(c + i, a, style)
     end
   end
   alias :rarray :write_array_to_row
 
-  def write_array_to_column(array, c, r = 0, style = @parent.styles.default_style)
+  def write_array_to_column(array, c, r = 0, style = true)
     array.each_with_index do |a, i|
       row(r + i).write(c, a, style)
     end
   end
   alias :carray :write_array_to_column
   
-  def write_arrays(array_of_arrays, r = 0, c = 0, style = @parent.styles.default_style)
+  def write_arrays(r, c, array_of_arrays, style = true)
     array_of_arrays.each_with_index do |a, i|
       raise "not an array of arrays!" unless a.is_a?(Array)
       write_array_to_row(a, r + i, c, style)

@@ -35,6 +35,7 @@ sudo gem install surpass
 
 \begin{verbatim}
 bzr branch http://ananelson.com/code/surpass
+cd surpass
 sudo rake gem:install
 \end{verbatim}
 
@@ -56,6 +57,26 @@ And, here's how it looks.
 
 \chapter{Writing Data} % (fold)
 \label{cha:writing_data}
+
+
+\section{Autoformatting} % (fold)
+\label{sec:autoformatting}
+
+Autoformats are number formats which are automatically applied to Dates, Floats and similar classes. To have autoformats applied, then pass true as the style parameter to the write function.
+
+Here is the relevant code from row.rb:
+<%= lidio("../../lib/row.rb", "autoformats") %>
+
+And here are the default formats being defined in style.rb:
+<%= lidio("../../lib/style.rb", "autoformats") %>
+
+If you use any of the array-writing methods, then autoformatting will be applied by default. To override this behaviour you can pass your own StyleFormat or nil to use the generic default format.
+
+<%= lidio("examples/autoformat.rb") %>
+
+\includegraphics[width=15cm]{examples/autoformat.png}
+
+% section autoformatting (end)
 
 % chapter writing_data (end)
 
@@ -118,3 +139,16 @@ And, here's how it looks.
 \includegraphics[width=16cm]{examples/formatting.png}
 
 % chapter formatting (end)
+
+\chapter{Saving} % (fold)
+\label{cha:saving}
+
+Typically, you will call the workbook's save() method to write that workbook to a file. You can pass the filename as an argument to save(), or as an argument to new() when you first instantiate a workbook object.
+
+However, you can also call a workbook's data() method, which gives you direct access to a workbook's binary data. You can write this to a file manually, as in this example:
+
+<%= lidio("examples/data.rb") %>
+
+Or, you could use this data as an argument to Rails' send\_data method.
+
+% chapter saving (end)

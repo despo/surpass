@@ -65,6 +65,7 @@ class Row
     end
   end
   
+  # TODO can we get rid of this? Tests pass if it is commented out.
   def style=(style)
     adjust_height(style)
     @xf_index = @parent_wb.styles.add(style)
@@ -102,7 +103,30 @@ class Row
   end
   
   def write(col, label, style)
-    style = StyleFormat.new(style) if style.is_a?(Hash)
+    case style
+    when StyleFormat
+      # leave it alone
+    when Hash
+      style = StyleFormat.new(style)
+### @export "autoformats"
+    when TrueClass # Automatically apply a nice numeric format.
+      case label
+      when DateTime, Time
+        style = @parent_wb.styles.default_datetime_style
+      when Date
+        style = @parent_wb.styles.default_date_style
+      when Float
+        style = @parent_wb.styles.default_float_style
+      else
+        style = @parent_wb.styles.default_style
+      end
+### @end
+    when NilClass
+      style = @parent_wb.styles.default_style
+    else
+      raise "I don't know how to use this to format a cell #{style.inspect}"
+    end
+
     style_index = @parent_wb.styles.add(style)
     
     adjust_height(style)

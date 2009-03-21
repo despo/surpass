@@ -15,7 +15,7 @@ ws0 = book.add_sheet('0')
 
 ws0.write(1, 1, 'Test', style0)
 
-0.upto(0x53) do |i|
+0.upto(13) do |i|
     borders = Borders.new
     borders.left = i
     borders.right = i

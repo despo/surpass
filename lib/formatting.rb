@@ -218,6 +218,7 @@ class Font
     end
   end
   alias :color= :colour=
+  alias :color_index= :colour_index=
   
   def to_biff
     options = PLAIN
@@ -405,6 +406,10 @@ class Borders
     LINE_TYPE_DIRECTIVES.collect {|k, v| k}
   end
   
+  def self.line_type_constants
+    LINE_TYPE_DIRECTIVES.collect {|k, v| v}
+  end
+  
   def initialize(hash = {})
     @left   = NO_LINE
     @right  = NO_LINE
@@ -441,6 +446,7 @@ class Borders
     end
     
     raise "no directives given to process_directives" if args.empty? # maybe don't need this, just get thin black border? but for development I want to know if this happens.
+    raise "too many directives given to process_directives" if args.size > 2
     
     instructions = [THIN, Formatting::COLOURS['black']]
     args.each do |a|
@@ -452,6 +458,11 @@ class Borders
       if Borders.line_type_directives.include?(a)
         line_type_directives_hash = Hash[*LINE_TYPE_DIRECTIVES.flatten]
         instructions[0] = line_type_directives_hash[a]
+        next
+      end
+      
+      if Borders.line_type_constants.include?(a)
+        instructions[0] = a
         next
       end
 

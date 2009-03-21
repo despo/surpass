@@ -195,7 +195,7 @@ class Workbook
   
   def data
     doc = ExcelDocument.new
-    doc.data(to_biff)
+    doc.data(to_biff).read
   end
   
   def save(filename = nil)

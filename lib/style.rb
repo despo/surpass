@@ -97,6 +97,20 @@ class StyleCollection
     @default_format = add_style(@default_style)[0]
   end
   
+### @export "autoformats"
+  def default_date_style
+    @default_date_style ||= StyleFormat.new(:number_format_string => 'dd-mmm-yyyy')
+  end
+
+  def default_datetime_style
+    @default_datetime_style ||= StyleFormat.new(:number_format_string => 'dd-mmm-yyyy hh:mm:ss')
+  end
+
+  def default_float_style
+    @default_float_style ||= StyleFormat.new(:number_format_string => '#,##0.00')
+  end
+### @end
+
   def add(style)
     if style.nil?
       0x10 # Return the index of the default style.

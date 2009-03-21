@@ -33,3 +33,12 @@ PROJ.exclude = %w{.bzr webby}
 
 
 PROJ.rdoc.format = 'darkfish'
+
+desc "Run all examples (except the big ones) in examples dir."
+task :examples do
+  `ls examples/*.rb`.chomp.split("\n").each_with_index do |f, i|
+    next if f =~ /big/
+    puts "processing #{f}..."
+    `ruby #{f}`
+  end
+end
