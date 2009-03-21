@@ -29,8 +29,7 @@ PROJ.ignore_file = '.bzrignore'
 
 PROJ.spec.opts << '--color'
 
-PROJ.exclude = %w{.bzr webby}
-
+PROJ.exclude = %w{.bzr webby surpass-manual-* examples spec tasks stats}
 
 PROJ.rdoc.format = 'darkfish'
 
