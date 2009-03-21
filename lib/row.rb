@@ -148,7 +148,7 @@ class Row
     when ExcelFormula
       @cells << FormulaCell.new(self, col, style_index, label)
     else
-      raise label.class.name
+      raise "You are trying to write an object of class #{label.class.name} to a spreadsheet. Please convert this to a supported class such as String."
     end
   end
   
