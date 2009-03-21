@@ -10,9 +10,9 @@ filter:
 <% require "surpass" %>
 h1. <%= @page.title %>
 
-Homepage of the Surpass project, coming soon.
+Homepage of the Surpass project. Surpass is software for creating Excel spreadsheets in pure native Ruby. Surpass is currently on version <%= Surpass::VERSION %> and is not yet ready for production use, however there are plenty of working examples for those who can't wait for a more stable 0.1.0 release.
 
-If you want to see what's going on, you can check out the source:
+Surpass can be installed via Rubygems (gem install surpass), but it is recommended instead to check out the source as this contains documentation and examples:
 
 @bzr branch http://ananelson.com/code/surpass@
 
