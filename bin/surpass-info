@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require "rubygems"
+require "surpass"
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: surpass-info [options]"
+
+  opts.on("-c", "--colors", "list available colors") do |v|
+    puts Formatting::COLOURS.keys.sort
+  end
+  
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+  
+end.parse!

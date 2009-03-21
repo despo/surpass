@@ -86,12 +86,12 @@ If you use any of the array-writing methods, then autoformatting will be applied
 
 \section{Reference}
 
-There are some rake tasks included with Surpass which provide some useful reference data.
+There is a command line tool included with Surpass which provides some useful reference data:
 
 <%= lidio("examples/rake-tasks.sh") %>
 <%= latex_verbatim IO.popen("cd ..; bash webby/content/examples/rake-tasks.sh").read %>
 
-And since you are running these on a command line, you can save them or pipe them to other commands, as usual.
+And since you are running this on the command line, you can save or pipe the output to other commands:
 
 <%= lidio("examples/show-light-colors.sh") %>
 <%= latex_verbatim IO.popen("cd ..; bash webby/content/examples/show-light-colors.sh").read %>

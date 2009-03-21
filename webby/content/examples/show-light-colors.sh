@@ -1,1 +1,1 @@
-rake excel:colors | grep green
+surpass-info -c | grep green

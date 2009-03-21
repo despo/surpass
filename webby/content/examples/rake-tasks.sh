@@ -1,1 +1,1 @@
-rake -T | grep excel
+surpass-info -h
