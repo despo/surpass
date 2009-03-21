@@ -8,7 +8,7 @@ namespace :metrics do
 
   desc "Run CLOC metrics and store in stats/cloc.txt"
   task :cloc do
-    puts `cloc --no3 --read-lang-def=/Users/ana/ana/cloc_definitions.txt --report-file=stats/cloc.txt lib/`
+    puts `cloc --no3 --report-file=stats/cloc.txt lib/`
   end
 
   desc "Run RCOV metrics and store in stats/rcov.txt"

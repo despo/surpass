@@ -17,7 +17,7 @@ sudo rake gem:install
 
 == Documentation
 
-See manual.pdf
+See surpass-manual.pdf
 
 == LICENSE:
 

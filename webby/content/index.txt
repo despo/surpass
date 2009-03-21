@@ -10,7 +10,13 @@ filter:
 <% require "surpass" %>
 h1. <%= @page.title %>
 
-Homepage of the Surpass project, coming soon...
+Homepage of the Surpass project, coming soon.
+
+If you want to see what's going on, you can check out the source:
+
+@bzr branch http://ananelson.com/code/surpass@
+
+You'll need "bazaar":http://bazaar-vcs.org, of course.
 
 Download the "manual":surpass-manual-<%= Surpass::VERSION.gsub(".", "-") %>.pdf
 View "examples":examples

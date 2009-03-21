@@ -3,4 +3,4 @@ Documentation for Surpass, written in Webby.
 To build this, you will need this branch of Webby:
 bzr branch http://ananelson.com/code/webby
 
-You will also need Excel running on OSX for screenshots. You can modify tasks/screenshots.rb to fix this OSX dependency.
+Run "rake pdf" to create the web site and to compile the user manual using LaTeX.

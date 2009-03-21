@@ -21,7 +21,7 @@ task :default => 'spec:run'
 PROJ.name = 'surpass'
 PROJ.authors = 'Ana Nelson'
 PROJ.email = 'ana@ananelson.com'
-PROJ.url = 'https://launchpad.net/surpass'
+PROJ.url = 'https://surpass.rubyforge.org'
 PROJ.version = Surpass::VERSION
 PROJ.rubyforge.name = 'surpass'
 

@@ -1,3 +1,0 @@
-* systematically validate all range inputs (i.e. column and row indexes)
-* formula support (needs full Ruby ANTLR support)
-* optimize file size
