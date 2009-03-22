@@ -12,8 +12,6 @@ task :copy do
   `cp output/#{surpass_manual_filename} ..`
 end
 
-task :all => [:clobber, :pdf, :copy]
-
 namespace :rubyforge do
   task :rsync do
     system "rsync -v -r --delete --exclude-from=rsync-exclude output/ ananelson@rubyforge.org:/var/www/gforge-projects/surpass/"
