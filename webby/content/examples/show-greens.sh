@@ -1,1 +1,1 @@
-surpass-info -c | grep green
+surpass -c | grep green

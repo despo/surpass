@@ -1,1 +1,1 @@
-surpass-info -h
+surpass -h

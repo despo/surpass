@@ -111,7 +111,7 @@ class Font
   attr_accessor :shadow
   attr_accessor :colour_index
   attr_accessor :bold
-  attr_accessor :weight # In practice, seems to be only 400 = normal, 700 = bold so just use bold = true.
+  attr_accessor :weight # Looks like only 400 = normal, 700 = bold are supported so just use bold = true.
   attr_accessor :escapement
   attr_accessor :charset
   attr_accessor :name
@@ -406,6 +406,10 @@ class Borders
     LINE_TYPE_DIRECTIVES.collect {|k, v| v}
   end
   
+  def self.line_type_directives_hash
+    Hash[*LINE_TYPE_DIRECTIVES.flatten]
+  end
+  
   def initialize(hash = {})
     @left   = NO_LINE
     @right  = NO_LINE
@@ -452,8 +456,7 @@ class Borders
       end
       
       if Borders.line_type_directives.include?(a)
-        line_type_directives_hash = Hash[*LINE_TYPE_DIRECTIVES.flatten]
-        instructions[0] = line_type_directives_hash[a]
+        instructions[0] = Borders.line_type_directives_hash[a]
         next
       end
       
@@ -484,50 +487,64 @@ class Borders
     @bottom, @bottom_colour = process_directives(directives)
   end
 end
-# public final static short     NO_FILL             = 0  ;
-# /**  Solidly filled */
-# public final static short     SOLID_FOREGROUND    = 1  ;
-# /**  Small fine dots */
-# public final static short     FINE_DOTS           = 2  ;
-# /**  Wide dots */
-# public final static short     ALT_BARS            = 3  ;
-# /**  Sparse dots */
-# public final static short     SPARSE_DOTS         = 4  ;
-# /**  Thick horizontal bands */
-# public final static short     THICK_HORZ_BANDS    = 5  ;
-# /**  Thick vertical bands */
-# public final static short     THICK_VERT_BANDS    = 6  ;
-# /**  Thick backward facing diagonals */
-# public final static short     THICK_BACKWARD_DIAG = 7  ;
-# /**  Thick forward facing diagonals */
-# public final static short     THICK_FORWARD_DIAG  = 8  ;
-# /**  Large spots */
-# public final static short     BIG_SPOTS           = 9  ;
-# /**  Brick-like layout */
-# public final static short     BRICKS              = 10 ;
-# /**  Thin horizontal bands */
-# public final static short     THIN_HORZ_BANDS     = 11 ;
-# /**  Thin vertical bands */
-# public final static short     THIN_VERT_BANDS     = 12 ;
-# /**  Thin backward diagonal */
-# public final static short     THIN_BACKWARD_DIAG  = 13 ;
-# /**  Thin forward diagonal */
-# public final static short     THIN_FORWARD_DIAG   = 14 ;
-# /**  Squares */
-# public final static short     SQUARES             = 15 ;
-# /**  Diamonds */
-# public final static short     DIAMONDS            = 16 ;
-# /**  Less Dots */
-# public final static short     LESS_DOTS           = 17 ;
-# /**  Least Dots */
-# public final static short     LEAST_DOTS          = 18 ;
+
+
 class Pattern
   NO_PATTERN      = 0x00 
-  SOLID_PATTERN   = 0x01
+  SOLID_FOREGROUND   = 0x01
+  SOLID_PATTERN = SOLID_FOREGROUND # for backwards compatibility
+  FINE_DOTS = 0x02
+  ALT_BARS = 0x03
+  SPARSE_DOTS = 0x04
+  THICK_HORZ_BANDS = 0x05
+  THICK_VERT_BANDS = 0x06
+  THICK_BACKWARD_DIAG = 0x07
+  THICK_FORWARD_DIAG = 0x08
+  BIG_SPOTS = 0x09
+  BRICKS = 0x0A
+  THIN_HORZ_BANDS = 0x0B
+  THIN_VERT_BANDS = 0x0C
+  THIN_BACKWARD_DIAG = 0x0D
+  THIN_FORWARD_DIAG = 0x0E
+  SQUARES = 0x0F
+  DIAMONDS = 0x10
+  LESS_DOTS = 0x11
+  LEAST_DOTS = 0x12
   
-  attr_accessor :pattern
-  attr_accessor :pattern_fore_colour
-  attr_accessor :pattern_back_colour
+  # Want to keep these sorted in this order, so need nested array instead of hash.
+  PATTERN_DIRECTIVES = [
+    ['none', NO_PATTERN],
+    ['solid', SOLID_FOREGROUND],
+    ['fine-dots', FINE_DOTS],
+    ['alt-bars', ALT_BARS],
+    ['sparse-dots', SPARSE_DOTS],
+    ['thick-horz-bands', THICK_HORZ_BANDS],
+    ['thick-vert-bands', THICK_VERT_BANDS],
+    ['thick-backward-diag', THICK_BACKWARD_DIAG],
+    ['thick-forward-diag', THICK_FORWARD_DIAG],
+    ['big-spots', BIG_SPOTS],
+    ['bricks', BRICKS],
+    ['thin-horz-bands', THIN_HORZ_BANDS],
+    ['thin-vert-bands', THIN_VERT_BANDS],
+    ['thin-backward-diag', THIN_BACKWARD_DIAG],
+    ['thin-forward-diag', THIN_FORWARD_DIAG],
+    ['squares', SQUARES],
+    ['diamonds', DIAMONDS],
+    ['less-dots', LESS_DOTS],
+    ['least-dots', LEAST_DOTS]
+  ]
+  
+  attr_reader :pattern
+  attr_reader :pattern_fore_colour
+  attr_reader :pattern_back_colour
+  
+  def self.fill_directives
+    PATTERN_DIRECTIVES.collect {|a| a[0]}
+  end
+  
+  def self.directives_hash
+    Hash[*PATTERN_DIRECTIVES.flatten]
+  end
   
   def initialize(hash = {})
     @pattern = NO_PATTERN
@@ -539,12 +556,39 @@ class Pattern
     end
   end
   
-  # Convenience method to set fill colour
+  def pattern=(arg)
+    case arg
+    when String
+      pattern_index = Pattern.directives_hash[arg]
+    when Integer
+      pattern_index = arg
+    else
+      raise "I don't know how to interpret #{arg.inspect} as a pattern!"
+    end
+    raise "invalid pattern #{arg}" if pattern_index.nil?
+    
+    @pattern = pattern_index
+  end
+  
+  def fore_colour=(arg)
+   colour_index = Formatting::COLOURS[arg]
+   raise "Invalid colour #{arg}" if colour_index.nil?
+   @pattern_fore_colour = colour_index
+  end
+  alias :pattern_fore_color= :fore_colour=
+
+  def back_colour=(arg)
+   colour_index = Formatting::COLOURS[arg]
+   raise "Invalid colour #{arg}" if colour_index.nil?
+   @pattern_back_colour = colour_index
+  end
+  alias :pattern_back_color= :back_colour=
+  
+  # Sets the foreground colour, also if no pattern has been specified
+  # will assume you want a solid colour fill.
   def colour=(arg)
-    colour_index = Formatting::COLOURS[arg]
-    raise "Invalid colour #{arg}" if colour_index.nil?
-    @pattern = SOLID_PATTERN
-    @pattern_fore_colour = colour_index
+    self.fore_colour = arg
+    @pattern = SOLID_PATTERN if @pattern == NO_PATTERN
   end
   alias :color= :colour=
   alias :fill= :colour=

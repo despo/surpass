@@ -147,7 +147,13 @@ Here is a list of available colours:
 
 Here is a list of available border line types:
 <%= latex_verbatim(Borders.line_type_directives.join("\n")) %>
+\includegraphics[width=16cm]{examples/borders.png}
 
+\subsection{Fill Patterns}
+
+Here is a list of available fill patterns:
+<%= latex_verbatim(Pattern.fill_directives.join("\n")) %>
+\includegraphics[width=16cm]{examples/patterns.png}
 
 \subsection{Surpass}
 <%= lidio("examples/formatting.rb")%>
