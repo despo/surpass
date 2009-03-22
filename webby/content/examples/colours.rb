@@ -4,7 +4,7 @@ require 'surpass'
 book = Workbook.new(__FILE__.gsub(/rb$/, "xls"))
 sheet = book.add_sheet("Colours") # You can name your worksheets.
 
-per_row = 20
+per_row = 18
 
 Formatting::COLORS.keys.sort.each_with_index do |c, i|
   format = StyleFormat.new

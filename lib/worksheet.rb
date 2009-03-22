@@ -269,24 +269,24 @@ class Worksheet
     end
   end
 
-  # Write the text stored in label in a single cell at (r,c) according to style.
+# TODO get rid of meaningless default value for label, should be required?
+### @export "write-method"
   def write(r, c, label = "", style = nil)
     row(r).write(c, label, style)
   end
-  
+
+### @export "write-arrays"
   def write_array_to_row(array, r, c = 0, style = true)
     array.each_with_index do |a, i|
       row(r).write(c + i, a, style)
     end
   end
-  alias :rarray :write_array_to_row
 
   def write_array_to_column(array, c, r = 0, style = true)
     array.each_with_index do |a, i|
       row(r + i).write(c, a, style)
     end
   end
-  alias :carray :write_array_to_column
   
   def write_arrays(r, c, array_of_arrays, style = true)
     array_of_arrays.each_with_index do |a, i|
@@ -294,6 +294,7 @@ class Worksheet
       write_array_to_row(a, r + i, c, style)
     end
   end
+### @end
   
   # Comment from xlwt:
   ## Stand-alone merge of previously written cells.
