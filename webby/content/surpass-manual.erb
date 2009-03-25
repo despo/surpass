@@ -116,7 +116,7 @@ And since you are running this on the command line, you can save or pipe the out
 <%= lidio("examples/show-greens.sh") %>
 <%= latex_verbatim IO.popen("cd ..; bash webby/content/examples/show-greens.sh").read %>
 
-\section{Formatting}
+\section{StyleFormat Class}
 
 The StyleFormat class is a wrapper for the various types of formatting you can apply to a cell. StyleFormat has attributes:
 
@@ -129,9 +129,22 @@ The StyleFormat class is a wrapper for the various types of formatting you can a
   \item protection
 \end{itemize}
 
-Each of these attributes has a corresponding class, and you can look in lib/formatting.rb for the source.
+Each of these attributes (except for number\_format\_string) has a corresponding class, and you can look in lib/formatting.rb for the source.
 
-There are two basic ways to set formatting options. You can pass a hash with formatting options when you initialize a new StyleFormat instance, or you can set individual attributes of the formatting classes. You can combine both approaches. Both of these are demonstrated in the examples in this section.
+There are two basic ways to set formatting options. You can pass a hash with formatting options when you initialize a new StyleFormat instance, or you can set individual attributes of the formatting classes. You can also combine both approaches, initializing with a hash and then modifying attributes.
+
+\section{Number Format Strings} % (fold)
+\label{sec:number_format_strings}
+
+This attribute is a simple string, specifying the numeric/date format to be applied to the value stored in a cell.
+
+\newpage
+
+<%= lidio("examples/number-format-string.rb") %>
+\includegraphics[width=16cm]{examples/number-format-string.png}
+
+% section number_format_strings (end)
+
 
 \subsection{Specifying Colours}
 

@@ -575,14 +575,14 @@ class Pattern
    raise "Invalid colour #{arg}" if colour_index.nil?
    @pattern_fore_colour = colour_index
   end
-  alias :pattern_fore_color= :fore_colour=
+  alias :fore_color= :fore_colour=
 
   def back_colour=(arg)
    colour_index = Formatting::COLOURS[arg]
    raise "Invalid colour #{arg}" if colour_index.nil?
    @pattern_back_colour = colour_index
   end
-  alias :pattern_back_color= :back_colour=
+  alias :back_color= :back_colour=
   
   # Sets the foreground colour, also if no pattern has been specified
   # will assume you want a solid colour fill.
