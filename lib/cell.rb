@@ -119,51 +119,19 @@ class MulBlankCell < Cell
 end
 
 class FormulaCell < Cell
-  attr_accessor :result
-  
   def initialize(parent, index, format_index, formula, calc_flags = 0)
-    @str = nil
     @parent = parent
     @index = index
     @format_index = format_index
-    @options = formula.options.nil? ? parent.formula_options : formula.options
     @formula = formula
-    @result = convert_formula_value_to_result(formula.default)
     @calc_flags = calc_flags
   end
   
   def to_biff
-    args = [@parent.index, @index, @format_index, @result, @options, @formula.rpn, @calc_flags]
-    formula_data = FormulaRecord.new(*args).to_biff
-    formula_data += StringRecord.new(@str).to_biff if @str
-    formula_data
-  end
-  
-  # TODO move this elsewhere, either Utilities or Formula ?
-  def convert_formula_value_to_result(value)
-    @str = ''
-    if value.is_a?(Numeric)
-      ret = [value].pack('E')
-    else
-      case value
-      when TrueClass, FalseClass
-        ret = [0x01, value ? 0x01 : 0x00].pack('CxC3x') 
-      when ErrorCode
-        ret = [0x02, value.to_i].pack('CxC3x') 
-      when String
-        ret = [0x00, 'Cx5']
-        @str = value # TODO convert to unicode
-      when NilClass
-        ret = [0x03, 'Cx5']
-      else
-        raise
-      end
-      ret += [0xFFFF].pack('C')
-    end
-    ret.unpack('Q')[0]
+    args = [@parent.index, @index, @format_index, @formula.to_biff, @calc_flags]
+    FormulaRecord.new(*args).to_biff
   end
 end
-
 
 class BooleanCell < Cell
   def initialize(parent, index, format_index, number)

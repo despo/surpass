@@ -38,7 +38,7 @@ class Worksheet
   
   attr_accessor :delta
   attr_accessor :save_recalc
-  
+  attr_accessor :formula_options
   attr_accessor :print_headers
   attr_accessor :print_grid
   attr_accessor :grid_set
