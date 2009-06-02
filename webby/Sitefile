@@ -15,3 +15,21 @@ end
 task :rsync => [:pdf, :copy] do
   system "rsync -v -r --delete --exclude-from=rsync-exclude output/ ananelson@rubyforge.org:/var/www/gforge-projects/surpass/"
 end
+
+task :generate_source do
+  `rm -r content/source`
+  `mkdir content/source`
+  `ls ../lib/*.rb`.chomp.split.each do |n|
+    File.open("content/source/#{File.basename(n, '.rb')}.txt", "w") do |f|
+      f.write %{---
+title:  #{File.basename(n)}
+layout:  web
+filter:
+  - erb
+  - idio
+---
+<%= idio("/Users/ana/work/surpass/lib/#{File.basename(n)}") %>
+}
+    end
+  end
+end
