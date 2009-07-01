@@ -115,6 +115,7 @@ class StyleCollection
     if style.nil?
       0x10 # Return the index of the default style.
     else
+      # TODO find way to freeze style so if someone modifies a StyleFormat instance it won't affect previously formatted cells.
       add_style(style)[1] # Return the index of the style just stored.
     end
   end

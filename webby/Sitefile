@@ -26,10 +26,13 @@ title:  #{File.basename(n)}
 layout:  web
 filter:
   - erb
-  - idio
 ---
-<%= idio("/Users/ana/work/surpass/lib/#{File.basename(n)}") %>
+<%= gorg("/Users/ana/work/surpass/lib/#{File.basename(n)}") %>
 }
     end
   end
 end
+
+
+require "gorgyrella"
+require "surpass"

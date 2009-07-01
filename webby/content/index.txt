@@ -4,10 +4,8 @@ author: Ana Nelson
 layout:  web
 filter:
   - erb
-  - idio
   - textile
 ---
-<% require "surpass" %>
 h1. <%= @page.title %>
 
 Homepage of the Surpass project. Surpass is software for creating Excel spreadsheets in pure native Ruby. Surpass is currently on version <%= Surpass::VERSION %> and is not yet ready for production use, however there are plenty of working examples for those who can't wait for a more stable 0.1.0 release.
@@ -21,6 +19,6 @@ You'll need "bazaar":http://bazaar-vcs.org, of course.
 Download the "manual":surpass-manual-<%= Surpass::VERSION.gsub(".", "-") %>.pdf
 View "examples":examples
 
-<%= idio("examples/formatting.rb") %>
+<%= gorg("content/examples/formatting.rb", "1", "latex") %>
 
 <img src="examples/formatting.png" />
