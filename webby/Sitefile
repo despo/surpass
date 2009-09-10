@@ -1,18 +1,13 @@
+require "gorgyrella"
+require "surpass"
+
 task :screenshots do
   require "tasks/screenshots"
 end
 
 task :default => :pdf
 
-desc "Rename generated file with Surpass version number."
-task :copy do
-  require "surpass"
-  surpass_manual_filename = "surpass-manual-#{Surpass::VERSION.gsub(".", "-")}.pdf"
-  `mv output/surpass-manual.pdf output/#{surpass_manual_filename}`
-  `cp output/#{surpass_manual_filename} ..`
-end
-
-task :rsync => [:pdf, :copy] do
+task :rsync => [:pdf] do
   system "rsync -v -r --delete --exclude-from=rsync-exclude output/ ananelson@rubyforge.org:/var/www/gforge-projects/surpass/"
 end
 
@@ -33,6 +28,6 @@ filter:
   end
 end
 
-
-require "gorgyrella"
-require "surpass"
+def manual_filename
+  "surpass-manual-#{Surpass::VERSION.gsub(".", "-")}.pdf"
+end
