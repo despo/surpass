@@ -29,7 +29,7 @@ PROJ.ignore_file = '.bzrignore'
 
 PROJ.spec.opts << '--color'
 
-PROJ.exclude = %w{.bzr webby surpass-manual-* examples spec tasks stats .DS_Store}
+PROJ.exclude = %w{.bzr webby surpass-manual-* examples spec tasks stats .DS_Store ._*}
 
 desc "Run all examples (except the big ones) in examples dir."
 task :examples do

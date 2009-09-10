@@ -20,7 +20,7 @@ describe ExcelFormula, "parsing primary objects" do
   it "should parse a product" do
     ExcelFormula.new("TRUE*TRUE").to_biff
   end
-
+  
   it "should raise an error if invalid formula is passed" do
     lambda { ExcelFormula.new("RUBBISHXYZ") }.should raise_error
   end

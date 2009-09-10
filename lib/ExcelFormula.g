@@ -28,13 +28,12 @@ expr[arg_type]
         (
             (
                   EQ { op = [PTGEQ].pack('C') }
-                  
-/*                | NE { op = [PTGNE].pack('C') }
-                | GT { op = [PTGGT].pack('C') }
-                | LT { op = [PTGLT].pack('C') }
-                | GE { op = [PTGGE].pack('C') }
-                | LE { op = [PTGLE].pack('C') }*/
-                
+/*                | NE { op = [PTGNE].pack('C') }         */
+/*                | GT { op = [PTGGT].pack('C') }         */
+/*                | LT { op = [PTGLT].pack('C') }         */
+/*                | GE { op = [PTGGE].pack('C') }         */
+/*                | LE { op = [PTGLE].pack('C') }         */
+
             )
             prec0_expr[arg_type] { @rpn += op }
         )*

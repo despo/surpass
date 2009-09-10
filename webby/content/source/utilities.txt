@@ -1,0 +1,7 @@
+---
+title:  utilities.rb
+layout:  web
+filter:
+  - erb
+---
+<%= gorg("/Users/ana/work/surpass/lib/utilities.rb") %>

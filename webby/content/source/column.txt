@@ -1,0 +1,7 @@
+---
+title:  column.rb
+layout:  web
+filter:
+  - erb
+---
+<%= gorg("/Users/ana/work/surpass/lib/column.rb") %>

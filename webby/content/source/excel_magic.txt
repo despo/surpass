@@ -1,0 +1,7 @@
+---
+title:  excel_magic.rb
+layout:  web
+filter:
+  - erb
+---
+<%= gorg("/Users/ana/work/surpass/lib/excel_magic.rb") %>

@@ -2,3 +2,4 @@ spec/output/*
 examples/*.xls
 pkg/
 webby/output
+.DS_Store

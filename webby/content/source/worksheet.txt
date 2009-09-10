@@ -1,0 +1,7 @@
+---
+title:  worksheet.rb
+layout:  web
+filter:
+  - erb
+---
+<%= gorg("/Users/ana/work/surpass/lib/worksheet.rb") %>

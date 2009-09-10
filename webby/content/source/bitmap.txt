@@ -1,0 +1,7 @@
+---
+title:  bitmap.rb
+layout:  web
+filter:
+  - erb
+---
+<%= gorg("/Users/ana/work/surpass/lib/bitmap.rb") %>
