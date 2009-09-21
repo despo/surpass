@@ -47,6 +47,7 @@ filter:    erb
 <ul id="nav">
     <li><a href="<%= manual_filename %>">Download PDF Manual</a></li>
 	<li><a href="http://rubyforge.org/projects/surpass">Rubyforge Project Page</a></li>
+	<li><a href="<%= gzipped_source %>">Download Latest Source (tgz)</a></li>
 </ul>
 	<div class="box">
 		<h2 style="margin-top:17px">Latest News</h2>

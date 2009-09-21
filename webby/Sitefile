@@ -31,3 +31,13 @@ end
 def manual_filename
   "surpass-manual-#{Surpass::VERSION.gsub(".", "-")}.pdf"
 end
+
+def gzipped_source
+  bzr_version = `bzr revno ..`.strip
+  filename = "surpass-r#{bzr_version}.tgz"
+
+  # Create gzipped file
+  `bzr export output/#{filename} ..`
+
+  filename
+end
