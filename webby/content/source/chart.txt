@@ -4,4 +4,4 @@ layout:  web
 filter:
   - erb
 ---
-<%= gorg("/Users/ana/work/surpass/lib/chart.rb") %>
+<%= gorg("/Users/ana/work/surpass/lib/surpass/chart.rb") %>

@@ -1,27 +1,8 @@
 #!/usr/bin/env ruby
 
-require "lib/surpass"
-require 'optparse'
+require File.expand_path(
+    File.join(File.dirname(__FILE__), %w[.. lib surpass]))
 
-options = {}
-OptionParser.new do |opts|
-  opts.banner = "Usage: surpass-info [options]"
+# Put your code here
 
-  opts.on("-c", "--colors", '--colours', "List available colors") do |v|
-    puts Formatting::COLOURS.keys.sort
-  end
-
-  opts.on("-p", "--patterns", "List available patterns") do |v|
-    puts Pattern.directives
-  end
-  
-  opts.on("-p", "--patterns", "List available patterns") do |v|
-    puts Pattern.directives
-  end
-  
-  opts.on("-h", "--help", "Show this message") do
-    puts opts
-    exit
-  end
-  
-end.parse!
+# EOF

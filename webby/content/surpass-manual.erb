@@ -60,7 +60,7 @@ And, here's how it looks.
 
 The basic method for writing data to cells is the worksheet's write method.
 
-<%= gorgl("../lib/worksheet.rb", "write-method")%>
+<%= gorgl("../lib/surpass/worksheet.rb", "write-method")%>
 
 There are two required arguments, the row and column. These are zero-based indexes for the row and column. To write to the first cell in the spreadsheet, you would pass 0, 0. The next argument is the label, this is the value you want written in the cell. This defaults to an empty string (for no particular reason). You can write nil, a String, a Boolean, a Numeric or a Date format. If you pass an object belonging to an unsupported class, you will get an error message, and in this case you should call some method on your object which will return a String or whatever the appropriate label is. The fourth argument is for style, which should be either nil, true, a hash or an instance of the StyleFormat class. See the chapter on Formatting for more information. The style parameter defaults to nil, which means that the default Excel format will be applied.
 
@@ -69,7 +69,7 @@ There are two required arguments, the row and column. These are zero-based index
 
 Frequently, you may want to write more than one value at a time, and so Surpass has convenience methods which handle arrays for you. In the background, these are just looping over the array and calling write() for each value you pass. There's no magic here and, for now at least, no clever optimization. The available methods are write\_array\_to\_row, write\_array\_to\_column, and write\_arrays. The write\_arrays method expects an array of arrays, the first two expect a single array.
 
-<%= gorgl("../lib/worksheet.rb", "write-arrays") %>
+<%= gorgl("../lib/surpass/worksheet.rb", "write-arrays") %>
 
 
 % section writing_arrays_of_data (end)
@@ -82,10 +82,10 @@ Frequently, you may want to write more than one value at a time, and so Surpass 
 Autoformats are number formats which are automatically applied to Dates, Floats and similar classes. To have autoformats applied, then pass true as the style parameter to the write function.
 
 Here is the relevant code from row.rb:
-<%= gorgl("../lib/row.rb", "autoformats") %>
+<%= gorgl("../lib/surpass/row.rb", "autoformats") %>
 
 And here are the default formats being defined in style.rb:
-<%= gorgl("../lib/style.rb", "autoformats") %>
+<%= gorgl("../lib/surpass/style.rb", "autoformats") %>
 
 If you use any of the array-writing methods, then autoformatting will be applied by default. To override this behaviour you can pass your own StyleFormat or nil to use the generic default format.
 
@@ -130,7 +130,7 @@ The StyleFormat class is a wrapper for the various types of formatting you can a
   \item protection
 \end{itemize}
 
-Each of these attributes (except for number\_format\_string) has a corresponding class, and you can look in lib/formatting.rb for the source.
+Each of these attributes (except for number\_format\_string) has a corresponding class, and you can look in lib/surpass/formatting.rb for the source.
 
 There are two basic ways to set formatting options. You can pass a hash with formatting options when you initialize a new StyleFormat instance, or you can set individual attributes of the formatting classes. You can also combine both approaches, initializing with a hash and then modifying attributes.
 

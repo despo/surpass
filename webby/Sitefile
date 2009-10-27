@@ -14,7 +14,7 @@ end
 task :generate_source do
   `rm -r content/source`
   `mkdir content/source`
-  `ls ../lib/*.rb`.chomp.split.each do |n|
+  `ls ../lib/surpass/*.rb`.chomp.split.each do |n|
     File.open("content/source/#{File.basename(n, '.rb')}.txt", "w") do |f|
       f.write %{---
 title:  #{File.basename(n)}
@@ -22,7 +22,7 @@ layout:  web
 filter:
   - erb
 ---
-<%= gorg("/Users/ana/work/surpass/lib/#{File.basename(n)}") %>
+<%= gorg("/Users/ana/work/surpass/lib/surpass/#{File.basename(n)}") %>
 }
     end
   end

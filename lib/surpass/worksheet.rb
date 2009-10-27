@@ -272,7 +272,15 @@ class Worksheet
 # TODO get rid of meaningless default value for label, should be required?
 ### @export "write-method"
   def write(r, c, label = "", style = nil)
-    row(r).write(c, label, style)
+    if label.is_a?(Array)
+      if label[0].is_a?(Array)
+        write_arrays(r, c, label)
+      else
+        write_array_to_row(label, r, c)
+      end
+    else
+      row(r).write(c, label, style)
+    end
   end
 
 ### @export "write-arrays"

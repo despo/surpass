@@ -21,21 +21,10 @@ task :default => 'spec:run'
 PROJ.name = 'surpass'
 PROJ.authors = 'Ana Nelson'
 PROJ.email = 'ana@ananelson.com'
-PROJ.url = 'https://surpass.rubyforge.org'
+PROJ.url = 'http://surpass.rubyforge.org'
 PROJ.version = Surpass::VERSION
 PROJ.rubyforge.name = 'surpass'
 
-PROJ.ignore_file = '.bzrignore'
-
 PROJ.spec.opts << '--color'
 
-PROJ.exclude = %w{.bzr webby surpass-manual-* examples spec tasks stats .DS_Store ._*}
-
-desc "Run all examples (except the big ones) in examples dir."
-task :examples do
-  `ls examples/*.rb`.chomp.split("\n").each_with_index do |f, i|
-    next if f =~ /big/
-    puts "processing #{f}..."
-    `ruby #{f}`
-  end
-end
+# EOF

@@ -4,4 +4,4 @@ layout:  web
 filter:
   - erb
 ---
-<%= gorg("/Users/ana/work/surpass/lib/ExcelFormulaParser.rb") %>
+<%= gorg("/Users/ana/work/surpass/lib/surpass/ExcelFormulaParser.rb") %>

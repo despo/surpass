@@ -1,7 +1,0 @@
----
-title:  surpass.rb
-layout:  web
-filter:
-  - erb
----
-<%= gorg("/Users/ana/work/surpass/lib/surpass.rb") %>
