@@ -274,7 +274,7 @@ class Worksheet
   def write(r, c, label = "", style = nil)
     if label.is_a?(Array)
       if label[0].is_a?(Array)
-        write_arrays(r, c, label)
+        write_arrays(r, c, label, style || true)
       else
         write_array_to_row(label, r, c)
       end
