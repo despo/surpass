@@ -4,27 +4,21 @@
 
 begin
   require 'bones'
-  Bones.setup
 rescue LoadError
-  begin
-    load 'tasks/setup.rb'
-  rescue LoadError
-    raise RuntimeError, '### please install the "bones" gem ###'
-  end
+  abort '### Please install the "bones" gem ###'
 end
 
 ensure_in_path 'lib'
 require 'surpass'
 
+Bones {
+  name     'surpass'
+  authors  'Ana Nelson'
+  email    'ana@ananelson.com'
+  url      'http://surpass.rubyforge.org'
+  version  Surpass::VERSION
+}
+
 task :default => 'spec:run'
+task 'gem:release' => 'test:run'
 
-PROJ.name = 'surpass'
-PROJ.authors = 'Ana Nelson'
-PROJ.email = 'ana@ananelson.com'
-PROJ.url = 'http://surpass.rubyforge.org'
-PROJ.version = Surpass::VERSION
-PROJ.rubyforge.name = 'surpass'
-
-PROJ.spec.opts << '--color'
-
-# EOF

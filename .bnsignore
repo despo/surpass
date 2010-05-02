@@ -14,3 +14,12 @@ announcement.txt
 coverage
 doc
 pkg
+.DS_Store
+.bzr
+.bzrignore
+examples
+webby
+stats
+spec
+*.swp
+

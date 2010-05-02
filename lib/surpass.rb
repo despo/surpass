@@ -1,7 +1,7 @@
 module Surpass
 
   # :stopdoc:
-  VERSION = '0.0.6'
+  VERSION = '0.0.8'
   LIBPATH = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
   PATH = ::File.dirname(LIBPATH) + ::File::SEPARATOR
   # :startdoc:
@@ -46,6 +46,7 @@ module Surpass
 
 end  # module Surpass
 
+require "rubygems"
+require "antlr3"
 Surpass.require_all_libs_relative_to(__FILE__)
-
 require 'date'
