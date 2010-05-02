@@ -55,3 +55,28 @@ describe Utilities, "hex function" do
     end
   end
 end
+
+describe Utilities, "cell references" do
+  it "should convert column name into number" do
+    col_by_name("A").should eql(0)
+    col_by_name("Z").should eql(25)
+    col_by_name("AA").should eql(26)
+    col_by_name("AB").should eql(27)
+    col_by_name("IV").should eql(MAX_COL-1)
+  end
+
+  it "should convert valid single cell references" do
+    cell_to_packed_rowcol("A1")
+    cell_to_packed_rowcol("$A1")
+    cell_to_packed_rowcol("A$1")
+    cell_to_packed_rowcol("$A$1")
+
+    cell_to_packed_rowcol("a1")
+    cell_to_packed_rowcol("Z12345")
+    cell_to_packed_rowcol("aA1")
+  end
+
+  it "should raise error on invalid single cell references" do
+    lambda { cell_to_rowcol("AAA1") }.should raise_error("Ill-formed single cell reference AAA1")
+  end
+end

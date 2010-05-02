@@ -63,6 +63,38 @@ module Utilities
   def hex(value)
     "0x" + value.to_s(16)
   end
+  
+  RE_CELL_EX = /^(\$)?([A-I]?[A-Z])(\$?)(\d+)$/i
+
+  def col_by_name(column_name)
+    col = 0
+    pow = 1
+    column_name.reverse.each_byte do |l|
+      col += (l - 64) * pow
+      pow *= 26
+    end
+    col - 1
+  end
+
+  def cell_to_rowcol(cell)
+    match = RE_CELL_EX.match(cell)
+    raise "Ill-formed single cell reference #{cell}" if match.nil?
+    col_abs, col, row_abs, row = match.captures
+    row = row.to_i - 1
+    col = col_by_name(col.upcase)
+    [row, col, row_abs.nil?, col_abs.nil?]
+  end
+
+  def cell_to_packed_rowcol(cell)
+    row, col, row_abs, col_abs = cell_to_rowcol(cell)
+    raise "Column #{col} is greater than IV (#{MAX_COL})" if col >= MAX_COL
+    raise "Row #{row} is greater than #{MAX_ROW} in #{cell}" if row >= MAX_ROW
+
+    col |= row_abs.to_i << 15
+    col |= col_abs.to_i << 14
+
+    [row, col]
+  end
 end
 
 def String.random_alphanumeric(size=16)

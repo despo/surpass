@@ -1,6 +1,7 @@
 require "rubygems"
 require "surpass"
 
+# TODO As this example shows, there is a bug in the size calculation somewhere.
 
 book = Workbook.new
 sheet = book.add_sheet('Image')

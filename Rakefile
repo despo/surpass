@@ -22,3 +22,7 @@ Bones {
 task :default => 'spec:run'
 task 'gem:release' => 'test:run'
 
+desc "run antlr compiler"
+task :antlr do
+  `cd lib/surpass; antlr4ruby ExcelFormulaGrammar.g`
+end
