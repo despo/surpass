@@ -276,7 +276,7 @@ class Worksheet
       if label[0].is_a?(Array)
         write_arrays(r, c, label, style || true)
       else
-        write_array_to_row(label, r, c)
+        write_array_to_row(label, r, c, style || true)
       end
     else
       row(r).write(c, label, style)
@@ -553,9 +553,9 @@ class Worksheet
     end
   end
   
-  def col_width(col)
-    if cols.keys.include?(col)
-      col.width_in_pixels
+  def col_width(column_index)
+    if cols.keys.include?(column_index)
+      cols[column_index].width_in_pixels
     else
       64
     end
