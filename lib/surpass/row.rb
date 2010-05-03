@@ -145,7 +145,7 @@ class Row
       @cells << NumberCell.new(self, col, style_index, label)
     when Date, DateTime, Time
       @cells << NumberCell.new(self, col, style_index, as_excel_date(label))
-    when ExcelFormula
+    when Formula
       @cells << FormulaCell.new(self, col, style_index, label)
     else
       raise "You are trying to write an object of class #{label.class.name} to a spreadsheet. Please convert this to a supported class such as String."

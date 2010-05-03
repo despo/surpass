@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 #
-# ExcelFormulaGrammar.g
+# ExcelFormula.g
 # 
 # Generated using ANTLR version: 3.2.1-SNAPSHOT Dec 18, 2009 04:29:28
 # Ruby runtime library version: 1.3.1
-# Input grammar file: ExcelFormulaGrammar.g
-# Generated at: 2010-05-02 22:24:46
+# Input grammar file: ExcelFormula.g
+# Generated at: 2010-05-03 16:34:32
 # 
 
 # ~~~> start load path setup
@@ -57,7 +57,7 @@ end
 # <~~~ end load path setup
 
 
-module ExcelFormulaGrammar
+module ExcelFormula
   # TokenData defines all of the token type integer values
   # as constants, which will be included in all 
   # ANTLR-generated recognizers.
@@ -79,11 +79,11 @@ module ExcelFormulaGrammar
 
 
   class Lexer < ANTLR3::Lexer
-    @grammar_home = ExcelFormulaGrammar
+    @grammar_home = ExcelFormula
     include TokenData
 
     begin
-      generated_using( "ExcelFormulaGrammar.g", "3.2.1-SNAPSHOT Dec 18, 2009 04:29:28", "1.3.1" )
+      generated_using( "ExcelFormula.g", "3.2.1-SNAPSHOT Dec 18, 2009 04:29:28", "1.3.1" )
     rescue NoMethodError => error
       error.name.to_sym == :generated_using or raise
     end
@@ -107,7 +107,7 @@ module ExcelFormulaGrammar
     
     # - - - - - - - - - - - lexer rules - - - - - - - - - - - -
     # lexer rule eq! (EQ)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def eq!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 1)
@@ -131,7 +131,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule lt! (LT)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def lt!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 2)
@@ -155,7 +155,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule gt! (GT)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def gt!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 3)
@@ -179,7 +179,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule ne! (NE)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def ne!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 4)
@@ -203,7 +203,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule le! (LE)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def le!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 5)
@@ -227,7 +227,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule ge! (GE)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def ge!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 6)
@@ -251,7 +251,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule add! (ADD)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def add!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 7)
@@ -275,7 +275,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule sub! (SUB)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def sub!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 8)
@@ -299,7 +299,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule mul! (MUL)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def mul!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 9)
@@ -323,7 +323,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule div! (DIV)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def div!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 10)
@@ -347,7 +347,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule colon! (COLON)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def colon!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 11)
@@ -371,7 +371,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule semicolon! (SEMICOLON)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def semicolon!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 12)
@@ -395,7 +395,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule comma! (COMMA)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def comma!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 13)
@@ -419,7 +419,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule lp! (LP)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def lp!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 14)
@@ -443,7 +443,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule rp! (RP)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def rp!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 15)
@@ -467,7 +467,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule concat! (CONCAT)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def concat!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 16)
@@ -491,7 +491,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule percent! (PERCENT)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def percent!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 17)
@@ -515,7 +515,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule power! (POWER)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def power!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 18)
@@ -539,7 +539,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule bang! (BANG)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def bang!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 19)
@@ -563,7 +563,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule digit! (DIGIT)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def digit!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 20)
@@ -580,7 +580,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule int_const! (INT_CONST)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def int_const!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 21)
@@ -628,7 +628,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule num_const! (NUM_CONST)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def num_const!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 22)
@@ -762,7 +762,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule str_const! (STR_CONST)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def str_const!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 23)
@@ -820,7 +820,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule ref_2_d! (REF2D)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def ref_2_d!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 24)
@@ -915,7 +915,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule true_const! (TRUE_CONST)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def true_const!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 25)
@@ -974,7 +974,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule false_const! (FALSE_CONST)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def false_const!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 26)
@@ -1042,7 +1042,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule name! (NAME)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def name!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 27)
@@ -1066,7 +1066,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule quotename! (QUOTENAME)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def quotename!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 28)
@@ -1090,7 +1090,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule func_if! (FUNC_IF)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def func_if!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 29)
@@ -1114,7 +1114,7 @@ module ExcelFormulaGrammar
     end
 
     # lexer rule func_choose! (FUNC_CHOOSE)
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     def func_choose!
       # -> uncomment the next line to manually enable rule tracing
       # trace_in(__method__, 30)

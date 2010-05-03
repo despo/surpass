@@ -152,7 +152,7 @@ class Worksheet
     @iterations_on = 0
     @delta = 0.001
     @save_recalc = 0
-    @formula_options = ExcelFormula::RECALC_ALWAYS | ExcelFormula::CALC_ON_OPEN
+    @formula_options = Formula::RECALC_ALWAYS | Formula::CALC_ON_OPEN
 
     @print_headers = 0
     @print_grid = 0

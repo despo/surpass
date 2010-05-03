@@ -1,4 +1,4 @@
-grammar ExcelFormulaGrammar;
+grammar ExcelFormula;
 
 options {
     language  = Ruby;
@@ -125,16 +125,16 @@ primary[arg_type]
         }
     | ref2d_tok = REF2D
         {
-          r, c = Utils.cell_to_packed_rowcol(ref2d_tok.text) 
+          r, c = Utilities.cell_to_packed_rowcol(ref2d_tok.text) 
           ptg = PTGREFR + RVA_DELTA[arg_type]
           @rpn += [ptg, r, c].pack("Cv2")
         }
     | ref2d1_tok = REF2D COLON ref2d2_tok = REF2D
         {
-            r1, c1 = Utils.cell_to_packed_rowcol(ref2d1_tok.text) 
-            r2, c2 = Utils.cell_to_packed_rowcol(ref2d2_tok.text)
+            r1, c1 = Utilities.cell_to_packed_rowcol(ref2d1_tok.text) 
+            r2, c2 = Utilities.cell_to_packed_rowcol(ref2d2_tok.text)
             ptg = PTGAREAR + RVA_DELTA[arg_type]
-            self.rpn += struct.pack("Cv4", ptg, r1, r2, c1, c2)
+            @rpn += [ptg, r1, r2, c1, c2].pack("Cv4")
         }
  
     | sheet1 = sheet
@@ -145,13 +145,13 @@ primary[arg_type]
         {
             ptg = PTGREF3DR + RVA_DELTA[arg_type]
             rpn_ref2d = ""
-            r1, c1 = Utils.cell_to_packed_rowcol(ref3d_ref2d.text)
+            r1, c1 = Utilities.cell_to_packed_rowcol(ref3d_ref2d.text)
             rpn_ref2d = [0x0000, r1, c1].pack("v3")
         }
         ( COLON ref3d_ref2d2= REF2D
             {
                 ptg = PTGAREA3DR + RVA_DELTA[arg_type]
-                r2, c2 = Utils.cell_to_packed_rowcol(ref3d_ref2d2.text)
+                r2, c2 = Utilities.cell_to_packed_rowcol(ref3d_ref2d2.text)
                 rpn_ref2d = [0x0000, r1, r2, c1, c2].pack("v5")
             }
         )?

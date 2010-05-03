@@ -1,7 +1,7 @@
 module Surpass
 
   # :stopdoc:
-  VERSION = '0.0.8'
+  VERSION = '0.0.9'
   LIBPATH = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
   PATH = ::File.dirname(LIBPATH) + ::File::SEPARATOR
   # :startdoc:
@@ -40,13 +40,22 @@ module Surpass
 
     Dir.glob(search_me).sort.each do |rb|
       next if File.basename(rb) === File.basename(__FILE__) # skip surpass.rb
+      next if File.basename(rb) =~ /^ExcelFormula/ unless FORMULAS_AVAILABLE
       require rb
     end
   end
 
 end  # module Surpass
 
-require "rubygems"
-require "antlr3"
+begin
+  require 'rubygems'
+  require 'antlr3'
+  FORMULAS_AVAILABLE = true
+rescue Exception => e
+  puts "antlr3 gem not found, formulas not available. Install antlr3 to enable formulas."
+  FORMULAS_AVAILABLE = false
+end
+
 Surpass.require_all_libs_relative_to(__FILE__)
 require 'date'
+

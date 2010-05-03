@@ -24,5 +24,5 @@ task 'gem:release' => 'test:run'
 
 desc "run antlr compiler"
 task :antlr do
-  `cd lib/surpass; antlr4ruby ExcelFormulaGrammar.g`
+  `cd lib/surpass; antlr4ruby ExcelFormula.g`
 end

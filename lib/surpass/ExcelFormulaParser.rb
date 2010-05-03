@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 #
-# ExcelFormulaGrammar.g
+# ExcelFormula.g
 # 
 # Generated using ANTLR version: 3.2.1-SNAPSHOT Dec 18, 2009 04:29:28
 # Ruby runtime library version: 1.3.1
-# Input grammar file: ExcelFormulaGrammar.g
-# Generated at: 2010-05-02 22:24:45
+# Input grammar file: ExcelFormula.g
+# Generated at: 2010-05-03 16:34:32
 # 
 
 # ~~~> start load path setup
@@ -57,7 +57,7 @@ end
 # <~~~ end load path setup
 
 # - - - - - - begin action @parser::header - - - - - -
-# ExcelFormulaGrammar.g
+# ExcelFormula.g
 
 
   RVA_DELTA = {"R" => 0, "V" => 0x20, "A" => 0x40}
@@ -67,7 +67,7 @@ end
 # - - - - - - end action @parser::header - - - - - - -
 
 
-module ExcelFormulaGrammar
+module ExcelFormula
   # TokenData defines all of the token type integer values
   # as constants, which will be included in all 
   # ANTLR-generated recognizers.
@@ -101,7 +101,7 @@ module ExcelFormulaGrammar
 
 
   class Parser < ANTLR3::Parser
-    @grammar_home = ExcelFormulaGrammar
+    @grammar_home = ExcelFormula
 
     RULE_METHODS = [:formula, :expr, :prec0_expr, :prec1_expr, :prec2_expr, 
                     :prec3_expr, :prec4_expr, :prec5_expr, :primary, :expr_list, 
@@ -110,13 +110,13 @@ module ExcelFormulaGrammar
 
     include TokenData
 
-    generated_using( "ExcelFormulaGrammar.g", "3.2.1-SNAPSHOT Dec 18, 2009 04:29:28", "1.3.1" )
+    generated_using( "ExcelFormula.g", "3.2.1-SNAPSHOT Dec 18, 2009 04:29:28", "1.3.1" )
 
     def initialize(input, options = {})
       super(input, options)
 
       # - - - - - - begin action @parser::init - - - - - -
-      # ExcelFormulaGrammar.g
+      # ExcelFormula.g
 
 
         @rpn = ''
@@ -134,7 +134,7 @@ module ExcelFormulaGrammar
 
     # parser rule formula
     # 
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     # 24:1: formula : expr[\"V\"] ;
     def formula
       # -> uncomment the next line to manually enable rule tracing
@@ -162,7 +162,7 @@ module ExcelFormulaGrammar
 
     # parser rule expr
     # 
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     # 28:1: expr[arg_type] : prec0_expr[arg_type] ( ( EQ | NE | GT | LT | GE | LE ) prec0_expr[arg_type] )* ;
     def expr(arg_type)
       # -> uncomment the next line to manually enable rule tracing
@@ -265,7 +265,7 @@ module ExcelFormulaGrammar
 
     # parser rule prec0_expr
     # 
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     # 44:1: prec0_expr[arg_type] : prec1_expr[arg_type] ( ( CONCAT ) prec1_expr[arg_type] )* ;
     def prec0_expr(arg_type)
       # -> uncomment the next line to manually enable rule tracing
@@ -318,7 +318,7 @@ module ExcelFormulaGrammar
 
     # parser rule prec1_expr
     # 
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     # 54:1: prec1_expr[arg_type] : prec2_expr[arg_type] ( ( ADD | SUB ) prec2_expr[arg_type] )* ;
     def prec1_expr(arg_type)
       # -> uncomment the next line to manually enable rule tracing
@@ -392,7 +392,7 @@ module ExcelFormulaGrammar
 
     # parser rule prec2_expr
     # 
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     # 66:1: prec2_expr[arg_type] : prec3_expr[arg_type] ( ( MUL | DIV ) prec3_expr[arg_type] )* ;
     def prec2_expr(arg_type)
       # -> uncomment the next line to manually enable rule tracing
@@ -466,7 +466,7 @@ module ExcelFormulaGrammar
 
     # parser rule prec3_expr
     # 
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     # 77:1: prec3_expr[arg_type] : prec5_expr[arg_type] ( ( POWER ) prec5_expr[arg_type] )* ;
     def prec3_expr(arg_type)
       # -> uncomment the next line to manually enable rule tracing
@@ -519,7 +519,7 @@ module ExcelFormulaGrammar
 
     # parser rule prec4_expr
     # 
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     # 87:1: prec4_expr[arg_type] : prec5_expr[arg_type] ( PERCENT )? ;
     def prec4_expr(arg_type)
       # -> uncomment the next line to manually enable rule tracing
@@ -563,7 +563,7 @@ module ExcelFormulaGrammar
 
     # parser rule prec5_expr
     # 
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     # 94:1: prec5_expr[arg_type] : ( primary[arg_type] | SUB primary[arg_type] );
     def prec5_expr(arg_type)
       # -> uncomment the next line to manually enable rule tracing
@@ -607,7 +607,7 @@ module ExcelFormulaGrammar
 
     # parser rule primary
     # 
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     # 99:1: primary[arg_type] : ( TRUE_CONST | FALSE_CONST | str_tok= STR_CONST | int_tok= INT_CONST | num_tok= NUM_CONST | ref2d_tok= REF2D | ref2d1_tok= REF2D COLON ref2d2_tok= REF2D | sheet1= sheet ( COLON sheet2= sheet )? BANG ref3d_ref2d= REF2D ( COLON ref3d_ref2d2= REF2D )? | FUNC_IF LP expr[\"V\"] ( SEMICOLON | COMMA ) expr[arg_type] ( SEMICOLON | COMMA ) expr[arg_type] RP | FUNC_CHOOSE LP expr[\"V\"] ( ( SEMICOLON | COMMA ) ( expr[arg_type] | ) )* RP | name_tok= NAME | func_tok= NAME LP arg_count= expr_list[arg_type_list, min_argc, max_argc] RP | LP expr[arg_type] RP );
     def primary(arg_type)
       # -> uncomment the next line to manually enable rule tracing
@@ -687,7 +687,7 @@ module ExcelFormulaGrammar
           ref2d_tok = match(REF2D, TOKENS_FOLLOWING_REF2D_IN_primary_956)
           # --> action
 
-                    r, c = Utils.cell_to_packed_rowcol(ref2d_tok.text) 
+                    r, c = Utilities.cell_to_packed_rowcol(ref2d_tok.text) 
                     ptg = PTGREFR + RVA_DELTA[arg_type]
                     @rpn += [ptg, r, c].pack("Cv2")
                   
@@ -700,10 +700,10 @@ module ExcelFormulaGrammar
           ref2d2_tok = match(REF2D, TOKENS_FOLLOWING_REF2D_IN_primary_986)
           # --> action
 
-                      r1, c1 = Utils.cell_to_packed_rowcol(ref2d1_tok.text) 
-                      r2, c2 = Utils.cell_to_packed_rowcol(ref2d2_tok.text)
+                      r1, c1 = Utilities.cell_to_packed_rowcol(ref2d1_tok.text) 
+                      r2, c2 = Utilities.cell_to_packed_rowcol(ref2d2_tok.text)
                       ptg = PTGAREAR + RVA_DELTA[arg_type]
-                      self.rpn += struct.pack("Cv4", ptg, r1, r2, c1, c2)
+                      @rpn += [ptg, r1, r2, c1, c2].pack("Cv4")
                   
           # <-- action
 
@@ -739,7 +739,7 @@ module ExcelFormulaGrammar
 
                       ptg = PTGREF3DR + RVA_DELTA[arg_type]
                       rpn_ref2d = ""
-                      r1, c1 = Utils.cell_to_packed_rowcol(ref3d_ref2d.text)
+                      r1, c1 = Utilities.cell_to_packed_rowcol(ref3d_ref2d.text)
                       rpn_ref2d = [0x0000, r1, c1].pack("v3")
                   
           # <-- action
@@ -754,7 +754,7 @@ module ExcelFormulaGrammar
             # --> action
 
                             ptg = PTGAREA3DR + RVA_DELTA[arg_type]
-                            r2, c2 = Utils.cell_to_packed_rowcol(ref3d_ref2d2.text)
+                            r2, c2 = Utilities.cell_to_packed_rowcol(ref3d_ref2d2.text)
                             rpn_ref2d = [0x0000, r1, r2, c1, c2].pack("v5")
                         
             # <-- action
@@ -1023,7 +1023,7 @@ module ExcelFormulaGrammar
 
     # parser rule expr_list
     # 
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     # 292:1: expr_list[arg_type_list, min_argc, max_argc] returns [arg_cnt] : ( expr[arg_type] ( ( SEMICOLON | COMMA ) ( expr[arg_type] | ) )* | );
     def expr_list(arg_type_list, min_argc, max_argc)
       # -> uncomment the next line to manually enable rule tracing
@@ -1122,7 +1122,7 @@ module ExcelFormulaGrammar
 
     # parser rule sheet
     # 
-    # (in ExcelFormulaGrammar.g)
+    # (in ExcelFormula.g)
     # 319:1: sheet returns [ref] : (sheet_ref_name= NAME | sheet_ref_int= INT_CONST | sheet_ref_quote= QUOTENAME );
     def sheet
       # -> uncomment the next line to manually enable rule tracing
