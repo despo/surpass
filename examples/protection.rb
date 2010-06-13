@@ -1,5 +1,9 @@
-require "rubygems"
-require "surpass"
+require "lib/surpass"
+
+book = Workbook.new
+sheet = book.add_sheet("Rows Outline")
+
+sheet.write(0, 0, "surpass #{Surpass::VERSION} running on #{RUBY_DESCRIPTION}")
 
 fnt = Font.new
 fnt.name = 'Arial'
@@ -16,29 +20,25 @@ style = StyleFormat.new
 style.font = fnt
 style.borders = borders
 
-book = Workbook.new
+sheet.write_merge(1, 1, 1, 5, 'test 1', style)
+sheet.write_merge(2, 2, 1, 4, 'test 1', style)
+sheet.write_merge(3, 3, 1, 3, 'test 2', style)
+sheet.write_merge(4, 4, 1, 4, 'test 1', style)
+sheet.write_merge(5, 5, 1, 4, 'test 3', style)
+sheet.write_merge(6, 6, 1, 5, 'test 1', style)
+sheet.write_merge(7, 7, 1, 5, 'test 4', style)
+sheet.write_merge(8, 8, 1, 4, 'test 1', style)
+sheet.write_merge(9, 9, 1, 3, 'test 5', style)
 
-ws0 = book.add_sheet('Rows Outline')
-
-ws0.write_merge(1, 1, 1, 5, 'test 1', style)
-ws0.write_merge(2, 2, 1, 4, 'test 1', style)
-ws0.write_merge(3, 3, 1, 3, 'test 2', style)
-ws0.write_merge(4, 4, 1, 4, 'test 1', style)
-ws0.write_merge(5, 5, 1, 4, 'test 3', style)
-ws0.write_merge(6, 6, 1, 5, 'test 1', style)
-ws0.write_merge(7, 7, 1, 5, 'test 4', style)
-ws0.write_merge(8, 8, 1, 4, 'test 1', style)
-ws0.write_merge(9, 9, 1, 3, 'test 5', style)
-
-ws0.row(1).level = 1
-ws0.row(2).level = 1
-ws0.row(3).level = 2
-ws0.row(4).level = 2
-ws0.row(5).level = 2
-ws0.row(6).level = 2
-ws0.row(7).level = 2
-ws0.row(8).level = 1
-ws0.row(9).level = 1
+sheet.row(1).level = 1
+sheet.row(2).level = 1
+sheet.row(3).level = 2
+sheet.row(4).level = 2
+sheet.row(5).level = 2
+sheet.row(6).level = 2
+sheet.row(7).level = 2
+sheet.row(8).level = 1
+sheet.row(9).level = 1
 
 
 ws1 = book.add_sheet('Columns Outline')
@@ -107,11 +107,11 @@ ws2.col(8).level = 1
 ws2.col(9).level = 1
 
 
-ws0.protect = true
-ws0.wnd_protect = true
-ws0.obj_protect = true
-ws0.scen_protect = true
-ws0.password = "123456"
+sheet.protect = true
+sheet.wnd_protect = true
+sheet.obj_protect = true
+sheet.scen_protect = true
+sheet.password = "123456"
 
 ws1.protect = true
 ws1.wnd_protect = true

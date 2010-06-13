@@ -1,21 +1,15 @@
-require "lib/surpass"
+require 'rubygems'
+require 'surpass'
 
 book = Workbook.new
 sheet = book.add_sheet
 
 sheet.write(0, 0, "surpass #{Surpass::VERSION} running on #{RUBY_DESCRIPTION}")
 
-sheet.write(2, 0, Formula.new("-(134.8780789+1)"))
-sheet.write(3, 0, Formula.new("-(134.8780789e-10+1)"))
-sheet.write(4, 0, Formula.new("-1/(1+1)+9344"))
-sheet.write(5, 0, Formula.new("-(1+1)"))
-sheet.write(6, 0, Formula.new("-(1+1)/(-2-2)"))
-
-sheet.write(2, 1, Formula.new("-(134.8780789+1)"))
-sheet.write(3, 1, Formula.new("-(134.8780789e-10+1)"))
-sheet.write(4, 1, Formula.new("-1/(1+1)+9344"))
-sheet.write(5, 1, Formula.new("-(1+1)"))
-sheet.write(6, 1, Formula.new("-(1+1)/(-2-2)"))
+sheet.write(2, 0, Formula.new("1+1"))
+sheet.write(3, 0, Formula.new("-1"))
+sheet.write(4, 0, Formula.new("-(1+1)"))
+sheet.write(5, 0, Formula.new("-(1+1)/(-2-2)"))
 
 sheet.write(2, 2, Formula.new("A3*B3"))
 sheet.write(3, 2, Formula.new("A3*B4"))
@@ -54,13 +48,5 @@ sheet.write(14, 3, Formula.new('left("abcde", 2)'))
 sheet.write(14, 4, Formula.new('hyperlink("http://google.com", "google")'))
 sheet.write(14, 5, Formula.new("sin(pi())"))
 sheet.write(14, 6, Formula.new('now()'))
-
-# TODO implement sheet references
-# sheet2 = book.add_sheet("s")
-# sheet2.write(0, 0, 100)
-# sheet.write(16, 0, Formula.new("s!A1"))
-
-# TODO have way to define custom functions e.g. Surpass.declare_excel_function('blp', 3, 5, "V", "V R R")
-# sheet.write(15, 0, Formula.new("blp()"))
 
 book.save(__FILE__.gsub(/rb$/, "xls"))

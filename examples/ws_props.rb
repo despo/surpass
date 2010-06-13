@@ -1,5 +1,9 @@
-require "rubygems"
-require "surpass"
+require "lib/surpass"
+
+book = Workbook.new
+sheet = book.add_sheet
+
+sheet.write(0, 0, "surpass #{Surpass::VERSION} running on #{RUBY_DESCRIPTION}")
 
 props = \
 [
@@ -72,9 +76,12 @@ props = \
         'copies_num',
 ]
 
-book = Workbook.new
-sheet = book.add_sheet('sheet')
-
-props.each do |p|
-  puts "#{p} #{sheet.send(p.to_sym)}"
+props.each_with_index do |p, i|
+  value = sheet.send(p.to_sym)
+  puts "#{p} #{value}"
+  sheet.write(i+2, 0, p)
+  sheet.write(i+2, 1, value)
 end
+
+book.save(__FILE__.gsub(/rb$/, "xls"))
+

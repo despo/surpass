@@ -133,9 +133,12 @@ class Row
     end
 
     style_index = @parent_wb.styles.add(style)
+
+    raise "trying to write to cell #{self.index}, #{col} - already exists!" if cell(col)
     
     adjust_height(style)
     adjust_boundary_column_indexes(col)
+
     case label
     when TrueClass, FalseClass
       @cells << BooleanCell.new(self, col, style_index, label)

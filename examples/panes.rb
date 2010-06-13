@@ -1,48 +1,48 @@
-require "rubygems"
-require "surpass"
-
-# TODO this is broken in both Ruby and Python
+require "lib/surpass"
 
 book = Workbook.new
-ws1 = book.add_sheet
-ws2 = book.add_sheet
-ws3 = book.add_sheet
-ws4 = book.add_sheet
-ws5 = book.add_sheet
-ws6 = book.add_sheet
+
+sheet1 = book.add_sheet
+sheet2 = book.add_sheet
+sheet3 = book.add_sheet
+sheet4 = book.add_sheet
+sheet5 = book.add_sheet
+sheet6 = book.add_sheet
+
+sheet1.write(0, 0, "surpass #{Surpass::VERSION} running on #{RUBY_DESCRIPTION}")
 
 0.upto(0x100) do |i|
-  ws1.write(i/0x10, i%0x10, i)
-  ws2.write(i/0x10, i%0x10, i)
-  ws3.write(i/0x10, i%0x10, i)
-  ws4.write(i/0x10, i%0x10, i)
-  ws5.write(i/0x10, i%0x10, i)
-  ws6.write(i/0x10, i%0x10, i)
+  sheet1.write(i/0x10+1, i%0x10, i)
+  sheet2.write(i/0x10+1, i%0x10, i)
+  sheet3.write(i/0x10+1, i%0x10, i)
+  sheet4.write(i/0x10+1, i%0x10, i)
+  sheet5.write(i/0x10+1, i%0x10, i)
+  sheet6.write(i/0x10+1, i%0x10, i)
 end
 
-ws1.panes_frozen = true
-ws1.horz_split_pos = 2
+sheet1.panes_frozen = true
+sheet1.horz_split_pos = 2
 
-ws2.panes_frozen = true
-ws2.vert_split_pos = 2
+sheet2.panes_frozen = true
+sheet2.vert_split_pos = 2
 
-ws3.panes_frozen = true
-ws3.horz_split_pos = 1
-ws3.vert_split_pos = 1
+sheet3.panes_frozen = true
+sheet3.horz_split_pos = 1
+sheet3.vert_split_pos = 1
 
-ws4.panes_frozen = false
-ws4.horz_split_pos = 12
-ws4.horz_split_first_visible = 2
+sheet4.panes_frozen = false
+sheet4.horz_split_pos = 12
+sheet4.horz_split_first_visible = 2
 
-ws5.panes_frozen = false
-ws5.vert_split_pos = 40
-ws4.vert_split_first_visible = 2
+sheet5.panes_frozen = false
+sheet5.vert_split_pos = 40
+sheet4.vert_split_first_visible = 2
 
-ws6.panes_frozen = false
-ws6.horz_split_pos = 12
-ws4.horz_split_first_visible = 2
-ws6.vert_split_pos = 40
-ws4.vert_split_first_visible = 2
+sheet6.panes_frozen = false
+sheet6.horz_split_pos = 12
+sheet4.horz_split_first_visible = 2
+sheet6.vert_split_pos = 40
+sheet4.vert_split_first_visible = 2
 
 book.save(__FILE__.gsub(/rb$/, "xls"))
 

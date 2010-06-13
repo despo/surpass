@@ -4,13 +4,15 @@ require 'surpass'
 book = Workbook.new
 sheet = book.add_sheet("Patterns")
 
+sheet.write(0, 0, "surpass #{Surpass::VERSION} running on #{RUBY_DESCRIPTION}")
+
 per_row = 19
 
 Pattern.fill_directives.sort.each_with_index do |c, i|
   format = StyleFormat.new
   format.pattern.pattern = c
   
-  row = i % per_row
+  row = i % per_row + 1
   label_column = (i/per_row)*2
   pattern_column = (i/per_row)*2 + 1
   

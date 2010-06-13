@@ -1,5 +1,11 @@
-require "rubygems"
-require "surpass"
+require "lib/surpass"
+
+book = Workbook.new
+sheet0 = book.add_sheet
+sheet1 = book.add_sheet
+sheet2 = book.add_sheet
+
+sheet.write(0, 0, "surpass #{Surpass::VERSION} running on #{RUBY_DESCRIPTION}")
 
 fnt = Font.new
 fnt.name = 'Arial'
@@ -21,16 +27,10 @@ style.font = fnt
 style.borders = borders
 style.alignment = al
 
-
-book = Workbook.new
-ws0 = book.add_sheet
-ws1 = book.add_sheet
-ws2 = book.add_sheet
-
 (0...0x200).step(2) do |i|
-  ws0.write_merge(i, i+1, 1, 5, "test #{i}", style)
-  ws1.write_merge(i, i, 1, 7, "test #{i}", style)
-  ws2.write_merge(i, i+1, 1, 7 + (i%10), "test #{i}", style)
+  sheet0.write_merge(i+1, i+1, 1, 5, "test #{i}", style)
+  sheet1.write_merge(i+1, i, 1, 7, "test #{i}", style)
+  sheet2.write_merge(i+1, i+1, 1, 7 + (i%10), "test #{i}", style)
 end
 
 book.save(__FILE__.gsub(/rb$/, "xls"))

@@ -26,3 +26,12 @@ desc "run antlr compiler"
 task :antlr do
   `cd lib/surpass; antlr4ruby ExcelFormula.g`
 end
+
+desc "run examples"
+task :examples do
+  `rm examples/*.xls`
+  `cd examples; ls *.rb`.chomp.split.each do |f|
+      next if f =~ /big/
+     `jruby #{File.expand_path(f, "examples")}`
+  end
+end

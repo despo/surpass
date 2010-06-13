@@ -43,19 +43,6 @@ filter:    erb
 <h2><%= @page.title %></h2>
 <%= @content %>
 </div>
-<div id="right">
-<ul id="nav">
-    <li><a href="<%= manual_filename %>">Download PDF Manual</a></li>
-	<li><a href="http://rubyforge.org/projects/surpass">Rubyforge Project Page</a></li>
-	<li><a href="<%= gzipped_source %>">Download Latest Source (tgz)</a></li>
-</ul>
-	<div class="box">
-		<h2 style="margin-top:17px">Latest News</h2>
-		<ul>
-			<li>Release 0.1.0 now has full support for formulas.</li>
-		</ul>
-	</div>
-</div>
 <div id="clear"></div></div>
 <div id="footer">
 <p>Site template designed by <a href="http://loadfoo.org/" rel="external">LoadFoO</a>. Valid <a href="http://jigsaw.w3.org/css-validator/check/referer" rel="external">CSS</a> &amp; <a href="http://validator.w3.org/check?uri=referer" rel="external">XHTML</a></p>

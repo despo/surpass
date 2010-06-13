@@ -1,7 +1,8 @@
 ---
 title:  ExcelFormulaParser.rb
-layout:  web
+layout:  no-sidebar
 filter:
   - erb
 ---
-<%= gorg("/Users/ana/work/surpass/lib/surpass/ExcelFormulaParser.rb") %>
+<%= gorg("../lib/surpass/ExcelFormulaParser.rb") %>
+      

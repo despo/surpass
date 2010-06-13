@@ -1,8 +1,9 @@
-require "rubygems"
-require "surpass"
+require "lib/surpass"
 
 book = Workbook.new
-ws0 = book.add_sheet
+sheet = book.add_sheet
+
+sheet.write(0, 0, "surpass #{Surpass::VERSION} running on #{RUBY_DESCRIPTION}")
 
 fnt1 = Font.new
 fnt1.name = 'Verdana'
@@ -90,10 +91,11 @@ ware_style.alignment = al3
 ware_style.borders = brd3
 
 
-ws0.merge(3, 3, 1, 5, style1)
-ws0.merge(4, 10, 1, 6, style2)
-ws0.merge(14, 16, 1, 7, style3)
-ws0.set_column_width(1, 0x0d00)
+sheet.merge(3, 3, 1, 5, style1)
+sheet.merge(4, 10, 1, 6, style2)
+sheet.merge(14, 16, 1, 7, style3)
+sheet.set_column_width(1, 0x0d00)
 
 
 book.save(__FILE__.gsub(/rb$/, "xls"))
+

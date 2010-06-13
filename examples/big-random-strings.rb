@@ -1,10 +1,11 @@
-require "rubygems"
-require "surpass"
-
-strings = File.read("spec/data/random-strings.txt").split("\n")
+require "lib/surpass"
 
 book = Workbook.new
-s = book.add_sheet('0')
+sheet = book.add_sheet
+
+sheet.write(0, 0, "surpass #{Surpass::VERSION} running on #{RUBY_DESCRIPTION}")
+
+strings = File.read("spec/data/random-strings.txt").split("\n")
 
 colcount = 100 + 1
 rowcount = 100 + 1
@@ -15,7 +16,7 @@ puts "starting at #{start.to_s}"
 colcount.times do |c|
   rowcount.times do |r|
     i = c * rowcount + r
-    s.write(r, c, strings[i])
+    sheet.write(r+1, c, strings[i])
   end
 end
 

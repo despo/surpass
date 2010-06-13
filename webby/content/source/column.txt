@@ -1,7 +1,8 @@
 ---
 title:  column.rb
-layout:  web
+layout:  no-sidebar
 filter:
   - erb
 ---
-<%= gorg("/Users/ana/work/surpass/lib/surpass/column.rb") %>
+<%= gorg("../lib/surpass/column.rb") %>
+      

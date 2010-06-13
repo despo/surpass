@@ -1,8 +1,9 @@
-require "rubygems"
-require "surpass"
+require "lib/surpass"
 
 book = Workbook.new
-ws = book.add_sheet
+sheet = book.add_sheet
+
+sheet.write(0, 0, "surpass #{Surpass::VERSION} running on #{RUBY_DESCRIPTION}")
 
 fmts = [
     'General',
@@ -44,12 +45,12 @@ fmts = [
 ]
 
 fmts.each_with_index do |fmt, i|
-    ws.write(i, 0, fmt)
+    sheet.write(i, 0, fmt)
 
     style = StyleFormat.new
     style.number_format_string = fmt
 
-    ws.write(i, 4, -1278.9078, style)
+    sheet.write(i, 4, -1278.9078, style)
 end
 
 book.save(__FILE__.gsub(/rb$/, "xls"))

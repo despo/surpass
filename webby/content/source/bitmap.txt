@@ -1,7 +1,8 @@
 ---
 title:  bitmap.rb
-layout:  web
+layout:  no-sidebar
 filter:
   - erb
 ---
-<%= gorg("/Users/ana/work/surpass/lib/surpass/bitmap.rb") %>
+<%= gorg("../lib/surpass/bitmap.rb") %>
+      

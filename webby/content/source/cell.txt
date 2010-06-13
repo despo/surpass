@@ -1,7 +1,8 @@
 ---
 title:  cell.rb
-layout:  web
+layout:  no-sidebar
 filter:
   - erb
 ---
-<%= gorg("/Users/ana/work/surpass/lib/surpass/cell.rb") %>
+<%= gorg("../lib/surpass/cell.rb") %>
+      

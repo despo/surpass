@@ -1,7 +1,8 @@
 ---
 title:  style.rb
-layout:  web
+layout:  no-sidebar
 filter:
   - erb
 ---
-<%= gorg("/Users/ana/work/surpass/lib/surpass/style.rb") %>
+<%= gorg("../lib/surpass/style.rb") %>
+      

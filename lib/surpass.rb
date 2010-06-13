@@ -57,7 +57,7 @@ rescue Exception => e
   FORMULAS_AVAILABLE = false
 end
 
-require 'lib/surpass/excel_magic'
+require File.join(File.dirname(__FILE__), 'surpass', 'excel_magic')
 include ExcelMagic
 Surpass.require_all_libs_relative_to(__FILE__)
 require 'date'

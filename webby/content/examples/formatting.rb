@@ -4,6 +4,8 @@ require 'surpass'
 book = Workbook.new(__FILE__.gsub(/rb$/, "xls"))
 sheet = book.add_sheet("Demo Worksheet") # You can name your worksheets.
 
+sheet.write(0, 0, "surpass #{Surpass::VERSION} running on #{RUBY_DESCRIPTION}")
+
 # Let's set up some formatting.
 
 # Remember to use Excel-style formatting directives, not sprintf.
@@ -15,8 +17,8 @@ fancy_format = StyleFormat.new(
   :font_italic => true
 )
 
-sheet.write(0, 0, "Hello World!", fancy_format)
-sheet.write(0, 1, Date.today, date_format)
+sheet.write(2, 0, "Hello World!", fancy_format)
+sheet.write(2, 1, Date.today, date_format)
 
 # You can also set up formatting by passing attributes directly to the constituents of StyleFormat
 
@@ -26,7 +28,7 @@ Formatting::COLOURS.keys.each_with_index do |c, i|
   format.font.name = 'Verdana'
   format.font.color = c
   format.font.size = i + 5
-  sheet.write(i, 5, c, format)
+  sheet.write(i+2, 5, c, format)
 end
 
 # Font underlining.
@@ -34,13 +36,13 @@ end
 [:none, :single, :single_accounting, :double, :double_accounting, nil, true, false].each_with_index do |u, i|
   format = StyleFormat.new
   format.font.underline = u
-  sheet.write(i, 7, u.to_s, format)
+  sheet.write(i+2, 7, u.to_s, format)
 end
 
 # Font bold, italic, strikethrough, outline are simple booleans.
 [:bold, :italic, :struck_out, :outline].each_with_index do |s, i|
   attribute = ("font_" + s.to_s).to_sym
-  sheet.write(i, 8, s.to_s, StyleFormat.new(attribute => true))
+  sheet.write(i+2, 8, s.to_s, StyleFormat.new(attribute => true))
 end
 
 # Cell alignment.

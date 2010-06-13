@@ -1,7 +1,0 @@
----
-title:  excel_formula.rb
-layout:  web
-filter:
-  - erb
----
-<%= gorg("/Users/ana/work/surpass/lib/surpass/excel_formula.rb") %>

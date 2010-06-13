@@ -11,6 +11,6 @@ Homepage of the Surpass project. Surpass is software for creating Excel spreadsh
 
 h2. Example:
 
-<%= gorg("content/examples/formatting.rb", "1") %>
+<%= gorgt("content/examples/formatting.rb", "1") %>
 
 <img src="examples/formatting.png" />

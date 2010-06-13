@@ -1,8 +1,9 @@
-require "rubygems"
-require "surpass"
+require "lib/surpass"
 
 book = Workbook.new
-s = book.add_sheet('0')
+sheet = book.add_sheet
+
+sheet.write(0, 0, "surpass #{Surpass::VERSION} running on #{RUBY_DESCRIPTION}")
 
 colcount = 200 + 1
 rowcount = 6000 + 1
@@ -12,7 +13,7 @@ puts "starting at #{start.to_s}"
 
 colcount.times do |c|
   rowcount.times do |r|
-    s.write(r, c, "BIG")
+    sheet.write(r+1, c, "BIG")
   end
 end
 

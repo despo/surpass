@@ -1,7 +1,8 @@
 ---
 title:  workbook.rb
-layout:  web
+layout:  no-sidebar
 filter:
   - erb
 ---
-<%= gorg("/Users/ana/work/surpass/lib/surpass/workbook.rb") %>
+<%= gorg("../lib/surpass/workbook.rb") %>
+      
