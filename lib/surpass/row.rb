@@ -54,6 +54,11 @@ class Row
     pix = (points*83.0/50.0 + 2.0/5.0).round
     @height_in_pixels = pix if (pix > @height_in_pixels)
   end
+
+  def set_height(height)
+    @height = height * 20 #This seems to correspond to row height in excel.
+    @height_mismatch = 1
+  end
   
   def adjust_boundary_column_indexes(*args)
     args.each do |a|

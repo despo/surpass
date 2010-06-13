@@ -1,8 +1,8 @@
 grammar ExcelFormula;
 
 options {
-    language  = Ruby;
-    k = 2;
+  language  = Ruby;
+  k = 2;
 }
 
 @header {
@@ -75,12 +75,12 @@ prec2_expr[arg_type]
     ;
 
 prec3_expr[arg_type]
-    : prec5_expr[arg_type]
+    : prec4_expr[arg_type]
         (
             (
                 POWER { op = [PTGPOWER].pack('C') }
             )
-            prec5_expr[arg_type] { @rpn += op }
+            prec4_expr[arg_type] { @rpn += op }
         )*
     ;
 
@@ -126,31 +126,33 @@ primary[arg_type]
     | ref2d_tok = REF2D
         {
           r, c = Utilities.cell_to_packed_rowcol(ref2d_tok.text) 
-          ptg = PTGREFR + RVA_DELTA[arg_type]
+          ptg = PTGREFR + RVA_DELTA_REF[arg_type]
           @rpn += [ptg, r, c].pack("Cv2")
         }
     | ref2d1_tok = REF2D COLON ref2d2_tok = REF2D
         {
             r1, c1 = Utilities.cell_to_packed_rowcol(ref2d1_tok.text) 
             r2, c2 = Utilities.cell_to_packed_rowcol(ref2d2_tok.text)
-            ptg = PTGAREAR + RVA_DELTA[arg_type]
+            ptg = PTGAREAR + RVA_DELTA_AREA[arg_type]
             @rpn += [ptg, r1, r2, c1, c2].pack("Cv4")
         }
- 
+    | LP expr[arg_type] RP
+        {
+            @rpn += [PTGPAREN].pack('C')
+        } 
     | sheet1 = sheet
         { 
             sheet2 = sheet1
         }
         ( COLON sheet2 = sheet )? BANG ref3d_ref2d=REF2D
         {
-            ptg = PTGREF3DR + RVA_DELTA[arg_type]
-            rpn_ref2d = ""
+            ptg = PTGREF3DR + RVA_DELTA_REF[arg_type]
             r1, c1 = Utilities.cell_to_packed_rowcol(ref3d_ref2d.text)
             rpn_ref2d = [0x0000, r1, c1].pack("v3")
         }
         ( COLON ref3d_ref2d2= REF2D
             {
-                ptg = PTGAREA3DR + RVA_DELTA[arg_type]
+                ptg = PTGAREA3DR + RVA_DELTA_AREA[arg_type]
                 r2, c2 = Utilities.cell_to_packed_rowcol(ref3d_ref2d2.text)
                 rpn_ref2d = [0x0000, r1, r2, c1, c2].pack("v5")
             }
@@ -169,19 +171,17 @@ primary[arg_type]
         expr[arg_type] (SEMICOLON | COMMA)
         {
             @rpn += [PTGATTR, 0x08, 0].pack("C2v") # tAttrSkip
-            pos1 = @rpn.length - 2
+            pos1 = @rpn.size - 2
 
-            rem = @rpn.length - (pos0 + 2)
-            @rpn = @rpn[0..pos0] + [pos1-pos0].pack("v") + @rpn[pos0+2, rem] # TODO Check for OBO
+            @rpn = @rpn[0...pos0] + [pos1-pos0].pack("v") + @rpn[(pos0+2)...(@rpn.size)] 
         }
         expr[arg_type] RP
         {
             @rpn += [PTGATTR, 0x08, 3].pack("C2v") # tAttrSkip
             @rpn += [PTGFUNCVARR, 3, 1].pack("C2v") # 3 = nargs, 1 = IF func
-            pos2 = @rpn.length
+            pos2 = @rpn.size
 
-            rem = @rpn.length - (pos1 + 2)
-            @rpn = @rpn[0..pos1] + [pos2-(pos1+2)-1].pack("v") + @rpn[pos1+2, rem] # TODO Check for OBO
+            @rpn = @rpn[0...pos1] + [pos2-(pos1+2)-1].pack("v") + @rpn[(pos1+2)...(@rpn.size)]
         }
     | FUNC_CHOOSE
         {
@@ -190,39 +190,39 @@ primary[arg_type]
         }
         LP expr["V"]
         {
-            rpn_start = @rpn.length
-            ref_markers = [@sheet_references.length]
+            rpn_start = @rpn.size
+            ref_markers = [@sheet_references.size]
         }
         (
             (SEMICOLON | COMMA)
-                { mark = @rpn.length }
+                { mark = @rpn.size }
                 (
                   expr[arg_type]
                 | { @rpn += [PTGMISSARG].pack("C") }
                 )
                 {
-                    rem = @rpn.length - mark
+                    rem = @rpn.size - mark
                     rpn_chunks << @rpn[mark, rem]
                     ref_markers << @sheet_references.size
                 }
         )*
         RP
         {
-            @rpn = @rpn[0..rpn_start]
+            @rpn = @rpn[0...rpn_start]
             nc = rpn_chunks.length
             chunklens = rpn_chunks.collect {|c| c.length}
             skiplens = [0] * nc
-            skiplens[-1] = 3
+            skiplens[nc-1] = 3
 
             (nc-1).downto(1) do |i|
               skiplens[i-1] = skiplens[i] + chunklens[i] + 4
             end
-            jump_pos = [2 * nc + 2]
+            jump_pos = [2*nc + 2]
 
             (0...nc).each do |i|
-              jump_pos.append(jump_pos[-1] + chunklens[ic] + 4)
+              jump_pos << (jump_pos.last + chunklens[i] + 4)
             end
-            chunk_shift = 2 * nc + 6 # size of tAttrChoose
+            chunk_shift = 2*nc + 6 # size of tAttrChoose
 
             (0...nc).each do |i|
               (ref_markers[i]...ref_markers[i+1]).each do |r|
@@ -266,7 +266,7 @@ primary[arg_type]
         LP arg_count = expr_list[arg_type_list, min_argc, max_argc] RP
         {
           if (arg_count > max_argc) || (arg_count < min_argc)
-             raise "#{arg_count} parameters for function: #{func_tok.text}"
+             raise "incorrect number #{arg_count} of parameters for function: #{func_tok.text}"
           end
 
           if xcall
@@ -275,47 +275,58 @@ primary[arg_type]
           elsif (min_argc == max_argc)
               func_ptg = PTGFUNCR + RVA_DELTA[func_type]
               @rpn += [func_ptg, opcode].pack("Cv") 
-          elsif (arg_count == 1) && (func_tok.text.upcase == "SUM")
+          elsif (arg_count == 1) && (func_tok.text.upcase === "SUM")
               @rpn += [PTGATTR, 0x10, 0].pack("CCv") # tAttrSum
           else
-            func_ptg = PTGFUNCVARR + RVA_DELTA[func_type]
+              func_ptg = PTGFUNCVARR + RVA_DELTA[func_type]
               @rpn += [func_ptg, arg_count, opcode].pack("CCv")
           end
         }
-    | LP expr[arg_type] RP
-        {
-            @rpn += [PTGPAREN].pack('C')
-        }
     ;
-    
 
+// Process arguments to a function.
 expr_list[arg_type_list, min_argc, max_argc] returns [arg_cnt]
-@members{
-    arg_cnt = 0
-    arg_type = arg_type_list[arg_cnt]
+@init
+{
+  arg_cnt = 0
+
+  # Set these for processing first argument, 
+  # it's simpler because first argument type can't be '...'
+  arg_type = arg_type_list.first
+
+  # need to check for '-' for a fn with no arguments
+  arg_cnt += 1 unless arg_type === '-'
 }
-    : expr[arg_type] { arg_cnt += 1 }
-    (
-        {
-            if arg_cnt < arg_type_list.size
-                arg_type = arg_type_list[arg_cnt]
-            else
-                arg_type = arg_type_list[-1]
-            end
-            if arg_type == "+"
-                arg_type = arg_type_list[-2]
-            end
-        }
-        (SEMICOLON | COMMA)
-            (
-                  expr[arg_type]
-                | { @rpn += [PTGMISSARG].pack("B") }
-            )
-            { arg_cnt += 1 }
-    )*
-    |
+    : 
+    (expr[arg_type]
+        (
+             (SEMICOLON | COMMA) { arg_cnt += 1 }
+                ( 
+                 // *either* we find an argument after the comma/semicolon in which case process it...
+                     expr[arg_type]
+                     {
+                        if arg_cnt - 2 < arg_type_list.size
+                           arg_type = arg_type_list[arg_cnt - 2]
+                        else
+                          if arg_type_list.last === "..."
+                             # e.g. "V R ..." arbitrary number of args of type R
+                             # this will always be last element in arg_type_list
+                             # 2nd to last element will provide type
+                             arg_type = arg_type_list[arg_type_list.size - 2]
+                          else
+                            # Just read last element normally.
+                            arg_type = arg_type_list[arg_cnt - 2]
+                          end
+                        end
+                     }
+                     // ... *or* we have a missing argument and need to insert a placeholder
+                | { @rpn += [PTGMISSARG].pack("C") } 
+                )
+         )*
+    )
+    | // Some functions have no arguments e.g. pi()
     ;
-    
+
 sheet returns[ref]
     : sheet_ref_name = NAME
       { ref = sheet_ref_name.text }
@@ -325,7 +336,7 @@ sheet returns[ref]
       { ref = sheet_ref_quote.text[1, len(sheet_ref_quote.text) - 1].replace("''", "'") }
     ;
 
-    
+
 EQ: '=';
 LT: '<';
 GT: '>';
@@ -345,7 +356,7 @@ COMMA: ',';
 LP: '(';
 RP: ')';
 CONCAT: '&';
-PERCENT: '%';
+PERCENT: '\%';
 POWER: '^';
 BANG: '!';
 
@@ -357,8 +368,11 @@ STR_CONST: '"' (~'"')+ '"';
 REF2D: '$'? ('A'..'I')? ('A'..'Z') '$'? DIGIT+;
 TRUE_CONST: ('T'|'t') ('R'|'r') ('U'|'u') ('E'|'e') ;
 FALSE_CONST: ('F'|'f') ('A'|'a') ('L'|'l') ('S'|'s') ('E'|'e') ;
-NAME: '\w[\.\w]*' ;
 QUOTENAME: '\'(?:[^\']|\'\')*\'';
 FUNC_IF: 'IF';
 FUNC_CHOOSE: 'CHOOSE';
 
+fragment ALPHA: 'a'..'z' | 'A'..'Z';
+NAME: ALPHA+ ;
+
+WS: (' ')+ {skip()};
