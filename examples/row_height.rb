@@ -1,9 +1,8 @@
-require "lib/surpass"
+require 'rubygems'
+require 'surpass'
 
 book = Workbook.new
 sheet = book.add_sheet
-
-sheet.write(0, 0, "surpass #{Surpass::VERSION} running on #{RUBY_DESCRIPTION}")
 
 top_align = StyleFormat.new(:text_align => 'top')
 bottom_align = StyleFormat.new(:text_align => 'bottom')

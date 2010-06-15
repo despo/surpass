@@ -15,6 +15,7 @@ class Cell
   end
 end
 
+### @export "string-cell"
 class StringCell < Cell
   def initialize(parent, index, format_index, sst_index)
     @parent = parent
@@ -27,6 +28,7 @@ class StringCell < Cell
     LabelSSTRecord.new(@parent.index, @index, @format_index, @sst_index).to_biff
   end
 end
+### @end
 
 class BlankCell < Cell
   def initialize(parent, index, format_index)

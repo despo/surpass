@@ -18,6 +18,7 @@ pkg
 .bzr
 .bzrignore
 examples
+debug-examples
 webby
 stats
 spec
