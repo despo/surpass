@@ -28,8 +28,8 @@ class StringCell < Cell
     LabelSSTRecord.new(@parent.index, @index, @format_index, @sst_index).to_biff
   end
 end
-### @end
 
+### @export "blank-cell"
 class BlankCell < Cell
   def initialize(parent, index, format_index)
     @parent = parent
@@ -41,6 +41,7 @@ class BlankCell < Cell
     BlankRecord.new(@parent.index, @index, @format_index).to_biff
   end
 end
+### @end
 
 class NumberCell < Cell
   def initialize(parent, index, format_index, number)
@@ -120,6 +121,7 @@ class MulBlankCell < Cell
   end
 end
 
+### @export "formula-cell"
 class FormulaCell < Cell
   def initialize(parent, index, format_index, formula, calc_flags = 0)
     @parent = parent
@@ -134,6 +136,7 @@ class FormulaCell < Cell
     FormulaRecord.new(*args).to_biff
   end
 end
+### @end
 
 class BooleanCell < Cell
   def initialize(parent, index, format_index, number)

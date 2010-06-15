@@ -329,6 +329,7 @@ class Worksheet
     merge(r1, r2, c1, c2, style)
   end
   
+  ### @export "to-biff"
   def to_biff
     result = []
     result << Biff8BOFRecord.new(Biff8BOFRecord::WORKSHEET).to_biff
@@ -345,6 +346,7 @@ class Worksheet
     result << wsbool_record
     result << @cols.sort.collect {|k, v| v.to_biff }.join
     result << dimensions_rec
+    ### @end
     
     # Print Settings
     result << PrintHeadersRecord.new(@print_headers).to_biff
@@ -368,12 +370,14 @@ class Worksheet
     result << WindowProtectRecord.new(as_numeric(@wnd_protect)).to_biff()
     result << ObjectProtectRecord.new(as_numeric(@obj_protect)).to_biff()
     result << PasswordRecord.new(@password).to_biff()
-
+    
+    ### @export "to-biff-rows"
     keys = @rows.keys.sort
     keys.each do |i|
       result << @rows[i].to_biff
       result << @rows[i].cells_biff
     end
+    ### @end
     
     # @charts.each do |c|
     #   result << c.to_biff

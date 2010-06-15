@@ -80,7 +80,8 @@ class Row
   def cells_count
     @cells.length
   end
-  
+ 
+  ### @export "to-biff"
   def to_biff
     height_options = (@height & 0x07FFF)
     height_options |= (@has_default_height & 0x01) << 15
@@ -102,6 +103,7 @@ class Row
   def cells_biff
     cells.collect {|c| c.to_biff }.join
   end
+  ### @end
   
   def cell(col_index)
     cells.select {|c| c.index == col_index}.first
@@ -139,6 +141,7 @@ class Row
     adjust_height(style)
     adjust_boundary_column_indexes(col)
 
+    ### @export "label-classes"
     case label
     when TrueClass, FalseClass
       @cells << BooleanCell.new(self, col, style_index, label)
@@ -158,6 +161,7 @@ class Row
     else
       raise "You are trying to write an object of class #{label.class.name} to a spreadsheet. Please convert this to a supported class such as String."
     end
+    ### @end
   end
   
   def write_blanks(c1, c2, style)

@@ -21,10 +21,12 @@ options {
   attr_accessor :rpn
 }
 
+/// @export "formula"
 formula
     : expr["V"]
     ;
 
+/// @export "expr"
 expr[arg_type]
     : prec0_expr[arg_type]
         (
@@ -40,7 +42,7 @@ expr[arg_type]
             prec0_expr[arg_type] { @rpn += op }
         )*
     ;
-
+/// @export "prec0_expr"
 prec0_expr[arg_type]
     : prec1_expr[arg_type]
         (
@@ -50,7 +52,7 @@ prec0_expr[arg_type]
             prec1_expr[arg_type] { @rpn += op }
         )*
     ;
-
+/// @export "prec1_expr"
 prec1_expr[arg_type]
     : prec2_expr[arg_type]
         (
@@ -61,8 +63,7 @@ prec1_expr[arg_type]
             prec2_expr[arg_type] { @rpn += op }
         )*
     ;
-
-
+/// @export "prec2_expr"
 prec2_expr[arg_type]
     : prec3_expr[arg_type]
         (
@@ -74,6 +75,7 @@ prec2_expr[arg_type]
         )*
     ;
 
+/// @export "prec3_expr"
 prec3_expr[arg_type]
     : prec4_expr[arg_type]
         (
@@ -83,20 +85,21 @@ prec3_expr[arg_type]
             prec4_expr[arg_type] { @rpn += op }
         )*
     ;
-
+/// @export "prec4_expr"
 prec4_expr[arg_type]
     : prec5_expr[arg_type]
         (
             PERCENT { @rpn += [PTGPERCENT].pack('C') }
         )?
     ;
-
+/// @export "prec5_expr"
 prec5_expr[arg_type]
     : primary[arg_type]
     | SUB primary[arg_type] { @rpn += [PTGUMINUS].pack('C') }
     ;
-
+/// @end
 primary[arg_type]
+/// @export "boolean-string"
     : TRUE_CONST
         {
             @rpn += [PTGBOOL, 1].pack("C2")
@@ -110,6 +113,7 @@ primary[arg_type]
             s = str_tok.text.gsub("\"", "")
             @rpn += [PTGSTR].pack("C") + [s.length].pack('v') + s
         }
+/// @export "numeric"
     | int_tok = INT_CONST
     {
         int_value = int_tok.text.to_i
@@ -123,6 +127,7 @@ primary[arg_type]
         {
             @rpn += [PTGNUM, num_tok.text.to_f].pack("CE")
         }
+/// @end
     | ref2d_tok = REF2D
         {
           r, c = Utilities.cell_to_packed_rowcol(ref2d_tok.text) 
@@ -136,10 +141,12 @@ primary[arg_type]
             ptg = PTGAREAR + RVA_DELTA_AREA[arg_type]
             @rpn += [ptg, r1, r2, c1, c2].pack("Cv4")
         }
+/// @export "parens"
     | LP expr[arg_type] RP
         {
             @rpn += [PTGPAREN].pack('C')
         } 
+/// @end
     | sheet1 = sheet
         { 
             sheet2 = sheet1
@@ -162,6 +169,7 @@ primary[arg_type]
             @sheet_references << [sheet1, sheet2, @rpn.size]
             @rpn += rpn_ref2d
         }
+/// @export "if-fn"
     | FUNC_IF
         LP expr["V"] (SEMICOLON | COMMA)
         {
@@ -183,6 +191,7 @@ primary[arg_type]
 
             @rpn = @rpn[0...pos1] + [pos2-(pos1+2)-1].pack("v") + @rpn[(pos1+2)...(@rpn.size)]
         }
+/// @end
     | FUNC_CHOOSE
         {
             arg_type = "R"
@@ -285,6 +294,7 @@ primary[arg_type]
     ;
 
 // Process arguments to a function.
+/// @export "expr_list"
 expr_list[arg_type_list, min_argc, max_argc] returns [arg_cnt]
 @init
 {
@@ -326,7 +336,7 @@ expr_list[arg_type_list, min_argc, max_argc] returns [arg_cnt]
     )
     | // Some functions have no arguments e.g. pi()
     ;
-
+/// @end
 sheet returns[ref]
     : sheet_ref_name = NAME
       { ref = sheet_ref_name.text }
@@ -336,18 +346,26 @@ sheet returns[ref]
       { ref = sheet_ref_quote.text[1, len(sheet_ref_quote.text) - 1].replace("''", "'") }
     ;
 
-
+/// @export "expr-tokens"
 EQ: '=';
 LT: '<';
 GT: '>';
 NE: '<>';
 LE: '<=';
 GE: '>=';
-
+/// @export "prec0_expr-tokens"
+CONCAT: '&';
+/// @export "prec1_expr-tokens"
 ADD: '+';
 SUB: '-';
+/// @export "prec2_expr-tokens"
 MUL: '*';
 DIV: '/';
+/// @export "prec3_expr-tokens"
+POWER: '^';
+/// @export "prec4_expr-tokens"
+PERCENT: '\%';
+/// @end
 
 COLON: ':';
 SEMICOLON: ';';
@@ -355,9 +373,6 @@ COMMA: ',';
 
 LP: '(';
 RP: ')';
-CONCAT: '&';
-PERCENT: '\%';
-POWER: '^';
 BANG: '!';
 
 fragment DIGIT: '0'..'9';

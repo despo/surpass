@@ -104,8 +104,8 @@ class BiffRecord
     @record_data = ''
   end
   
+### @export "biff-record"
   def record_header
-    # TODO figure out if Ruby's or Python's length function is correct here.
     [self.class::RECORD_ID, @record_data.length].pack('v2')
   end
 
@@ -130,6 +130,7 @@ class BiffRecord
       record_header + @record_data
     end
   end
+### @end
 end
 
 # Offset Size Contents
@@ -145,6 +146,7 @@ end
 # 6      2    Build year
 # 8      4    File history flags
 # 12     4    Lowest Excel version that can read all records in this file
+### @export "biffbof-record"
 class Biff8BOFRecord < BiffRecord
   RECORD_ID = 0x0809
   
@@ -166,6 +168,7 @@ class Biff8BOFRecord < BiffRecord
     @record_data = [version, rec_type, build, year, file_hist_flags, ver_can_read].pack('v4V2')
   end
 end
+### @end
 
 class InterfaceHeaderRecord < BiffRecord
   RECORD_ID = 0x00E1
@@ -1396,6 +1399,7 @@ end
 #             3   0008H   1 = Part of a shared formula
 # 16     4    Not used
 # 20     var. Formula data (RPN token array)
+### @export "formula-record"
 class FormulaRecord < BiffRecord
   RECORD_ID = 0x0006
 
@@ -1403,6 +1407,7 @@ class FormulaRecord < BiffRecord
     @record_data = [row, col, xf_index, 0xFFFF000000000003, calc_flags & 0x03, 0].pack('v3QvV') + rpn
   end
 end
+### @end
 
 # This record contains information about the layout of outline symbols.
 # 

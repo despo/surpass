@@ -118,10 +118,11 @@ class Workbook
     args = [options, 0x00, MACROS['Print_Area'], sheetnum, rpn]
     @names << NameRecord.new(*args).to_biff
   end
-  
+
   def to_biff
     raise "You cannot save a workbook with no worksheets" if @worksheets.empty?
     
+### @export "to-biff"
     section_1_array = []
     section_1_array << Biff8BOFRecord.new(Biff8BOFRecord::BOOK_GLOBAL).to_biff
     section_1_array << InterfaceHeaderRecord.new.to_biff
@@ -149,7 +150,7 @@ class Workbook
     section_1_array << '' # Palette
     section_1_array << UseSelfsRecord.new.to_biff
     section_1 = section_1_array.join
-
+### @end
     section_3_array = []
     section_3_array << CountryRecord.new(@country_code, @country_code).to_biff unless @country_code.nil?
     # section_3_array << InternalReferenceSupBookRecord.new(@worksheets.length).to_biff

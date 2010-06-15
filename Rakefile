@@ -8,8 +8,7 @@ rescue LoadError
   abort '### Please install the "bones" gem ###'
 end
 
-ensure_in_path 'lib'
-require 'surpass'
+require 'lib/surpass'
 
 Bones {
   name     'surpass'

@@ -9,7 +9,6 @@ class Formula
   def initialize(formula_string)
     raise "formulas not available" unless FORMULAS_AVAILABLE
     @lexer = ExcelFormula::Lexer.new(formula_string)
-#    puts @lexer.inspect
     @parser = ExcelFormula::Parser.new(@lexer)
     begin
       @parser.formula
