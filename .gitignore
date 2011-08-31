@@ -1,3 +1,4 @@
+*.swp
 spec/output/*
 examples/*.xls
 pkg/
