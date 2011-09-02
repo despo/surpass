@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/spec_helper'
+require 'spec_helper'
 
 describe Row, "various classes of input" do
   it "should write" do

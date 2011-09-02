@@ -1,11 +1,11 @@
-require File.dirname(__FILE__) + '/spec_helper'
+require 'spec_helper'
 
 describe NumberCell, "to_biff" do
   before(:all) do
     @w = Workbook.new
     @s = @w.add_sheet('rk_tests')
   end
-  
+
   it "should encode with rk_encode" do
     TEST_VALUES.each_with_index do |x, i|
       # Write original test values
@@ -21,7 +21,7 @@ describe NumberCell, "to_biff" do
       @s.write(i, 9, -x/100.00)
     end
   end
-  
+
   after(:all) do
     @w.save("spec/output/cells-rk.xls")
   end
